@@ -119,7 +119,7 @@
           var minSrc = 'https://raw.githubusercontent.com/scemsjyd/scemsjyd.github.io/master/min-photos/' + data.link[i];
           var src = 'https://raw.githubusercontent.com/scemsjyd/scemsjyd.github.io/master/max-photos/' + data.link[i];
           var type = data.type[i];
-          //var target = src + (type === 'video' ? '.mp4' : '.jpg');
+          var target = src + (type === 'video' ? '.mp4' : '');
           //src += '.jpg';
 
           liTmpl += '<figure class="thumb" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">\
