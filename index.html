@@ -168,11 +168,10 @@
       
         <h1 id="sentry配置"><a href="#sentry配置" class="headerlink" title="sentry配置"></a>sentry配置</h1><blockquote>
 <p>使用sentry 进行异常报警</p>
-<ol>
-<li>sentry安装<br>sentry 目前推荐使用docker安装，docker-compose启动<br>官方安装链接：<code>https://docs.sentry.io/server/installation</code></li>
-</ol>
 </blockquote>
-<ol start="2">
+<ol>
+<li><p>sentry安装<br>sentry 目前推荐使用docker安装，docker-compose启动<br>官方安装链接：<code>https://docs.sentry.io/server/installation</code></p>
+</li>
 <li><p>添加maven依赖</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.getsentry.raven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;raven-logback&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;8.0.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
 </li>
