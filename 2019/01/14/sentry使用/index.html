@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://www.scemsjyd.com">
-  <title>相册 | 山脚下的脚下山</title>
+  <title>sentry使用 | 山脚下的脚下山</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="照片   	图片正在加载中…     (function() {     var loadScript = function(path) {       var $script = document.createElement(&apos;script&apos;)       document.getElementsByTagName(&apos;body&apos;)[0].appendChild($script)">
-<meta property="og:type" content="website">
-<meta property="og:title" content="相册">
-<meta property="og:url" content="https://www.scemsjyd.com/photos/index.html">
+  <meta name="description" content="sentry配置 使用sentry 进行异常报警  sentry安装sentry 目前推荐使用docker安装，docker-compose启动官方安装链接：https://docs.sentry.io/server/installation    添加maven依赖 12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;com.getsentry.raven&amp;lt;">
+<meta name="keywords" content="sentry">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sentry使用">
+<meta property="og:url" content="https://www.scemsjyd.com/2019/01/14/sentry使用/index.html">
 <meta property="og:site_name" content="山脚下的脚下山">
-<meta property="og:description" content="照片   	图片正在加载中…     (function() {     var loadScript = function(path) {       var $script = document.createElement(&apos;script&apos;)       document.getElementsByTagName(&apos;body&apos;)[0].appendChild($script)">
+<meta property="og:description" content="sentry配置 使用sentry 进行异常报警  sentry安装sentry 目前推荐使用docker安装，docker-compose启动官方安装链接：https://docs.sentry.io/server/installation    添加maven依赖 12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;com.getsentry.raven&amp;lt;">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-12T12:20:41.512Z">
+<meta property="og:updated_time" content="2019-01-14T09:50:10.459Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="相册">
-<meta name="twitter:description" content="照片   	图片正在加载中…     (function() {     var loadScript = function(path) {       var $script = document.createElement(&apos;script&apos;)       document.getElementsByTagName(&apos;body&apos;)[0].appendChild($script)">
+<meta name="twitter:title" content="sentry使用">
+<meta name="twitter:description" content="sentry配置 使用sentry 进行异常报警  sentry安装sentry 目前推荐使用docker安装，docker-compose启动官方安装链接：https://docs.sentry.io/server/installation    添加maven依赖 12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;com.getsentry.raven&amp;lt;">
   
     <link rel="alternative" href="/atom.xml" title="山脚下的脚下山" type="application/atom+xml">
   
@@ -148,41 +149,40 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-photos" class="article article-type-post " itemscope="" itemprop="blogPost">
+            <article id="post-sentry使用" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      相册
+      sentry使用
     </h1>
   
 
+        
+        <a href="/2019/01/14/sentry使用/" class="archive-article-date">
+  	<time datetime="2019-01-14T09:49:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
+</a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <link rel="stylesheet" href="./ins.css">
-<div class="photos-btn-wrap">
-	<a class="photos-btn active" href="javascript:void(0)" target="_blank" rel="noopener">照片</a>
-</div>
-<div class="instagram itemscope">
-	<a href="#" target="_blank" class="open-ins">图片正在加载中…</a>
-</div>
-<script>
-  (function() {
-    var loadScript = function(path) {
-      var $script = document.createElement('script')
-      document.getElementsByTagName('body')[0].appendChild($script)
-      $script.setAttribute('src', path)
-    }
-    setTimeout(function() {
-      loadScript('./ins.js')
-    }, 0)
-  })()
-</script>
+        <h1 id="sentry配置"><a href="#sentry配置" class="headerlink" title="sentry配置"></a>sentry配置</h1><blockquote>
+<p>使用sentry 进行异常报警</p>
+<ol>
+<li>sentry安装<br>sentry 目前推荐使用docker安装，docker-compose启动<br>官方安装链接：<code>https://docs.sentry.io/server/installation</code></li>
+</ol>
+</blockquote>
+<ol start="2">
+<li><p>添加maven依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.getsentry.raven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;raven-logback&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;8.0.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置logback</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;appender name=&quot;Sentry&quot; class=&quot;com.getsentry.raven.logback.SentryAppender&quot;&gt;</span><br><span class="line">    &lt;dsn&gt;https://username:password@sentry.abc.com/117&lt;/dsn&gt;</span><br><span class="line">    &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;</span><br><span class="line">        &lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">    &lt;/filter&gt;</span><br><span class="line">&lt;/appender&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
       
 
@@ -222,6 +222,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">sentry</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -272,7 +283,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://www.scemsjyd.com/photos/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://www.scemsjyd.com/2019/01/14/sentry使用/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -284,6 +295,16 @@
 </article>
 
   
+<nav id="article-nav">
+  
+  
+    <a href="/2019/01/12/first-blog/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">first blog</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -302,6 +323,33 @@
 </aside>
 
 
+
+  
+  
+  
+
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+<script src="https://jjeejj.github.io/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "https://www.scemsjyd.com/2019/01/14/sentry使用/",
+  owner: 'scemsjyd',
+  repo: 'scemsjyd.github.io',
+  oauth: {
+    client_id: 'c87e8d8eda14d289e3eb',
+    client_secret: 'db3231862d84839bae75322f837ec9b780d2af57',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
 
 
           </div>
@@ -324,7 +372,7 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
