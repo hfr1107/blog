@@ -144,6 +144,112 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-skywalking-agent" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/29/skywalking-agent/">skywalking-agent</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/29/skywalking-agent/" class="archive-article-date">
+  	<time datetime="2019-01-29T14:50:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="skywalking-agent源码分析"><a href="#skywalking-agent源码分析" class="headerlink" title="skywalking-agent源码分析"></a>skywalking-agent源码分析</h1><h2 id="执行顺序图"><a href="#执行顺序图" class="headerlink" title="执行顺序图"></a>执行顺序图</h2><blockquote>
+<p>该顺序图大体内容都有了，缺少最后一步的BootService的生命周期调用，即下面的接口。在这个接口中会有一些服务调用，比如向Gprc注册发送的流程</p>
+</blockquote>
+<p><img src="/2019/01/29/skywalking-agent/0885a663.png" alt="0885a663.png"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> public interface BootService &#123;</span><br><span class="line">    void prepare() throws Throwable;</span><br><span class="line"></span><br><span class="line">    void boot() throws Throwable;</span><br><span class="line"></span><br><span class="line">    void onComplete() throws Throwable;</span><br><span class="line"></span><br><span class="line">    void shutdown() throws Throwable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><blockquote>
+<p>分析中主要讲<code>class Transformer implements AgentBuilder.Transformer</code>这个实现类中的<code>transform</code>方法</p>
+</blockquote>
+<ol>
+<li><p><code>transform</code>方法中调用<code>pluginFinder</code>的<code>find</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> DynamicType.Builder&lt;?&gt; transform(DynamicType.Builder&lt;?&gt; builder, TypeDescription typeDescription,</span><br><span class="line">    ClassLoader classLoader, JavaModule <span class="keyword">module</span>) &#123;</span><br><span class="line">    List&lt;AbstractClassEnhancePluginDefine&gt; pluginDefines = pluginFinder.find(typeDescription, classLoader);</span><br><span class="line">    <span class="keyword">if</span> (pluginDefines.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        DynamicType.Builder&lt;?&gt; newBuilder = builder;</span><br><span class="line">        EnhanceContext context = <span class="keyword">new</span> EnhanceContext();</span><br><span class="line">        <span class="keyword">for</span> (AbstractClassEnhancePluginDefine define : pluginDefines) &#123;</span><br><span class="line">            DynamicType.Builder&lt;?&gt; possibleNewBuilder = define.define(typeDescription, newBuilder, classLoader, context);</span><br><span class="line">            <span class="keyword">if</span> (possibleNewBuilder != <span class="keyword">null</span>) &#123;</span><br><span class="line">                newBuilder = possibleNewBuilder;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (context.isEnhanced()) &#123;</span><br><span class="line">            logger.debug(<span class="string">"Finish the prepare stage for &#123;&#125;."</span>, typeDescription.getName());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> newBuilder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    logger.debug(<span class="string">"Matched class &#123;&#125;, but ignore by finding mechanism."</span>, typeDescription.getTypeName());</span><br><span class="line">    <span class="keyword">return</span> builder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找到所有的<code>AbstractClassEnhancePluginDefine</code>实现类，在迭代所有子类，调用子类的<code>define</code>方法。在<code>define</code>方法中最主要的方法是<code>enhance</code>。该方法是抽象方法，由子类<code>ClassEnhancePluginDefine</code>中调用<code>enhanceClass</code>和<code>enhanceInstance</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> DynamicType.Builder&lt;?&gt; enhance(TypeDescription typeDescription,</span><br><span class="line">                                         DynamicType.Builder&lt;?&gt; newClassBuilder, ClassLoader classLoader,</span><br><span class="line">                                         EnhanceContext context) <span class="keyword">throws</span> PluginException &#123;</span><br><span class="line">    newClassBuilder = <span class="keyword">this</span>.enhanceClass(typeDescription, newClassBuilder, classLoader);</span><br><span class="line"></span><br><span class="line">    newClassBuilder = <span class="keyword">this</span>.enhanceInstance(typeDescription, newClassBuilder, classLoader, context);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> newClassBuilder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用<code>enhanceClass</code>方法。该方法第一步也是最主要的一步调用<code>getStaticMethodsInterceptPoints</code>。这个方法也是抽象方法。这个方法由具体的插件实现。比如<code>LoadBalancedConnectionProxyInstrumentation</code>。这个类中会调用<code>getConstructorsInterceptPoints</code>来获取哪些方法是需要被拦截的。并且通过<code>getMethodsInterceptor</code>方法返回具体的实现类。这个方法类似AOP做切面处理。</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> DynamicType.Builder&lt;?&gt; enhanceClass(TypeDescription typeDescription,</span><br><span class="line">    DynamicType.Builder&lt;?&gt; newClassBuilder, ClassLoader classLoader) <span class="keyword">throws</span> PluginException &#123;</span><br><span class="line">    StaticMethodsInterceptPoint[] staticMethodsInterceptPoints = getStaticMethodsInterceptPoints();</span><br><span class="line">    String enhanceOriginClassName = typeDescription.getTypeName();</span><br><span class="line">    <span class="keyword">if</span> (staticMethodsInterceptPoints == <span class="keyword">null</span> || staticMethodsInterceptPoints.length == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> newClassBuilder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (StaticMethodsInterceptPoint staticMethodsInterceptPoint : staticMethodsInterceptPoints) &#123;</span><br><span class="line">        String interceptor = staticMethodsInterceptPoint.getMethodsInterceptor();</span><br><span class="line">        <span class="keyword">if</span> (StringUtil.isEmpty(interceptor)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> EnhanceException(<span class="string">"no StaticMethodsAroundInterceptor define to enhance class "</span> + enhanceOriginClassName);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (staticMethodsInterceptPoint.isOverrideArgs()) &#123;</span><br><span class="line">            newClassBuilder = newClassBuilder.method(isStatic().and(staticMethodsInterceptPoint.getMethodsMatcher()))</span><br><span class="line">                .intercept(</span><br><span class="line">                    MethodDelegation.withDefaultConfiguration()</span><br><span class="line">                        .withBinders(</span><br><span class="line">                            Morph.Binder.install(OverrideCallable.class)</span><br><span class="line">                        )</span><br><span class="line">                        .to(<span class="keyword">new</span> StaticMethodsInterWithOverrideArgs(interceptor))</span><br><span class="line">                );</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            newClassBuilder = newClassBuilder.method(isStatic().and(staticMethodsInterceptPoint.getMethodsMatcher()))</span><br><span class="line">                .intercept(</span><br><span class="line">                    MethodDelegation.withDefaultConfiguration()</span><br><span class="line">                        .to(<span class="keyword">new</span> StaticMethodsInter(interceptor))</span><br><span class="line">                );</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> newClassBuilder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>LoadBalancedConnectionProxyInstrumentation</code>的实现方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="keyword">protected</span> StaticMethodsInterceptPoint[] getStaticMethodsInterceptPoints() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> StaticMethodsInterceptPoint[] &#123;</span><br><span class="line">        <span class="keyword">new</span> StaticMethodsInterceptPoint() &#123;</span><br><span class="line">            <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> ElementMatcher&lt;MethodDescription&gt; <span class="title">getMethodsMatcher</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> named(<span class="string">"createProxyInstance"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//返回具体的拦截器实现类</span></span><br><span class="line">            <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> String <span class="title">getMethodsInterceptor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> METHOD_INTERCEPTOR;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isOverrideArgs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol start="4">
+<li>调用<code>enhanceInstance</code>方法。这个方法中最主要的是调用下面的两个方法，一个是对构造器进行切面拦截，另一个是对实例对象中的方法进行拦截。比如<code>InvocableHandlerInstrumentation</code>这个实现类是对Springmvc中<code>InvocableHandlerMethod</code>的<code>invokeForRequest</code>进行拦截，具体的拦截器类是<code>org.apache.skywalking.apm.plugin.spring.mvc.commons.interceptor.InvokeForRequestInterceptor</code>。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ConstructorInterceptPoint[] constructorInterceptPoints = getConstructorsInterceptPoints();</span><br><span class="line">InstanceMethodsInterceptPoint[] instanceMethodsInterceptPoints = getInstanceMethodsInterceptPoints();</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>实现类中的方法调用，3和4步骤中对方法进行了增强即拦截进行了代理操作。以<code>enhanceInstance</code>为例，在调用<code>getConstructorsInterceptPoints</code>和方法<code>getInstanceMethodsInterceptPoints</code>之后，如果存在需要拦截的方法，通过返回的<code>newClassBuilder</code>对方法进行拦截配置。如下代码，<code>newClassBuilder.method(junction).intercept(...)</code>调用intercept方法，然后在intercept方法中分别调用接口的具体实现方法。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (existedMethodsInterceptPoints) &#123;</span><br><span class="line">    <span class="keyword">for</span> (InstanceMethodsInterceptPoint instanceMethodsInterceptPoint : instanceMethodsInterceptPoints) &#123;</span><br><span class="line">        String interceptor = instanceMethodsInterceptPoint.getMethodsInterceptor();</span><br><span class="line">        <span class="keyword">if</span> (StringUtil.isEmpty(interceptor)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> EnhanceException(<span class="string">"no InstanceMethodsAroundInterceptor define to enhance class "</span> + enhanceOriginClassName);</span><br><span class="line">        &#125;</span><br><span class="line">        ElementMatcher.Junction&lt;MethodDescription&gt; junction = not(isStatic()).and(instanceMethodsInterceptPoint.getMethodsMatcher());</span><br><span class="line">        <span class="keyword">if</span> (instanceMethodsInterceptPoint <span class="keyword">instanceof</span> DeclaredInstanceMethodsInterceptPoint) &#123;</span><br><span class="line">            junction = junction.and(ElementMatchers.&lt;MethodDescription&gt;isDeclaredBy(typeDescription));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (instanceMethodsInterceptPoint.isOverrideArgs()) &#123;</span><br><span class="line">            newClassBuilder =</span><br><span class="line">                newClassBuilder.method(junction)</span><br><span class="line">                    .intercept(</span><br><span class="line">                        MethodDelegation.withDefaultConfiguration()</span><br><span class="line">                            .withBinders(</span><br><span class="line">                                Morph.Binder.install(OverrideCallable.class)</span><br><span class="line">                            )</span><br><span class="line">                            .to(<span class="keyword">new</span> InstMethodsInterWithOverrideArgs(interceptor, classLoader))</span><br><span class="line">                    );</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            newClassBuilder =</span><br><span class="line">                newClassBuilder.method(junction)</span><br><span class="line">                    .intercept(</span><br><span class="line">                        MethodDelegation.withDefaultConfiguration()</span><br><span class="line">                            .to(<span class="keyword">new</span> InstMethodsInter(interceptor, classLoader))</span><br><span class="line">                    );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="总结重要实现及接口"><a href="#总结重要实现及接口" class="headerlink" title="总结重要实现及接口"></a>总结重要实现及接口</h2><blockquote>
+<p>该流程过程中主要是在enhance方法内进程代理（拦截器）的创建。具体的拦截器接口有<code>InstanceConstructorInterceptor</code>,<code>InstanceMethodsAroundInterceptor</code>,<code>StaticMethodsAroundInterceptor</code>,然后在上面三个接口的子类中有些会实现<code>EnhancedInstance</code>接口进行动态属性添加。而最主要的三个接口的实现类的调用是通过<code>newClassBuilder.method(junction).intercept</code>方法内部调用的。</p>
+</blockquote>
+<p>如下图：<br><img src="/2019/01/29/skywalking-agent/e6ceb470.png" alt="e6ceb470.png"></p>
+<p><img src="/2019/01/29/skywalking-agent/c5f55da0.png" alt="c5f55da0.png"></p>
+<p><img src="/2019/01/29/skywalking-agent/a7f4cc7f.png" alt="a7f4cc7f.png"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">skywalking,skywalking-agent</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/29/skywalking-agent/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-java-Reference" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -698,6 +804,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">sentry</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">skywalking,skywalking-agent</a>
               </li>
             
             <div class="clearfix"></div>
