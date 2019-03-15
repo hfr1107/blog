@@ -167,33 +167,63 @@
         <h1 id="Mysql-MVCC和隔离级别-个人见解"><a href="#Mysql-MVCC和隔离级别-个人见解" class="headerlink" title="Mysql MVCC和隔离级别 个人见解"></a>Mysql MVCC和隔离级别 个人见解</h1><blockquote>
 <p>多版本并发控制（MultiVersion Concurrency Control，简称MVCC或MCC）是mysql中比较重要的一个知识点，也经常在面试时被面试官询问，这里说说我的见解，如有错误，请留言或者邮件：<a href="mailto:`jyd@scemsjyd.com" target="_blank" rel="noopener">`jyd@scemsjyd.com</a>`</p>
 </blockquote>
-<ol>
-<li><p>要说MVCC就必须先说事务的隔离级别。</p>
-<p>大家一定了解或者至少听说过关系型数据库的ACID属性了。</p>
+<h3 id="要说MVCC就必须先说事务的隔离级别。"><a href="#要说MVCC就必须先说事务的隔离级别。" class="headerlink" title="要说MVCC就必须先说事务的隔离级别。"></a>要说MVCC就必须先说事务的隔离级别。</h3><p>   大家一定了解或者至少听说过关系型数据库的ACID属性了。</p>
 <ul>
 <li>原子性（Atomicity) : 事务是一个原子操作，在一个事务中的所有操作要么一起成功，要么一起失败回滚到事务开启之前的状态。</li>
 <li>一致性（Consistent)：在事务之前与之后的状态保持一致。可能有点懵，简而言之，系统的从开始的状态到结束的状态满足预定的约束。</li>
 <li>隔离性（Isolation)：数据库提供一定级别的隔离机制保证当前执行的事务受其他事务的影响不同。这里也是我们本次MVCC的引入的来源了。</li>
 <li>持久性（Durable)：事务执行完成之后持久化到数据库中。</li>
 </ul>
-</li>
-</ol>
-<ol start="2">
-<li><p>隔离性</p>
-<p>因为数据库是存在并发访问的，即同时存在对同一条记录的读与写。既然存在并发的读写，那就出现了数据库最常见的<code>脏读</code> 、<code>幻读</code>、<code>不可重复读</code>和<code>更新丢失</code>。</p>
+<h3 id="隔离性"><a href="#隔离性" class="headerlink" title="隔离性"></a>隔离性</h3><p>   因为数据库是存在并发访问的，即同时存在对同一条记录的读与写。既然存在并发的读写，那就出现了数据库最常见的<code>脏读</code> 、<code>幻读</code>、<code>不可重复读</code>和<code>更新丢失</code>。</p>
 <ul>
 <li>脏读：一个事务对修改记录还未提交，另一个事务读取到了这一条修改过的记录。但是在下一个时刻，第一个事务回滚了。第二个事务读取到了脏数据，所以叫脏读。而隔离级别中的<code>读已提交（Read Commit</code>就是为了解决这个问题。</li>
 <li>不可重复读：第一个事务T1时刻读取了某条记录，T2时刻再次读取时，两次读取数据不一致或者删除了。隔离级别中的<code>可重复读</code>用于解决了这个问题和脏读的问题</li>
 <li>幻读：一个事务T1时刻读取了数据，在T2时刻再次读取数据却多了其他事务插入的满足条件的记录。产生了幻觉。隔离级别中的<code>串行化</code>解决了幻读。</li>
 <li>更新丢失主要是业务在处理。不做说明 </li>
 </ul>
-<p>| 隔离级别                     | 读数据一致性                                                 | 脏读 | 不可重复读 | 幻读 |<br>| —————————- | ———————————————————— | —- | ———- | —- |<br>| 未提交读（Read uncommitted） | 最低级别，只能保证不读取物理上损坏的数据，事务可以看到其他事务没有被提交的数据（脏数据） | 是   | 是         | 是   |<br>| 已提交读（Read committed）   | 语句级，事务可以看到其他事务已经提交的数据                   | 否   | 是         | 是   |<br>| 可重复读（Repeatable read）  | 事务级，事务中两次查询的结果相同                             | 否   | 否         | 是   |<br>| 可序列化（Serializable）     | 串行                                                         | 否   | 否         | 否   |</p>
-</li>
-<li><p>隔离级别的实现</p>
-<p>使用不同的隔离级别解决上述的问题。那是如何实现的呢，这里就将介绍MVCC。MVCC只存在<code>innoDB</code>引擎中<code>读已提交</code>和<code>可重复读</code>隔离级别下，因为读未提交不需要锁，序列化是也不需要使用锁。</p>
-<p><code>InnoDB</code>引擎下的数据每一行会多三个列<code>DATA_TRX_ID</code>（事务ID或者创建版本号）、<code>DATA_ROLL_PTR</code>（指向回滚段的指针，删除版本号）、<code>ID</code>（隐藏主键列）</p>
-</li>
-</ol>
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>读数据一致性</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未提交读（Read uncommitted）</td>
+<td>最低级别，只能保证不读取物理上损坏的数据，事务可以看到其他事务没有被提交的数据（脏数据）</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>已提交读（Read committed）</td>
+<td>语句级，事务可以看到其他事务已经提交的数据</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可重复读（Repeatable read）</td>
+<td>事务级，事务中两次查询的结果相同</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可序列化（Serializable）</td>
+<td>串行</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<h3 id="隔离级别的实现"><a href="#隔离级别的实现" class="headerlink" title="隔离级别的实现"></a>隔离级别的实现</h3><p>   使用不同的隔离级别解决上述的问题。那是如何实现的呢，这里就将介绍MVCC。MVCC只存在<code>innoDB</code>引擎中<code>读已提交</code>和<code>可重复读</code>隔离级别下，因为读未提交不需要锁，序列化是也不需要使用锁。</p>
+<p>   <code>InnoDB</code>引擎下的数据每一行会多三个列<code>DATA_TRX_ID</code>（事务ID或者创建版本号）、<code>DATA_ROLL_PTR</code>（指向回滚段的指针，删除版本号）、<code>ID</code>（隐藏主键列）</p>
 <p>   执行一条插入语句：insert into table values(1,’zhangsan’,18);数据格式如下：</p>
 <table>
 <thead>
@@ -267,14 +297,14 @@
 <p>   查询：从上面描述可以看出只有满足下面2个条件的数据才可以查出来。</p>
 <p>   1）当前事务版本号大于创建版本号</p>
 <p>   2）删除版本号空或者大于当前事务版本号</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li><p>为了解决数据库的并发读性能使用了MVCC，而MVCC可以认为是乐观锁的一种实现</p>
 </li>
 <li><p>隔离级别是为了解决多事务并发出现的问题</p>
 </li>
 <li><p>MVCC只存在InnoDB引擎下，并且隔离级别为RR(REPEATABLE READ)和RC(READ COMMIT)</p>
 </li>
-</ol>
+</ul>
 <h4 id="参考目录"><a href="#参考目录" class="headerlink" title="参考目录"></a>参考目录</h4><ul>
 <li><a href="https://blog.csdn.net/w2064004678/article/details/83012387" target="_blank" rel="noopener">https://blog.csdn.net/w2064004678/article/details/83012387</a></li>
 <li><a href="https://lanjingling.github.io/2015/10/10/mysql-hangsuo/" target="_blank" rel="noopener">https://lanjingling.github.io/2015/10/10/mysql-hangsuo/</a></li>
