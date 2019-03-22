@@ -144,19 +144,19 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-redis设计与实现笔记（一）" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+    <article id="post-redis设计与实现笔记一" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/22/redis设计与实现笔记（一）/">redis设计与实现笔记（一）</a>
+      <a class="article-title" href="/2019/03/22/redis设计与实现笔记一/">redis设计与实现笔记一</a>
     </h1>
   
 
         
-        <a href="/2019/03/22/redis设计与实现笔记（一）/" class="archive-article-date">
+        <a href="/2019/03/22/redis设计与实现笔记一/" class="archive-article-date">
   	<time datetime="2019-03-22T13:28:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-22</time>
 </a>
         
@@ -203,7 +203,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dictht</span>&#123;</span> <span class="comment">//dict hash table</span></span><br><span class="line">    dictEntry **table;<span class="comment">//哈希表 *数组*</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> size;<span class="comment">//哈希表大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> sizemask;<span class="comment">//hash table大小掩码，计算索引值,总等于size-1,用户计算键放于table哪个索引上</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> used;<span class="comment">//hash table已使用节点大小</span></span><br><span class="line">&#125;dictht;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dictEntry</span>&#123;</span></span><br><span class="line">    <span class="keyword">void</span> *key;<span class="comment">//键</span></span><br><span class="line">    <span class="keyword">union</span>&#123;</span><br><span class="line">        <span class="keyword">void</span> *val;</span><br><span class="line">        uint64_tu64;</span><br><span class="line">        int64_ts64;</span><br><span class="line">    &#125;v; <span class="comment">//值</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dictEntry</span> *<span class="title">next</span>;</span> <span class="comment">//指向下个哈希表节点，形成链表。拉链表解决hash冲突。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dict</span>&#123;</span></span><br><span class="line">    dictType *type; <span class="comment">//类型特定函数</span></span><br><span class="line">    <span class="keyword">void</span> *privdaa;<span class="comment">//私有数据</span></span><br><span class="line">    dictht ht[<span class="number">2</span>]; <span class="comment">// 哈希表，大小为2，一个存储，另一个用于rehash时</span></span><br><span class="line">    in rehashidx; <span class="comment">//rehash 索引，不rehash 值 = -1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p>  <img src="/2019/03/22/redis设计与实现笔记（一）/image-20190319212810155.png" alt="image-20190319212810155"></p>
+<p>  <img src="/2019/03/22/redis设计与实现笔记一/image-20190319212810155.png" alt="image-20190319212810155"></p>
 <ul>
 <li><p>type属性和privdata属性，用于不同类型设置不同的函数</p>
 </li>
@@ -252,7 +252,7 @@
 <h3 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h3><ul>
 <li>压缩列表是列表键及哈希键的底层实现之一，当列表键少量并且是小整数或者短字符时使用。</li>
 </ul>
-<p><img src="/2019/03/22/redis设计与实现笔记（一）/image-20190322175139662.png" alt="image-20190322175139662"></p>
+<p><img src="/2019/03/22/redis设计与实现笔记一/image-20190322175139662.png" alt="image-20190322175139662"></p>
 <ul>
 <li>zlbytes表示压缩列表占用内存总字节数</li>
 <li>zltail表示压缩列表表尾距离开始节点的偏移量</li>
@@ -261,7 +261,7 @@
 <li>zlend标记压缩列表结尾</li>
 </ul>
 <p>压缩列表节点数据结构，即上图的entry节点：</p>
-<p><img src="/2019/03/22/redis设计与实现笔记（一）/image-20190322180325931.png" alt="image-20190322180325931"></p>
+<p><img src="/2019/03/22/redis设计与实现笔记一/image-20190322180325931.png" alt="image-20190322180325931"></p>
 <ul>
 <li>描述：<ul>
 <li>Previous_entry_length前一节点的长度，如果是&lt; 254字节，使用1字节长保存，如果&gt;=254字节，使用5字节保存，并且属性第一字节设置为OxFE=254。</li>
@@ -270,7 +270,7 @@
 </ul>
 </li>
 <li>影响 ：<ul>
-<li>压缩列表会引起连锁更新：因为previous_entry_length保存了前一个节点的长度。如果介于250~254之前，新增一个节点在前面并且是大于254的，接下来的节点的previous_entry_length会调整为5字节，又会影响下一个节点，连锁返应。</li>
+<li>压缩列表会引起连锁更新：因为previous_entry_length保存了前一个节点的长度。如果介于250~254之前，新增一个节点在前面并且是大于254的，接下来的节点的previous_entry_length会调整为5字节，又会影响下一个节点，连锁反应。</li>
 </ul>
 </li>
 </ul>
@@ -297,7 +297,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/03/22/redis设计与实现笔记（一）/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/03/22/redis设计与实现笔记一/">展开全文 >></a>
         </p>
       
 
