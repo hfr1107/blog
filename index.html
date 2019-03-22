@@ -274,6 +274,155 @@
 </ul>
 </li>
 </ul>
+<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><blockquote>
+<ol>
+<li><p>redis并不直接使用上面的提到的数据结构来构建数据库。而是使用上面提到的数据结构构建了五种redis对象：<code>字符串对象</code> <code>列表对象</code> <code>哈希对象</code> <code>集合对象</code> <code>有序集合对象</code>。</p>
+</li>
+<li><p>使用对象的好处是可以对同一种对象底层使用不同的实现。并且根据对象类型执行不同的命令。优化对象在不同的场景下的使用效率。</p>
+</li>
+<li><p>redis对象实现了引用计数对内存进行回收。同时实现了对象的共享，以实现内存的节约。</p>
+</li>
+<li><p>redis对象带有访问时间记录信息，lru等属性，用于回收最近最少使用的对象。</p>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisObject</span>&#123;</span></span><br><span class="line">  <span class="keyword">unsigned</span> type:<span class="number">4</span>; <span class="comment">//对象类型</span></span><br><span class="line">  <span class="keyword">unsigned</span> encodeing:<span class="number">4</span>; <span class="comment">//编码</span></span><br><span class="line">  <span class="keyword">void</span> *ptr; <span class="comment">//指向底层实现该对象的数据结构指针</span></span><br><span class="line">&#125;robj;</span><br></pre></td></tr></table></figure>
+<p>type值有5种类型常量，分别对应redis的5种对象。</p>
+<table>
+<thead>
+<tr>
+<th>类型常量</th>
+<th>对象的名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REDIS_STRING</td>
+<td>字符串对象</td>
+</tr>
+<tr>
+<td>REDIS_LIST</td>
+<td>列表对象</td>
+</tr>
+<tr>
+<td>REDIS_HASH</td>
+<td>哈希对象</td>
+</tr>
+<tr>
+<td>REDIS_SET</td>
+<td>集合对象</td>
+</tr>
+<tr>
+<td>REDIS_ZSET</td>
+<td>有序集合对象</td>
+</tr>
+</tbody>
+</table>
+<p>可以使用<code>type</code>命令返回redis对象的值类型</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set msg <span class="string">"hello world"</span></span><br><span class="line"><span class="built_in">type</span> msg //返回<span class="built_in">string</span></span><br></pre></td></tr></table></figure>
+<h3 id="编码和底层编码"><a href="#编码和底层编码" class="headerlink" title="编码和底层编码"></a>编码和底层编码</h3><blockquote>
+<p>对象的<code>ptr</code>指针指向了具体该对象的实现数据结构，而数据结构邮对象的<code>encoding</code>决定.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>编码常量</th>
+<th>编码对象底层数据结构</th>
+<th>OBJECT ENCODING命令输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REDIS_ENCODING_INT</td>
+<td>long类型整数</td>
+<td>int</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_EMBSTR</td>
+<td>embtr编码的SDS</td>
+<td>embstr</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_RAW</td>
+<td>SDS</td>
+<td>raw</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_HT</td>
+<td>字典</td>
+<td>hashtable</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_LINKEDLIST</td>
+<td>双端列表</td>
+<td>linkedlist</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_ZIPLIST</td>
+<td>压缩列表</td>
+<td>ziplist</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_INTSET</td>
+<td>整数集合</td>
+<td>intset</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_SKIPLIST</td>
+<td>跳跃表</td>
+<td>skiplist</td>
+</tr>
+</tbody>
+</table>
+<h3 id="字符串对象"><a href="#字符串对象" class="headerlink" title="字符串对象"></a>字符串对象</h3><blockquote>
+<p>字符串对象编码可以是int、raw、embstr。</p>
+<ol>
+<li>如果字符串对象保存的值类型为整数，那么encoding=REDIS_ENCODING_INT</li>
+<li>如何值为字符串值，并且字符串值length &gt; 32 byte 那么encoding = REDIS_ENCODING_RAW。</li>
+<li>相反如果length &lt;= 32 byte encoding = REDIS_ENCODING_EMBSTR</li>
+<li>类型的编码不是永恒不变的，当原来保存的是int值，但是使用了<code>APPEND</code>函数添加了字符串，那么类型将变成raw。为什么不是embstr，是因为embstr没有修改函数，只有先将其转为raw才能执行修改操作。</li>
+</ol>
+</blockquote>
+<h3 id="列表对象"><a href="#列表对象" class="headerlink" title="列表对象"></a>列表对象</h3><blockquote>
+<p>列表对象的编码可以是<code>ziplist</code>或者<code>linkedlist</code></p>
+<p>使用ziplist的条件如下：</p>
+<ol>
+<li>列表对象保存的所有字符串元素长度 &lt; 64 byte</li>
+<li>列表对象保存的元素数量 &lt; 512个</li>
+</ol>
+<p>除此之外都使用linkedlist结构。</p>
+<p>可以修改配置：<code>list-max-ziplist-value</code> 和<code>list-max-ziplist-entries</code>来修改上面的条件</p>
+</blockquote>
+<h3 id="哈希对象"><a href="#哈希对象" class="headerlink" title="哈希对象"></a>哈希对象</h3><blockquote>
+<p>哈希对象的编码是<code>ziplist</code>和<code>hashtable</code></p>
+<p>使用<code>ziplist</code>条件如下：</p>
+<ol>
+<li>所有键值对的length &lt; 64 byte</li>
+<li>所有键值对的数据&lt; 512</li>
+</ol>
+<p>除此之外使用<code>hashtable</code></p>
+<p>可以修改配置：<code>hash-max-ziplist-value</code> 和<code>hash-max-ziplist-entries</code>来修改上面的条件</p>
+</blockquote>
+<h3 id="集合对象"><a href="#集合对象" class="headerlink" title="集合对象"></a>集合对象</h3><blockquote>
+<p>集合对象使用的编码是：<code>intset</code>和<code>hashtable</code></p>
+<p>使用<code>intset</code>条件如下：</p>
+<ol>
+<li>集合对象保存的所有元素都是整数</li>
+<li>集合对象保存的元素个数 &lt;= 512</li>
+</ol>
+<p>除此之外使用<code>hashtable</code></p>
+<p>可以修改配置：<code>set-max-intset-value</code>来修改上面的条件</p>
+</blockquote>
+<h3 id="有序集合对象"><a href="#有序集合对象" class="headerlink" title="有序集合对象"></a>有序集合对象</h3><blockquote>
+<p>有序集合对象编码是：<code>ziplist</code>和<code>skiplist</code></p>
+<p>使用<code>ziplist</code>条件如下：</p>
+<ol>
+<li>有序集合保存元素个数 &lt; 128</li>
+<li>有序集合保存的所有元素长度 &lt; 64 byte</li>
+</ol>
+<p>除此之外使用<code>skiplist</code>编码</p>
+<p>可以修改配置：<code>zset-max-ziplist-value</code> 和<code>zset-max-ziplist-entries</code>来修改上面的条件</p>
+</blockquote>
 
       
 
