@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="https://www.scemsjyd.com">
   <title>java Reference | 山脚下的脚下山</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="java 四种引用关系  虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。 四种引用关系的从强到弱依次为：强引用-&amp;gt;软引用-&amp;gt;弱引用-&amp;gt;虚引用 以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（-Xms1m -Xmn1m -Xmx1m）。   1、强引用">
+  <meta name="description" content="java 四种引用关系  虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。 四种引用关系的从强到弱依次为：强引用-&amp;gt;软引用-&amp;gt;弱引用-&amp;gt;虚引用 以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（-Xms1m -Xmn1m -Xmx1m）。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java Reference">
 <meta property="og:url" content="https://www.scemsjyd.com/2019/01/25/java-Reference/index.html">
 <meta property="og:site_name" content="山脚下的脚下山">
-<meta property="og:description" content="java 四种引用关系  虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。 四种引用关系的从强到弱依次为：强引用-&amp;gt;软引用-&amp;gt;弱引用-&amp;gt;虚引用 以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（-Xms1m -Xmn1m -Xmx1m）。   1、强引用">
+<meta property="og:description" content="java 四种引用关系  虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。 四种引用关系的从强到弱依次为：强引用-&amp;gt;软引用-&amp;gt;弱引用-&amp;gt;虚引用 以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（-Xms1m -Xmn1m -Xmx1m）。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-25T02:07:11.231Z">
+<meta property="og:updated_time" content="2019-06-13T08:19:59.652Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java Reference">
-<meta name="twitter:description" content="java 四种引用关系  虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。 四种引用关系的从强到弱依次为：强引用-&amp;gt;软引用-&amp;gt;弱引用-&amp;gt;虚引用 以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（-Xms1m -Xmn1m -Xmx1m）。   1、强引用">
+<meta name="twitter:description" content="java 四种引用关系  虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。 四种引用关系的从强到弱依次为：强引用-&amp;gt;软引用-&amp;gt;弱引用-&amp;gt;虚引用 以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（-Xms1m -Xmn1m -Xmx1m）。">
   
     <link rel="alternative" href="/atom.xml" title="山脚下的脚下山" type="application/atom+xml">
   
@@ -170,7 +170,8 @@
 <ul>
 <li>虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。</li>
 <li>四种引用关系的从强到弱依次为：<code>强引用-&gt;软引用-&gt;弱引用-&gt;虚引用</code></li>
-<li>以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（<code>-Xms1m -Xmn1m -Xmx1m</code>）。</li>
+<li>以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（<code>-Xms1m -Xmn1m -Xmx1m</code>）。<a id="more"></a>
+</li>
 </ul>
 </blockquote>
 <h2 id="1、强引用"><a href="#1、强引用" class="headerlink" title="1、强引用"></a>1、强引用</h2><blockquote>

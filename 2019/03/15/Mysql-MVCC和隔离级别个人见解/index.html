@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="山脚下的脚下山">
 <meta property="og:description" content="Mysql MVCC和隔离级别 个人见解 多版本并发控制（MultiVersion Concurrency Control，简称MVCC或MCC）是mysql中比较重要的一个知识点，也经常在面试时被面试官询问，这里说说我的见解，如有错误，请留言或者邮件：`jyd@scemsjyd.com`  要说MVCC就必须先说事务的隔离级别。   大家一定了解或者至少听说过关系型数据库的ACID属性了。  原">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-15T10:39:17.163Z">
+<meta property="og:updated_time" content="2019-06-13T08:20:56.424Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql MVCC和隔离级别个人见解">
 <meta name="twitter:description" content="Mysql MVCC和隔离级别 个人见解 多版本并发控制（MultiVersion Concurrency Control，简称MVCC或MCC）是mysql中比较重要的一个知识点，也经常在面试时被面试官询问，这里说说我的见解，如有错误，请留言或者邮件：`jyd@scemsjyd.com`  要说MVCC就必须先说事务的隔离级别。   大家一定了解或者至少听说过关系型数据库的ACID属性了。  原">
@@ -177,6 +177,7 @@
 <li>隔离性（Isolation)：数据库提供一定级别的隔离机制保证当前执行的事务受其他事务的影响不同。这里也是我们本次MVCC的引入的来源了。</li>
 <li>持久性（Durable)：事务执行完成之后持久化到数据库中。</li>
 </ul>
+<a id="more"></a>
 <h3 id="隔离性"><a href="#隔离性" class="headerlink" title="隔离性"></a>隔离性</h3><p>   因为数据库是存在并发访问的，即同时存在对同一条记录的读与写。既然存在并发的读写，那就出现了数据库最常见的<code>脏读</code> 、<code>幻读</code>、<code>不可重复读</code>和<code>更新丢失</code>。</p>
 <ul>
 <li>脏读：一个事务对修改记录还未提交，另一个事务读取到了这一条修改过的记录。但是在下一个时刻，第一个事务回滚了。第二个事务读取到了脏数据，所以叫脏读。而隔离级别中的<code>读已提交（Read Commit</code>就是为了解决这个问题。</li>

@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://www.scemsjyd.com/2019/03/22/redis设计与实现笔记一/image-20190319212810155.png">
 <meta property="og:image" content="https://www.scemsjyd.com/2019/03/22/redis设计与实现笔记一/image-20190322175139662.png">
 <meta property="og:image" content="https://www.scemsjyd.com/2019/03/22/redis设计与实现笔记一/image-20190322180325931.png">
-<meta property="og:updated_time" content="2019-03-22T17:34:40.274Z">
+<meta property="og:updated_time" content="2019-06-13T08:21:19.977Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis设计与实现笔记一">
 <meta name="twitter:description" content="《redis设计与实现》学习记录（一） 一直在使用redis，使用熟练，但是好像一直没有关注过底层如何实现，最近准备关注一下底层的数据结构，于是买了本《redis设计与实现》第二版，晚上睡前抽时间看看，让自己在脑海中对redis有一个更清晰的认识。以下内容是自己看书的一些记录。因此有些内容摘自书中。  数据结构字符串 redis自定义了自己的字符串数据结构。（SDS=简单动态字符串） 12345s">
@@ -178,6 +178,9 @@
 <li><p>redis自定义了自己的字符串数据结构。（SDS=简单动态字符串）</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> len;<span class="comment">//所保存的字符数长度</span></span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">free</span>;<span class="comment">//未使用字节数量</span></span><br><span class="line">    <span class="keyword">char</span> buf[];<span class="comment">//用于保存字符串，并且使用‘\0’结尾，与c保持一致，方便使用c的部分函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
+</ul>
+<a id="more"></a>
+<ul>
 <li><p>优势</p>
 <ul>
 <li>获取字符串长度（STRLEN函数）时间复杂度为O(1)，因为有len这个属性。而C语言没有这个属性，要获取长度需要遍历数组。</li>

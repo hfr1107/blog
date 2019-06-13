@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://www.scemsjyd.com/2019/01/29/skywalking-agent/e6ceb470.png">
 <meta property="og:image" content="https://www.scemsjyd.com/2019/01/29/skywalking-agent/c5f55da0.png">
 <meta property="og:image" content="https://www.scemsjyd.com/2019/01/29/skywalking-agent/a7f4cc7f.png">
-<meta property="og:updated_time" content="2019-01-29T14:55:46.637Z">
+<meta property="og:updated_time" content="2019-06-13T08:21:49.199Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="skywalking-agent">
 <meta name="twitter:description" content="skywalking-agent源码分析执行顺序图 该顺序图大体内容都有了，缺少最后一步的BootService的生命周期调用，即下面的接口。在这个接口中会有一些服务调用，比如向Gprc注册发送的流程  123456789 public interface BootService &amp;#123;    void prepare() throws Throwable;    void boot() t">
@@ -176,6 +176,7 @@
 <p>该顺序图大体内容都有了，缺少最后一步的BootService的生命周期调用，即下面的接口。在这个接口中会有一些服务调用，比如向Gprc注册发送的流程</p>
 </blockquote>
 <p><img src="/2019/01/29/skywalking-agent/0885a663.png" alt="0885a663.png"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> public interface BootService &#123;</span><br><span class="line">    void prepare() throws Throwable;</span><br><span class="line"></span><br><span class="line">    void boot() throws Throwable;</span><br><span class="line"></span><br><span class="line">    void onComplete() throws Throwable;</span><br><span class="line"></span><br><span class="line">    void shutdown() throws Throwable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><blockquote>
 <p>分析中主要讲<code>class Transformer implements AgentBuilder.Transformer</code>这个实现类中的<code>transform</code>方法</p>
 </blockquote>
