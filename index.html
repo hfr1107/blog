@@ -144,19 +144,19 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-mysql大表大线添加字段及索引" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+    <article id="post-mysql大表添加字段及索引" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/13/mysql大表大线添加字段及索引/">mysql大表大线添加字段及索引</a>
+      <a class="article-title" href="/2019/06/13/mysql大表添加字段及索引/">mysql大表大线添加字段及索引</a>
     </h1>
   
 
         
-        <a href="/2019/06/13/mysql大表大线添加字段及索引/" class="archive-article-date">
+        <a href="/2019/06/13/mysql大表添加字段及索引/" class="archive-article-date">
   	<time datetime="2019-06-13T06:51:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-13</time>
 </a>
         
@@ -166,7 +166,7 @@
       
         <h2 id="mysql大表添加字段，并且添加索引是否引起锁表"><a href="#mysql大表添加字段，并且添加索引是否引起锁表" class="headerlink" title="mysql大表添加字段，并且添加索引是否引起锁表"></a>mysql大表添加字段，并且添加索引是否引起锁表</h2><h3 id="1、引言"><a href="#1、引言" class="headerlink" title="1、引言"></a>1、引言</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">## 1、查看是否开启profiling</span><br><span class="line">show variablies like &apos;%profiling%&apos;;</span><br><span class="line">select @@profiling;</span><br><span class="line"></span><br><span class="line">## 2、开启profiling,该作用是记录数据执行的过程，可以用于帮助分析该语句的执行过程，是否锁表等</span><br><span class="line">set profiling=1;</span><br><span class="line"></span><br><span class="line">## 3、查询sql的id;</span><br><span class="line">show profiles;查询query_id,该语句查询的实际存储在information_schema.PROFILING中 select * from information_schema.PROFILING;</span><br></pre></td></tr></table></figure>
         
-          <a class="article-more-a" href="/2019/06/13/mysql大表大线添加字段及索引/#more">more >></a>
+          <a class="article-more-a" href="/2019/06/13/mysql大表添加字段及索引/#more">more >></a>
         
       
 
@@ -190,7 +190,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/13/mysql大表大线添加字段及索引/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/06/13/mysql大表添加字段及索引/">展开全文 >></a>
         </p>
       
 
