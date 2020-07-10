@@ -6,11 +6,11 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://www.scemsjyd.com">
-  <title>山脚下的脚下山</title>
+  <title>Tag: SpringMVC | 山脚下的脚下山</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="山脚下的脚下山">
-<meta property="og:url" content="https://www.scemsjyd.com/page/2/index.html">
+<meta property="og:url" content="https://www.scemsjyd.com/tags/SpringMVC/index.html">
 <meta property="og:site_name" content="山脚下的脚下山">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
@@ -144,393 +144,134 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-java-Reference" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/25/java-Reference/">java Reference</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/25/java-Reference/" class="archive-article-date">
-  	<time datetime="2019-01-25T01:54:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-25</time>
-</a>
-        
-      </header>
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="java-四种引用关系"><a href="#java-四种引用关系" class="headerlink" title="java 四种引用关系"></a>java 四种引用关系</h1><blockquote>
-<ul>
-<li>虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。</li>
-<li>四种引用关系的从强到弱依次为：<code>强引用-&gt;软引用-&gt;弱引用-&gt;虚引用</code></li>
-<li>以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（<code>-Xms1m -Xmn1m -Xmx1m</code>）。</li></ul></blockquote>
-        
-          <a class="article-more-a" href="/2019/01/25/java-Reference/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
+    
       
       
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/25/java-Reference/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-gatling" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
+        <div class="archives">
     
-      <header class="article-header">
-        
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/07/11/03_HandlerMapping/" class="archive-article-date">
+  	<time datetime="2020-07-10T16:32:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-11</time>
+</a>
+        </div>
+    	 
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/17/gatling/">gatling</a>
+      <a class="archive-article-title" href="/2020/07/11/03_HandlerMapping/">03_HandlingMapping</a>
     </h1>
   
 
-        
-        <a href="/2019/01/17/gatling/" class="archive-article-date">
-  	<time datetime="2019-01-17T03:49:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="测试工具gatling（加特林）"><a href="#测试工具gatling（加特林）" class="headerlink" title="测试工具gatling（加特林）"></a>测试工具gatling（加特林）</h1><blockquote>
-<p>在学习Webflux响应式编程的过程中偶然听到了gatling这个负载测试工作，并且看着很简单。之前有听说过loadrunner和jmeter，并且使用过wrk这个小工具，但是没有一个详细完整的报告。因此看到这个工具的时候，就花了点时间在网上找资料学习了一下。这个文档只是为了记录我的学习过程。我是开发人员，因此不会关注太细，如有问题，请指正。</p>
-</blockquote>
-<h2 id="1、使用方式一"><a href="#1、使用方式一" class="headerlink" title="1、使用方式一"></a>1、使用方式一</h2><ul>
-<li>下载<br><a href="https://gatling.io/download/" target="_blank" rel="noopener">Download - Gatling Load and Performance testing</a></li></ul>
-        
-          <a class="article-more-a" href="/2019/01/17/gatling/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">gatling,test</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringMVC</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/17/gatling/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
-    <article id="post-elk日志采集" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
     
-      <header class="article-header">
-        
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/07/11/02_DispatcherServlet/" class="archive-article-date">
+  	<time datetime="2020-07-10T16:30:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-11</time>
+</a>
+        </div>
+    	 
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/elk日志采集/">elk日志采集</a>
+      <a class="archive-article-title" href="/2020/07/11/02_DispatcherServlet/">02_DispatcherServlet</a>
     </h1>
   
 
-        
-        <a href="/2019/01/14/elk日志采集/" class="archive-article-date">
-  	<time datetime="2019-01-14T10:53:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="elk日志采集"><a href="#elk日志采集" class="headerlink" title="elk日志采集"></a>elk日志采集</h1><blockquote>
-<p>在java项目中使用elk采集日志，将系统日志记录在本地文件系统中，使用filebeat实时采集到logstash</p>
-</blockquote>
-<h2 id="1-自定义字段"><a href="#1-自定义字段" class="headerlink" title="1. 自定义字段"></a>1. 自定义字段</h2><blockquote>
-<p>使用Intercepter存放和清除当前线程（每个请求）存储的值<br>MDC内部使用ThreadLocal作用存储方式，因此需要请求完成进行清除操作。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2019/01/14/elk日志采集/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">elk</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringMVC</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/elk日志采集/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
-    <article id="post-sentry使用" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
     
-      <header class="article-header">
-        
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/07/11/01_SpringMVC流程/" class="archive-article-date">
+  	<time datetime="2020-07-10T16:28:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-11</time>
+</a>
+        </div>
+    	 
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/sentry使用/">sentry使用</a>
+      <a class="archive-article-title" href="/2020/07/11/01_SpringMVC流程/">SpringMVC流程</a>
     </h1>
   
 
-        
-        <a href="/2019/01/14/sentry使用/" class="archive-article-date">
-  	<time datetime="2019-01-14T09:49:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="sentry配置"><a href="#sentry配置" class="headerlink" title="sentry配置"></a>sentry配置</h1><blockquote>
-<p>使用sentry 进行异常报警</p>
-</blockquote>
-<ol>
-<li><p>sentry安装<br>sentry 目前推荐使用docker安装，docker-compose启动<br>官方安装链接：<code>https://docs.sentry.io/server/installation</code></p>
-</li>
-<li><p>添加maven依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.getsentry.raven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;raven-logback&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;8.0.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置logback</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;appender name=&quot;Sentry&quot; class=&quot;com.getsentry.raven.logback.SentryAppender&quot;&gt;</span><br><span class="line">    &lt;dsn&gt;https://username:password@sentry.abc.com/117&lt;/dsn&gt;</span><br><span class="line">    &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;</span><br><span class="line">        &lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">    &lt;/filter&gt;</span><br><span class="line">&lt;/appender&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">sentry</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringMVC</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/sentry使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
-    <article id="post-first-blog" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
+  
+    </div></section>
+  
+
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/12/first-blog/">first blog</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/12/first-blog/" class="archive-article-date">
-  	<time datetime="2019-01-12T06:32:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>这是我的第一篇博客，只是为了测试<br></p></blockquote>
-        
-          <a class="article-more-a" href="/2019/01/12/first-blog/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/12/first-blog/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-    </nav>
-  
 
 
           </div>
@@ -552,10 +293,10 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
+		isHome: false,
 		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://www.scemsjyd.com">
-  <title>山脚下的脚下山</title>
+  <title>SpringMVC流程 | 山脚下的脚下山</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="山脚下的脚下山">
-<meta property="og:url" content="https://www.scemsjyd.com/page/2/index.html">
+  <meta name="description" content="SpringMVCSpringMVC流程图 SpringMVC 九大组件 翻看SpringMVC源码会发现   DispatcherServlet    用于处理上传请求。处理方法是将普通的request包装成MultipartHttpServletRequest，后者可以直接调用getFile方法获取File，如果上传多个文件，还可以调用getFileMap得到FileName-&amp;gt;File">
+<meta name="keywords" content="SpringMVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringMVC流程">
+<meta property="og:url" content="https://www.scemsjyd.com/2020/07/11/01_SpringMVC流程/index.html">
 <meta property="og:site_name" content="山脚下的脚下山">
+<meta property="og:description" content="SpringMVCSpringMVC流程图 SpringMVC 九大组件 翻看SpringMVC源码会发现   DispatcherServlet    用于处理上传请求。处理方法是将普通的request包装成MultipartHttpServletRequest，后者可以直接调用getFile方法获取File，如果上传多个文件，还可以调用getFileMap得到FileName-&amp;gt;File">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2020/06/29/SjD4zUGuXF27EpC.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/30/KsxqWzJfTBa8O6U.png">
+<meta property="og:updated_time" content="2020-07-10T16:29:01.965Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="山脚下的脚下山">
+<meta name="twitter:title" content="SpringMVC流程">
+<meta name="twitter:description" content="SpringMVCSpringMVC流程图 SpringMVC 九大组件 翻看SpringMVC源码会发现   DispatcherServlet    用于处理上传请求。处理方法是将普通的request包装成MultipartHttpServletRequest，后者可以直接调用getFile方法获取File，如果上传多个文件，还可以调用getFileMap得到FileName-&amp;gt;File">
+<meta name="twitter:image" content="https://i.loli.net/2020/06/29/SjD4zUGuXF27EpC.png">
   
     <link rel="alternative" href="/atom.xml" title="山脚下的脚下山" type="application/atom+xml">
   
@@ -142,269 +150,53 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-java-Reference" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+            <article id="post-01_SpringMVC流程" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/25/java-Reference/">java Reference</a>
+    <h1 class="article-title" itemprop="name">
+      SpringMVC流程
     </h1>
   
 
         
-        <a href="/2019/01/25/java-Reference/" class="archive-article-date">
-  	<time datetime="2019-01-25T01:54:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-25</time>
+        <a href="/2020/07/11/01_SpringMVC流程/" class="archive-article-date">
+  	<time datetime="2020-07-10T16:28:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-11</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="java-四种引用关系"><a href="#java-四种引用关系" class="headerlink" title="java 四种引用关系"></a>java 四种引用关系</h1><blockquote>
+        <h1 id="SpringMVC"><a href="#SpringMVC" class="headerlink" title="SpringMVC"></a>SpringMVC</h1><h2 id="SpringMVC流程图"><a href="#SpringMVC流程图" class="headerlink" title="SpringMVC流程图"></a>SpringMVC流程图</h2><p><img src="https://i.loli.net/2020/06/29/SjD4zUGuXF27EpC.png" alt="springmvc"></p>
+<h2 id="SpringMVC-九大组件"><a href="#SpringMVC-九大组件" class="headerlink" title="SpringMVC 九大组件"></a>SpringMVC 九大组件</h2><blockquote>
+<p>翻看SpringMVC源码会发现</p>
+</blockquote>
 <ul>
-<li>虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。</li>
-<li>四种引用关系的从强到弱依次为：<code>强引用-&gt;软引用-&gt;弱引用-&gt;虚引用</code></li>
-<li>以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（<code>-Xms1m -Xmn1m -Xmx1m</code>）。</li></ul></blockquote>
-        
-          <a class="article-more-a" href="/2019/01/25/java-Reference/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/25/java-Reference/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-gatling" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/17/gatling/">gatling</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/17/gatling/" class="archive-article-date">
-  	<time datetime="2019-01-17T03:49:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="测试工具gatling（加特林）"><a href="#测试工具gatling（加特林）" class="headerlink" title="测试工具gatling（加特林）"></a>测试工具gatling（加特林）</h1><blockquote>
-<p>在学习Webflux响应式编程的过程中偶然听到了gatling这个负载测试工作，并且看着很简单。之前有听说过loadrunner和jmeter，并且使用过wrk这个小工具，但是没有一个详细完整的报告。因此看到这个工具的时候，就花了点时间在网上找资料学习了一下。这个文档只是为了记录我的学习过程。我是开发人员，因此不会关注太细，如有问题，请指正。</p>
-</blockquote>
-<h2 id="1、使用方式一"><a href="#1、使用方式一" class="headerlink" title="1、使用方式一"></a>1、使用方式一</h2><ul>
-<li>下载<br><a href="https://gatling.io/download/" target="_blank" rel="noopener">Download - Gatling Load and Performance testing</a></li></ul>
-        
-          <a class="article-more-a" href="/2019/01/17/gatling/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">gatling,test</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/17/gatling/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-elk日志采集" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/elk日志采集/">elk日志采集</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/14/elk日志采集/" class="archive-article-date">
-  	<time datetime="2019-01-14T10:53:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="elk日志采集"><a href="#elk日志采集" class="headerlink" title="elk日志采集"></a>elk日志采集</h1><blockquote>
-<p>在java项目中使用elk采集日志，将系统日志记录在本地文件系统中，使用filebeat实时采集到logstash</p>
-</blockquote>
-<h2 id="1-自定义字段"><a href="#1-自定义字段" class="headerlink" title="1. 自定义字段"></a>1. 自定义字段</h2><blockquote>
-<p>使用Intercepter存放和清除当前线程（每个请求）存储的值<br>MDC内部使用ThreadLocal作用存储方式，因此需要请求完成进行清除操作。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2019/01/14/elk日志采集/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">elk</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/elk日志采集/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-sentry使用" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/sentry使用/">sentry使用</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/14/sentry使用/" class="archive-article-date">
-  	<time datetime="2019-01-14T09:49:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="sentry配置"><a href="#sentry配置" class="headerlink" title="sentry配置"></a>sentry配置</h1><blockquote>
-<p>使用sentry 进行异常报警</p>
-</blockquote>
+<li><code>DispatcherServlet</code></li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/30/KsxqWzJfTBa8O6U.png" alt="image-20200629173734303"></p>
 <ol>
-<li><p>sentry安装<br>sentry 目前推荐使用docker安装，docker-compose启动<br>官方安装链接：<code>https://docs.sentry.io/server/installation</code></p>
+<li><p>用于处理上传请求。处理方法是将普通的request包装成MultipartHttpServletRequest，后者可以直接调用getFile方法获取File，如果上传多个文件，还可以调用getFileMap得到FileName-&gt;File结构的Map。此组件中一共有三个方法，作用分别是判断是不是上传请求，将request包装成MultipartHttpServletRequest、处理完后清理上传过程中产生的临时资源。</p>
 </li>
-<li><p>添加maven依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.getsentry.raven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;raven-logback&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;8.0.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<li><p>解析视图需要两个参数：一是视图名，另一个是Locale。视图名是处理器返回的，Locale是从哪里来的？这就是LocaleResolver要做的事情。LocaleResolver用于从request解析出Locale，Locale就是zh-cn之类，表示一个区域，有了这个就可以对不同区域的用户显示不同的结果。SpringMVC主要有两个地方用到了Locale：一是ViewResolver视图解析的时候；二是用到国际化资源或者主题的时候。</p>
 </li>
-<li><p>配置logback</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;appender name=&quot;Sentry&quot; class=&quot;com.getsentry.raven.logback.SentryAppender&quot;&gt;</span><br><span class="line">    &lt;dsn&gt;https://username:password@sentry.abc.com/117&lt;/dsn&gt;</span><br><span class="line">    &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;</span><br><span class="line">        &lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">    &lt;/filter&gt;</span><br><span class="line">&lt;/appender&gt;</span><br></pre></td></tr></table></figure>
+<li><p>用于解析主题。SpringMVC中一个主题对应一个properties文件，里面存放着跟当前主题相关的所有资源、如图片、css样式等。SpringMVC的主题也支持国际化，同一个主题不同区域也可以显示不同的风格。SpringMVC中跟主题相关的类有 ThemeResolver、ThemeSource和Theme。主题是通过一系列资源来具体体现的，要得到一个主题的资源，首先要得到资源的名称，这是ThemeResolver的工作。然后通过主题名称找到对应的主题（可以理解为一个配置）文件，这是ThemeSource的工作。最后从主题中获取资源就可以了。</p>
+</li>
+<li><p>是用来查找Handler的。在SpringMVC中会有很多请求，每个请求都需要一个Handler处理，具体接收到一个请求之后使用哪个Handler进行处理呢？这就是HandlerMapping需要做的事。</p>
+</li>
+<li><p>从名字上看，它就是一个适配器。因为SpringMVC中的Handler可以是任意的形式，只要能处理请求就ok，但是Servlet需要的处理方法的结构却是固定的，都是以request和response为参数的方法。如何让固定的Servlet处理方法调用灵活的Handler来进行处理呢？这就是HandlerAdapter要做的事情。</p>
+<pre><code>小结：Handler是用来干活的工具；HandlerMapping用于根据需要干的活找到相应的工具；HandlerAdapter是使用工具干活的人。
+</code></pre></li>
+<li><p>其它组件都是用来干活的。在干活的过程中难免会出现问题，出问题后怎么办呢？这就需要有一个专门的角色对异常情况进行处理，在SpringMVC中就是HandlerExceptionResolver。具体来说，此组件的作用是根据异常设置ModelAndView，之后再交给render方法进行渲染。</p>
+</li>
+<li><p>ViewName是根据ViewName查找View，但有的Handler处理完后并没有设置View也没有设置ViewName，这时就需要从request获取ViewName了，如何从request中获取ViewName就是RequestToViewNameTranslator要做的事情了。RequestToViewNameTranslator在Spring MVC容器里只可以配置一个，所以所有request到ViewName的转换规则都要在一个Translator里面全部实现。</p>
+</li>
+<li><p>ViewResolver用来将String类型的视图名和Locale解析为View类型的视图。View是用来渲染页面的，也就是将程序返回的参数填入模板里，生成html（也可能是其它类型）文件。这里就有两个关键问题：使用哪个模板？用什么技术（规则）填入参数？这其实是ViewResolver主要要做的工作，ViewResolver需要找到渲染所用的模板和所用的技术（也就是视图的类型）进行渲染，具体的渲染过程则交由不同的视图自己完成。</p>
+</li>
+<li><p>用来管理FlashMap的，FlashMap主要用在redirect中传递参数。</p>
 </li>
 </ol>
 
@@ -420,7 +212,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">sentry</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringMVC</a>
         		</li>
       		
 		</ul>
@@ -429,16 +221,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/sentry使用/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://www.scemsjyd.com/2020/07/11/01_SpringMVC流程/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/07/11/02_DispatcherServlet/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          02_DispatcherServlet
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/28/sonarqube安装/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -458,78 +318,30 @@
 
 
 
-
-  
-    <article id="post-first-blog" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/12/first-blog/">first blog</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/12/first-blog/" class="archive-article-date">
-  	<time datetime="2019-01-12T06:32:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>这是我的第一篇博客，只是为了测试<br></p></blockquote>
-        
-          <a class="article-more-a" href="/2019/01/12/first-blog/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/12/first-blog/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-    </nav>
+  
+
+  
+
+  
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'scemsjyd'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  
+
   
 
 
@@ -552,8 +364,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

@@ -144,6 +144,589 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-03_HandlerMapping" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/11/03_HandlerMapping/">03_HandlingMapping</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/11/03_HandlerMapping/" class="archive-article-date">
+  	<time datetime="2020-07-10T16:32:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="HandlerMapping"><a href="#HandlerMapping" class="headerlink" title="HandlerMapping"></a>HandlerMapping</h1><blockquote>
+<p>HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在HandlerExecutionChain对象内，返回给中央调度器。</p>
+<p>HandlerMapping接口只有一个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="meta">@Nullable</span></span><br><span class="line">&gt; <span class="function">HandlerExecutionChain <span class="title">getHandler</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>这里我们主要讲清楚两个问题：</p>
+<ul>
+<li>HandlerMapping初始化</li>
+<li>HandlerMapping的唯一方法<code>getHandler</code></li>
+</ul>
+<h2 id="HandlerMapping初始化"><a href="#HandlerMapping初始化" class="headerlink" title="HandlerMapping初始化"></a>HandlerMapping初始化</h2><p>我们在第02_DispatcherServlet里已经看到过了Springmvc初始化handlerMapping策略的方法：<code>initHandlerMappings</code></p>
+<p><img src="https://i.loli.net/2020/07/05/mlUCtRydOArjesH.png" alt="image-20200705125443769"></p>
+<p>此处可以看到将HandlerMapping的实现类封装到了<code>handlerMappings</code>属性中。</p>
+<p>那HandlerMapping的实现类是在什么时候实例化的，并且里面有哪些东西呢？带着这个疑问我们往下走。</p>
+<p>这里我们以<code>RequestMappingHandlerMapping</code>为例：</p>
+<p><img src="https://i.loli.net/2020/07/05/2CvB3awGXkdShxq.png" alt="image-20200705155250466"></p>
+<p>在非SpringBoot的环境下，我们以前写spring的启动配置dispatchServlet.xml的时候总会加一行</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这个配置会为我们初始化三个类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RequestMappingHandlerMapping</span><br><span class="line">RequestMappingHandlerAdapter</span><br><span class="line">ExceptionHandlerExceptionResolver</span><br></pre></td></tr></table></figure>
+<p>但是在SpringBoot环境下，配置都是自动化添加的，那我们看一下<code>spring-boot-autoconfigure</code>的<code>spring.factories</code>，再搜索一下web。我们能在其中找到下面这个配置类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration</span><br></pre></td></tr></table></figure>
+<p>这个类中有一个静态类<code>EnableWebMvcConfiguration</code>的目录结构如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/3wK1CrQouRnxfMG.png" alt="image-20200705161212278"></p>
+<p>在其中，我们可以看到有一个方法<code>createRequestMappingHandlerMapping</code>。</p>
+<h3 id="InitializingBean接口"><a href="#InitializingBean接口" class="headerlink" title="InitializingBean接口"></a>InitializingBean接口</h3><p>在上面的<code>RequestMappingHandlerMapping</code>类图中，我们看到该类实现了<code>InitializingBean</code>接口，接口方法实现如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/ZENcSbBQnmYK6tR.png" alt="image-20200705163032594"></p>
+<p>方法中实例化了一个<em>BuilderConfiguration</em>对象，并为该对象设置了一些路径抓取器，路径方法匹配器等。最后还需要调用父类的方法</p>
+<p><img src="https://i.loli.net/2020/07/05/GzJ5tcf2O3Ujxue.png" alt="image-20200705163118853"></p>
+<p>该方法比较重要，看名字可以猜测是初始化HandlerMethods用的。方法实现如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/qTzPjWcpwZdnKhX.png" alt="image-20200705163614219"></p>
+<p>第一步是遍历AplicationContext中的所有Bean，只要不是以SCOPED_TARGET_NAME_PREFIX（private static final String SCOPED_TARGET_NAME_PREFIX = “scopedTarget.”;）开头就调用<code>processCandidatebean</code>方法，方法如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/c9tITeFulxfq1Oj.png" alt="image-20200705164023406"></p>
+<p>拿到Bean的类型，调用<code>isHandler(beanType)</code>方法，该方法如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/DFgn7bRI1Hk9Ja8.png" alt="image-20200705164259297"></p>
+<p>看到两个非常熟悉的注解<code>@Controller</code>和<code>@RequestMapping</code>。</p>
+<p>如果该Bean标注了以上两个注解，那么调用<code>detectHandlerMethos(beanName)</code>，方法如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/TFCSraUhEfpeIz4.png" alt="image-20200705164827326"></p>
+<p>看方法描述可知，该方法在指定的bean中寻找handler methods。</p>
+<p>我们先来看看该类中第一个重要的方法<code>getMappingForMethod(method, userType)</code>，方法如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/5MQPE1N38yRxgDL.png" alt="image-20200705165129247"></p>
+<p>通过方法或者通过类级别标注的RequestMapping注解创建<code>RequestMappingInfo</code>，</p>
+<p><img src="https://i.loli.net/2020/07/05/tOZzFYm47xTJdoV.png" alt="image-20200705165914427"></p>
+<p><img src="https://i.loli.net/2020/07/05/1EXKZyv8CLSMOxl.png" alt="image-20200705165951303"></p>
+<p>这里可以看出RequestMappingInfo主要存放的就是RequestMapping注解标注的方法的相关信息请求信息。到这里RequestMappingInfo已经构造完成。然后我们回到之前的方法，在遍历完标注了@Controller或者@RequestMapping的类的方法并且生成了对应的RequestMappingInfo之后调用<code>registerHandlerMethod</code></p>
+<p><img src="https://i.loli.net/2020/07/05/fdCJnhjR1N2lU67.png" alt="image-20200705171114940"></p>
+<p>至此，Controller中的HandlerMethods方法遍历查找并且注册到了RequestMapptinHandlerMapping中的mappingRegistry属性中。第一步结束。</p>
+<p>我们再回到初始化之前，看 <code>initHandlerMethods</code> 接下来又做了什么?</p>
+<p>翻看第6张图，得到接下来调用 <code>handlerMethodsInitialized</code> 方法：</p>
+<p><img src="https://i.loli.net/2020/07/05/VqQhbi6Mg4SeNLH.png" alt="image-20200705172911972"></p>
+<p>从该方法看到handlerMethods初始化结束之后并没有做其他特别的事，但是有一行注释，我们发现。handlerMethods包括了两部分：springmvc自动监测到的和用户显示通过<code>registerMapping（）</code>方法添加的。</p>
+<p>到这里为止，<code>InitializingBean</code>方法执行结束。</p>
+<h3 id="ApplicationContextAware接口"><a href="#ApplicationContextAware接口" class="headerlink" title="ApplicationContextAware接口"></a>ApplicationContextAware接口</h3><p>回到之前看的类结构图，得知该还继承了<code>ApplicationObjectSupport</code>类，而该类又实现了<code>ApplicationContextAware</code>接口。那我们再来看看该接口方法做了什么。</p>
+<p><img src="https://i.loli.net/2020/07/05/tzvaSKgCTeoGPU4.png" alt="image-20200705182213910"></p>
+<p>从该方法得知：该类对子类暴露了一个方法<code>initApplicationContext</code>，我们从<code>RequestMappingHandlerMapping</code>的父类<code>AbstractHandlerMapping</code>中看到以下实现：</p>
+<p><img src="https://i.loli.net/2020/07/05/RHqcBpJN2u5aKwI.png" alt="image-20200705182451569"></p>
+<p>我们看到这里内部执行了三个方法，</p>
+<ul>
+<li><p>extendInterceptors(this.interceptors) 该方法体内部为空，给子类使用</p>
+</li>
+<li><p>detectMappedInterceptors(this.adaptedInterceptors) 从所有Bean对象中找出实现了MappedInterceptor接口的Bean，添加到this.this.adaptedInterceptors中。</p>
+</li>
+<li><p>initInterceptors() 将默认interceptors拦截器放入this.adaptedInterceptors中，</p>
+<ul>
+<li>比如SpringBoot配置类<code>EnableWebMvcConfiguration</code>默认添加了两个拦截器<code>ConversionServiceExposingInterceptor</code> <code>ResourceUrlProviderExposingInterceptor</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> RequestMappingHandlerMapping <span class="title">requestMappingHandlerMapping</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  @Qualifier(<span class="string">"mvcContentNegotiationManager"</span>)</span> ContentNegotiationManager contentNegotiationManager,</span></span><br><span class="line"><span class="function">  @<span class="title">Qualifier</span><span class="params">(<span class="string">"mvcConversionService"</span>)</span> FormattingConversionService conversionService,</span></span><br><span class="line"><span class="function">  @<span class="title">Qualifier</span><span class="params">(<span class="string">"mvcResourceUrlProvider"</span>)</span> ResourceUrlProvider resourceUrlProvider) </span>&#123;</span><br><span class="line">  <span class="comment">// Must be @Primary for MvcUriComponentsBuilder to work</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">super</span>.requestMappingHandlerMapping(contentNegotiationManager, conversionService,</span><br><span class="line">                                            resourceUrlProvider);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="HandlerInterceptor"><a href="#HandlerInterceptor" class="headerlink" title="HandlerInterceptor"></a>HandlerInterceptor</h4><blockquote>
+<p>HandlerInterceptor接口主要有三个方法，三个方法会在dispatcherServlet执行过程中调用</p>
+</blockquote>
+<ul>
+<li>preHandle：执行HandlerAdaptor的handle方法前。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>preHandle：执行HandlerAdaptor的handle方法后。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="function"><span class="params">@Nullable ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>afterCompletion：doDispatch方法执行完成前，即使抛出异常也会执行。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="function"><span class="params">                             @Nullable Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，<code>ApplicationContextAware</code>接口方法initApplicationContext执行结束</p>
+<h2 id="HandlerExecutionChain-getHandler-HttpServletRequest-request"><a href="#HandlerExecutionChain-getHandler-HttpServletRequest-request" class="headerlink" title="HandlerExecutionChain getHandler(HttpServletRequest request)"></a>HandlerExecutionChain getHandler(HttpServletRequest request)</h2><p><img src="https://i.loli.net/2020/07/05/CvhNFjZwpLABr8u.png" alt="image-20200705174135770"></p>
+<p>我们来看第一个方法<code>getHandlerInternal(request)</code></p>
+<p><img src="https://i.loli.net/2020/07/05/CtJicMm3sWUbuvg.png" alt="image-20200705174449675"></p>
+<p>通过UrlPathHelper从request获取请求的path，然后根据path调用<code>lookupHandlerMethod()</code>方法获取处理这个request的HandlerMethod。</p>
+<p><code>lookupHandlerMethod</code>方法作用：查找当前请求的最佳匹配处理程序方法，如果找到多个匹配项，则选择最佳匹配项。这个方法的作用也比较明确，就不多说了。</p>
+<p>回到之前，找到HandlerMethod，如果没有找到，返回默认的Handler。接下来是最核心的方法<code>getHandlerExecutionChain(handler, request)</code></p>
+<p><img src="https://i.loli.net/2020/07/05/6rjf7LT3KNReGI2.png" alt="image-20200705180210185"></p>
+<p>从此方法可以看出通过HandlerMethod new了一个HandlerExecutionChain对象。然后将属性<code>adaptedInterceptors</code>中的<code>HandlerInterceptor</code>添加到HandlerExecutionChain中，形成了调用执行链。</p>
+<p>其中一个包括<code>includePatterns</code>和<code>excludePatterns</code>字符串集合并带有<code>HandlerInterceptor</code>的类。 很明显，就是对于某些地址做特殊包括和排除的拦截器。</p>
+<p><img src="https://i.loli.net/2020/07/05/mu1H5LvcBkjoJxr.png" alt="image-20200705185612898"></p>
+<p>接下来，判断请求或者Handler是否是CROS请求，如果是，则添加</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chain.addInterceptor(<span class="number">0</span>, <span class="keyword">new</span> CorsInterceptor(config));</span><br></pre></td></tr></table></figure>
+<p>到此，getHandler执行结束。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>RequestMappingHandlerMapping初始化过程中会遍历所有的Bean，找到注解了@Controller或者@RequestMapping的类，通过反射找到所有的注解了@RequestMapping的方法，将其信息封装到一个RequestMapingInfo类对象中；最后将Handler（可以理解为Controller）、Method（注解标记的方法）、RequestMappingInfo三者注册到mappingRegistry的registry属性中。</li>
+<li>执行doDispatch方法内部调用getHandler方法将HandlerInterceptor实现类封装得到HandlerExecutionChain对象。</li>
+<li>得到HandlerExecutionChain对象之后调用HandlerInterceptor的preHandle方法</li>
+<li>调用HandlerAdapter的handle方法后调用HandlerInterceptor的postHandle方法</li>
+<li>在doDispatch方法调用结束前调用HandlerInterceptor的afterCompletion方法（异常处理之后，preHandle返回false也会执行）</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringMVC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/11/03_HandlerMapping/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-02_DispatcherServlet" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/11/02_DispatcherServlet/">02_DispatcherServlet</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/11/02_DispatcherServlet/" class="archive-article-date">
+  	<time datetime="2020-07-10T16:30:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="DispatcherServlet-Init"><a href="#DispatcherServlet-Init" class="headerlink" title="DispatcherServlet Init"></a>DispatcherServlet Init</h1><blockquote>
+<p>dispatcherServlet是springmvc的核心</p>
+</blockquote>
+<h2 id="servlet的生命周期"><a href="#servlet的生命周期" class="headerlink" title="servlet的生命周期"></a>servlet的生命周期</h2><blockquote>
+<p>==servlet==的三个重要方法<code>init</code>  <code>service</code> <code>destroy</code></p>
+</blockquote>
+<p>1.被创建：执行init方法，只执行一次</p>
+<p>　　1.1 Servlet什么时候被创建？</p>
+<p>　　1.2 默认情况下，第一次被访问时，Servlet被创建，然后执行init方法；</p>
+<p>　　1.3 可以配置执行Servlet的创建时机；</p>
+<p>2.提供服务：执行service方法，执行多次</p>
+<p>3.被销毁：当Servlet服务器正常关闭时，执行destroy方法，只执行一次</p>
+<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><blockquote>
+<p>dispatcherServlet的init做了什么？</p>
+</blockquote>
+<p>最重要的方法：<code>initServletBean()</code></p>
+<p><img src="https://i.loli.net/2020/07/03/O9Iwdst1JVRzGZe.png" alt="image-20200630151802535"></p>
+<p><img src="https://i.loli.net/2020/07/03/dW8piPYb7wvSMHn.png" alt="image-20200630153348266"></p>
+<p><img src="https://i.loli.net/2020/07/03/cEFToGaP4NdOgqi.png" alt="image-20200630153834595"></p>
+<p>到此SpringMVC的初始化基本结束。</p>
+<p>总结：</p>
+<ol>
+<li>完成上下文springmvc的上下文配置</li>
+<li>初始化九大组件的策略配置</li>
+</ol>
+<h2 id="service"><a href="#service" class="headerlink" title="service"></a>service</h2><blockquote>
+<p>service是servlet的业务处理核心，此处又做了些什么？</p>
+</blockquote>
+<p>DispatcherServlet的service主要业务处理方法在<code>doDispatch</code>中</p>
+<p><img src="https://i.loli.net/2020/07/03/M1zDoecFalduvmU.png" alt="image-20200701093416565"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringMVC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/11/02_DispatcherServlet/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-01_SpringMVC流程" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/11/01_SpringMVC流程/">SpringMVC流程</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/11/01_SpringMVC流程/" class="archive-article-date">
+  	<time datetime="2020-07-10T16:28:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="SpringMVC"><a href="#SpringMVC" class="headerlink" title="SpringMVC"></a>SpringMVC</h1><h2 id="SpringMVC流程图"><a href="#SpringMVC流程图" class="headerlink" title="SpringMVC流程图"></a>SpringMVC流程图</h2><p><img src="https://i.loli.net/2020/06/29/SjD4zUGuXF27EpC.png" alt="springmvc"></p>
+<h2 id="SpringMVC-九大组件"><a href="#SpringMVC-九大组件" class="headerlink" title="SpringMVC 九大组件"></a>SpringMVC 九大组件</h2><blockquote>
+<p>翻看SpringMVC源码会发现</p>
+</blockquote>
+<ul>
+<li><code>DispatcherServlet</code></li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/30/KsxqWzJfTBa8O6U.png" alt="image-20200629173734303"></p>
+<ol>
+<li><p>用于处理上传请求。处理方法是将普通的request包装成MultipartHttpServletRequest，后者可以直接调用getFile方法获取File，如果上传多个文件，还可以调用getFileMap得到FileName-&gt;File结构的Map。此组件中一共有三个方法，作用分别是判断是不是上传请求，将request包装成MultipartHttpServletRequest、处理完后清理上传过程中产生的临时资源。</p>
+</li>
+<li><p>解析视图需要两个参数：一是视图名，另一个是Locale。视图名是处理器返回的，Locale是从哪里来的？这就是LocaleResolver要做的事情。LocaleResolver用于从request解析出Locale，Locale就是zh-cn之类，表示一个区域，有了这个就可以对不同区域的用户显示不同的结果。SpringMVC主要有两个地方用到了Locale：一是ViewResolver视图解析的时候；二是用到国际化资源或者主题的时候。</p>
+</li>
+<li><p>用于解析主题。SpringMVC中一个主题对应一个properties文件，里面存放着跟当前主题相关的所有资源、如图片、css样式等。SpringMVC的主题也支持国际化，同一个主题不同区域也可以显示不同的风格。SpringMVC中跟主题相关的类有 ThemeResolver、ThemeSource和Theme。主题是通过一系列资源来具体体现的，要得到一个主题的资源，首先要得到资源的名称，这是ThemeResolver的工作。然后通过主题名称找到对应的主题（可以理解为一个配置）文件，这是ThemeSource的工作。最后从主题中获取资源就可以了。</p>
+</li>
+<li><p>是用来查找Handler的。在SpringMVC中会有很多请求，每个请求都需要一个Handler处理，具体接收到一个请求之后使用哪个Handler进行处理呢？这就是HandlerMapping需要做的事。</p>
+</li>
+<li><p>从名字上看，它就是一个适配器。因为SpringMVC中的Handler可以是任意的形式，只要能处理请求就ok，但是Servlet需要的处理方法的结构却是固定的，都是以request和response为参数的方法。如何让固定的Servlet处理方法调用灵活的Handler来进行处理呢？这就是HandlerAdapter要做的事情。</p>
+<pre><code>小结：Handler是用来干活的工具；HandlerMapping用于根据需要干的活找到相应的工具；HandlerAdapter是使用工具干活的人。
+</code></pre></li>
+<li><p>其它组件都是用来干活的。在干活的过程中难免会出现问题，出问题后怎么办呢？这就需要有一个专门的角色对异常情况进行处理，在SpringMVC中就是HandlerExceptionResolver。具体来说，此组件的作用是根据异常设置ModelAndView，之后再交给render方法进行渲染。</p>
+</li>
+<li><p>ViewName是根据ViewName查找View，但有的Handler处理完后并没有设置View也没有设置ViewName，这时就需要从request获取ViewName了，如何从request中获取ViewName就是RequestToViewNameTranslator要做的事情了。RequestToViewNameTranslator在Spring MVC容器里只可以配置一个，所以所有request到ViewName的转换规则都要在一个Translator里面全部实现。</p>
+</li>
+<li><p>ViewResolver用来将String类型的视图名和Locale解析为View类型的视图。View是用来渲染页面的，也就是将程序返回的参数填入模板里，生成html（也可能是其它类型）文件。这里就有两个关键问题：使用哪个模板？用什么技术（规则）填入参数？这其实是ViewResolver主要要做的工作，ViewResolver需要找到渲染所用的模板和所用的技术（也就是视图的类型）进行渲染，具体的渲染过程则交由不同的视图自己完成。</p>
+</li>
+<li><p>用来管理FlashMap的，FlashMap主要用在redirect中传递参数。</p>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringMVC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/11/01_SpringMVC流程/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-sonarqube安装" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Sonarqube"><a href="#Sonarqube" class="headerlink" title="Sonarqube"></a>Sonarqube</h1><h2 id="一Sonarqube-介绍"><a href="#一Sonarqube-介绍" class="headerlink" title="一Sonarqube 介绍"></a>一Sonarqube 介绍</h2><blockquote>
+<p>sonarqube的优点：</p>
+<ul>
+<li>开源平台</li>
+<li>使用插件扩展性强</li>
+<li>支持多种语言</li>
+<li>可以和jekins、gitlab平台集成</li>
+<li>支持多种代码质量检测（checkstyle、findbugs、PMD(阿里规约)等）</li>
+<li>报告格式清晰统一</li>
+<li>可自定义检测规则</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">SonarQube 检测的核心</th>
+<th style="text-align:left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">检查代码是否遵循编程标准</td>
+<td style="text-align:left">命名规范，编写的规范等</td>
+</tr>
+<tr>
+<td style="text-align:left">检查设计存在的（潜在）缺陷</td>
+<td style="text-align:left">检测代码存在的缺陷</td>
+</tr>
+<tr>
+<td style="text-align:left">检测代码的重复代码量</td>
+<td style="text-align:left">展示项目中存在大量复制粘贴的代码</td>
+</tr>
+<tr>
+<td style="text-align:left">检测代码中注释的程度</td>
+<td style="text-align:left">是否源码注释过多或者太少</td>
+</tr>
+<tr>
+<td style="text-align:left">检测代码中包、类之间的关系</td>
+<td style="text-align:left">分析类之间的关系是否合理，复杂度是否合适</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">代码七大问题</th>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">糟糕的复杂度分布</td>
+<td style="text-align:center">文件、类、方法等复杂度过高</td>
+</tr>
+<tr>
+<td style="text-align:center">重复</td>
+<td style="text-align:center">大量的复制粘贴代码的出现</td>
+</tr>
+<tr>
+<td style="text-align:center">缺乏单元测试</td>
+<td style="text-align:center">Sonar会统计并展示单元测试覆盖率</td>
+</tr>
+<tr>
+<td style="text-align:center">没有代码标准</td>
+<td style="text-align:center">通过PMD，CheckStyle，Findbugs等这些代码规则检测工具规范代码编写</td>
+</tr>
+<tr>
+<td style="text-align:center">没有足够的或者过多的注释</td>
+<td style="text-align:center">避免过多的注释降低代码可读性</td>
+</tr>
+<tr>
+<td style="text-align:center">潜在的bug</td>
+<td style="text-align:center">通过PMD，CheckStyle，Findbugs等等代码规则检测工具检测出潜在的bug</td>
+</tr>
+<tr>
+<td style="text-align:center">糟糕的设计</td>
+<td style="text-align:center">找出循环，展示包与包、类与类之间的相互依赖关系，检测自定义的架构规则</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h2 id="二、sonarqube安装"><a href="#二、sonarqube安装" class="headerlink" title="二、sonarqube安装"></a>二、sonarqube安装</h2><ol>
+<li>sonarqube</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.2.zip</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>创建sonar用户</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd sonar -m -s /bin/bash</span><br><span class="line">sudo passwd sonar</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>添加用户权限</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sudoers</span><br><span class="line">root  ALL=(ALL:ALL) ALL  </span><br><span class="line">sonar  ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>修改sonarqube配置</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">## 进入sonarqube安装目录</span><br><span class="line">cd conf</span><br><span class="line">vim sonar.properties</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改数据库配置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sonar.jdbc.url=jdbc:mysql://ip:port/sonarqube?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true&amp;useConfigs=maxPerformance&amp;maxAllowedPacket=256000000&amp;useSSL=false</span><br><span class="line">sonar.jdbc.username=XXX</span><br><span class="line">sonar.jdbc.password=XXX</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>启动sonarqube</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">判断linux是32位还是64位：uname -a</span><br><span class="line">cd /home/sonar/sonarqube-7.2/bin/linux-x86-64</span><br><span class="line">普通启动：./sonar.sh console</span><br><span class="line">后台启动：./sonar.sh start   </span><br><span class="line">通过指令：netstat -tnlp     检查9000端口是否启动成功</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>启动完成登陆</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://ip:9000</span><br><span class="line">默认用户名密码：admin/admin</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li>插件安装</li>
+</ol>
+<blockquote>
+<p>插件安装注意版本兼容性问题</p>
+</blockquote>
+<ul>
+<li>中文插件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 下载地址：https://github.com/SonarQubeCommunity/sonar-l10n-zh</span><br><span class="line"># 下载之后安装到sonarqube安装目录下extensions/plugins下</span><br></pre></td></tr></table></figure>
+<ul>
+<li>findbugs插件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## 下载地址：https://github.com/spotbugs/sonar-findbugs</span><br></pre></td></tr></table></figure>
+<ul>
+<li>checkstyle</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## 下载地址：https://github.com/checkstyle/sonar-checkstyle</span><br></pre></td></tr></table></figure>
+<ul>
+<li>p3c-alibaba插件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/slowwalkerlcr/sonar-p3c-pmd/tree/pmd_alibaba</span><br><span class="line">下载然后maven打包</span><br></pre></td></tr></table></figure>
+<h2 id="三、sonarqube使用"><a href="#三、sonarqube使用" class="headerlink" title="三、sonarqube使用"></a>三、sonarqube使用</h2><h3 id="3-1-maven方式"><a href="#3-1-maven方式" class="headerlink" title="3.1 maven方式"></a>3.1 maven方式</h3><ul>
+<li>配置maven setting.xml</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>sonar<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">activation</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>true<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">activation</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sonar.jdbc.url</span>&gt;</span>jdbc:mysql://172.16.0.130:7301/sonarqube<span class="tag">&lt;/<span class="name">sonar.jdbc.url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sonar.jdbc.driver</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="name">sonar.jdbc.driver</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sonar.jdbc.username</span>&gt;</span>dev_admin<span class="tag">&lt;/<span class="name">sonar.jdbc.username</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sonar.jdbc.password</span>&gt;</span>zk.123456<span class="tag">&lt;/<span class="name">sonar.jdbc.password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sonar.host.url</span>&gt;</span>http://172.16.0.131:9000<span class="tag">&lt;/<span class="name">sonar.host.url</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改项目pom.xml文件</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.sonarsource.scanner.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>sonar-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行maven命令</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn sonar:sonar -Dsonar.projectName=项目名称</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-IDEA插件"><a href="#3-2-IDEA插件" class="headerlink" title="3.2 IDEA插件"></a>3.2 IDEA插件</h3><ul>
+<li>sonarLint</li>
+<li>SonarQube Community Plugin</li>
+</ul>
+<h3 id="3-3-jekins"><a href="#3-3-jekins" class="headerlink" title="3.3 jekins"></a>3.3 jekins</h3><ul>
+<li>jekins安装sonarqube插件</li>
+<li>jekins所在服务器安装sonar-runner</li>
+<li>jekins系统设置–&gt;全局属性-ToolLocations添加sonarqube,配置sonarqube服务器地址</li>
+<li>配置项目：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">configure--&gt;Post-build Actions--&gt;Execute sonarqube scanner</span><br><span class="line">Execute Command:  sonar-runner</span><br><span class="line">Execute SonarQube Scanner(Analysis properties):根据实际实际值配置</span><br><span class="line">    sonar.projectKey=ibuild-web</span><br><span class="line">    sonar.projectName=ibuild-web</span><br><span class="line">    sonar.projectVersion=1.0.0  </span><br><span class="line">    # Set modules IDs  </span><br><span class="line">    sonar.modules=ibuild-parent,ibuild-common</span><br><span class="line">    # Modules inherit properties set at parent level  </span><br><span class="line">    sonar.sources=src/main/java  </span><br><span class="line">    sonar.tests=src/test/java  </span><br><span class="line">    sonar.java.binaries=target  </span><br><span class="line">    sonar.language=java</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/28/sonarqube安装/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-spring-kafka" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -643,322 +1226,6 @@
 
 
   
-    <article id="post-java-Reference" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/25/java-Reference/">java Reference</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/25/java-Reference/" class="archive-article-date">
-  	<time datetime="2019-01-25T01:54:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="java-四种引用关系"><a href="#java-四种引用关系" class="headerlink" title="java 四种引用关系"></a>java 四种引用关系</h1><blockquote>
-<ul>
-<li>虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。</li>
-<li>四种引用关系的从强到弱依次为：<code>强引用-&gt;软引用-&gt;弱引用-&gt;虚引用</code></li>
-<li>以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（<code>-Xms1m -Xmn1m -Xmx1m</code>）。</li></ul></blockquote>
-        
-          <a class="article-more-a" href="/2019/01/25/java-Reference/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/25/java-Reference/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-gatling" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/17/gatling/">gatling</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/17/gatling/" class="archive-article-date">
-  	<time datetime="2019-01-17T03:49:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="测试工具gatling（加特林）"><a href="#测试工具gatling（加特林）" class="headerlink" title="测试工具gatling（加特林）"></a>测试工具gatling（加特林）</h1><blockquote>
-<p>在学习Webflux响应式编程的过程中偶然听到了gatling这个负载测试工作，并且看着很简单。之前有听说过loadrunner和jmeter，并且使用过wrk这个小工具，但是没有一个详细完整的报告。因此看到这个工具的时候，就花了点时间在网上找资料学习了一下。这个文档只是为了记录我的学习过程。我是开发人员，因此不会关注太细，如有问题，请指正。</p>
-</blockquote>
-<h2 id="1、使用方式一"><a href="#1、使用方式一" class="headerlink" title="1、使用方式一"></a>1、使用方式一</h2><ul>
-<li>下载<br><a href="https://gatling.io/download/" target="_blank" rel="noopener">Download - Gatling Load and Performance testing</a></li></ul>
-        
-          <a class="article-more-a" href="/2019/01/17/gatling/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">gatling,test</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/17/gatling/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-elk日志采集" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/elk日志采集/">elk日志采集</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/14/elk日志采集/" class="archive-article-date">
-  	<time datetime="2019-01-14T10:53:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="elk日志采集"><a href="#elk日志采集" class="headerlink" title="elk日志采集"></a>elk日志采集</h1><blockquote>
-<p>在java项目中使用elk采集日志，将系统日志记录在本地文件系统中，使用filebeat实时采集到logstash</p>
-</blockquote>
-<h2 id="1-自定义字段"><a href="#1-自定义字段" class="headerlink" title="1. 自定义字段"></a>1. 自定义字段</h2><blockquote>
-<p>使用Intercepter存放和清除当前线程（每个请求）存储的值<br>MDC内部使用ThreadLocal作用存储方式，因此需要请求完成进行清除操作。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2019/01/14/elk日志采集/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">elk</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/elk日志采集/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-sentry使用" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/sentry使用/">sentry使用</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/14/sentry使用/" class="archive-article-date">
-  	<time datetime="2019-01-14T09:49:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="sentry配置"><a href="#sentry配置" class="headerlink" title="sentry配置"></a>sentry配置</h1><blockquote>
-<p>使用sentry 进行异常报警</p>
-</blockquote>
-<ol>
-<li><p>sentry安装<br>sentry 目前推荐使用docker安装，docker-compose启动<br>官方安装链接：<code>https://docs.sentry.io/server/installation</code></p>
-</li>
-<li><p>添加maven依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.getsentry.raven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;raven-logback&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;8.0.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置logback</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;appender name=&quot;Sentry&quot; class=&quot;com.getsentry.raven.logback.SentryAppender&quot;&gt;</span><br><span class="line">    &lt;dsn&gt;https://username:password@sentry.abc.com/117&lt;/dsn&gt;</span><br><span class="line">    &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;</span><br><span class="line">        &lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">    &lt;/filter&gt;</span><br><span class="line">&lt;/appender&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">sentry</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/sentry使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -973,7 +1240,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 Adam Jin
+    		&copy; 2020 Adam Jin
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -1046,6 +1313,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SpringMVC</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql,mvcc</a>

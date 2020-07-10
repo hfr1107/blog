@@ -6,15 +6,41 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://www.scemsjyd.com">
-  <title>山脚下的脚下山</title>
+  <title>03_HandlingMapping | 山脚下的脚下山</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="山脚下的脚下山">
-<meta property="og:url" content="https://www.scemsjyd.com/page/2/index.html">
+  <meta name="description" content="HandlerMapping HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在HandlerExecutionChain对象内，返回给中央调度器。 HandlerMapping接口只有一个方法： 123&amp;gt; @Nullable&amp;gt; HandlerExecutionChain getHandler(Http">
+<meta name="keywords" content="SpringMVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="03_HandlingMapping">
+<meta property="og:url" content="https://www.scemsjyd.com/2020/07/11/03_HandlerMapping/index.html">
 <meta property="og:site_name" content="山脚下的脚下山">
+<meta property="og:description" content="HandlerMapping HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在HandlerExecutionChain对象内，返回给中央调度器。 HandlerMapping接口只有一个方法： 123&amp;gt; @Nullable&amp;gt; HandlerExecutionChain getHandler(Http">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/mlUCtRydOArjesH.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/2CvB3awGXkdShxq.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/3wK1CrQouRnxfMG.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/ZENcSbBQnmYK6tR.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/GzJ5tcf2O3Ujxue.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/qTzPjWcpwZdnKhX.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/c9tITeFulxfq1Oj.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/DFgn7bRI1Hk9Ja8.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/TFCSraUhEfpeIz4.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/5MQPE1N38yRxgDL.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/tOZzFYm47xTJdoV.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/1EXKZyv8CLSMOxl.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/fdCJnhjR1N2lU67.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/VqQhbi6Mg4SeNLH.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/tzvaSKgCTeoGPU4.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/RHqcBpJN2u5aKwI.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/CvhNFjZwpLABr8u.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/CtJicMm3sWUbuvg.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/6rjf7LT3KNReGI2.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/05/mu1H5LvcBkjoJxr.png">
+<meta property="og:updated_time" content="2020-07-10T16:34:24.899Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="山脚下的脚下山">
+<meta name="twitter:title" content="03_HandlingMapping">
+<meta name="twitter:description" content="HandlerMapping HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在HandlerExecutionChain对象内，返回给中央调度器。 HandlerMapping接口只有一个方法： 123&amp;gt; @Nullable&amp;gt; HandlerExecutionChain getHandler(Http">
+<meta name="twitter:image" content="https://i.loli.net/2020/07/05/mlUCtRydOArjesH.png">
   
     <link rel="alternative" href="/atom.xml" title="山脚下的脚下山" type="application/atom+xml">
   
@@ -142,270 +168,130 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-java-Reference" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+            <article id="post-03_HandlerMapping" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/25/java-Reference/">java Reference</a>
+    <h1 class="article-title" itemprop="name">
+      03_HandlingMapping
     </h1>
   
 
         
-        <a href="/2019/01/25/java-Reference/" class="archive-article-date">
-  	<time datetime="2019-01-25T01:54:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-25</time>
+        <a href="/2020/07/11/03_HandlerMapping/" class="archive-article-date">
+  	<time datetime="2020-07-10T16:32:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-11</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="java-四种引用关系"><a href="#java-四种引用关系" class="headerlink" title="java 四种引用关系"></a>java 四种引用关系</h1><blockquote>
+        <h1 id="HandlerMapping"><a href="#HandlerMapping" class="headerlink" title="HandlerMapping"></a>HandlerMapping</h1><blockquote>
+<p>HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在HandlerExecutionChain对象内，返回给中央调度器。</p>
+<p>HandlerMapping接口只有一个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="meta">@Nullable</span></span><br><span class="line">&gt; <span class="function">HandlerExecutionChain <span class="title">getHandler</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>这里我们主要讲清楚两个问题：</p>
 <ul>
-<li>虽然之前有到其他开源项目或者jdk源码ThrealLocal中看到过WeakReference。但一直一知半解，因此系统的学习了，写下这篇文章记录一下。</li>
-<li>四种引用关系的从强到弱依次为：<code>强引用-&gt;软引用-&gt;弱引用-&gt;虚引用</code></li>
-<li>以下四种类型引用在测试时为了引起GC，需要将JVM 堆内存大小设置小一点（<code>-Xms1m -Xmn1m -Xmx1m</code>）。</li></ul></blockquote>
-        
-          <a class="article-more-a" href="/2019/01/25/java-Reference/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/25/java-Reference/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-gatling" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/17/gatling/">gatling</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/17/gatling/" class="archive-article-date">
-  	<time datetime="2019-01-17T03:49:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="测试工具gatling（加特林）"><a href="#测试工具gatling（加特林）" class="headerlink" title="测试工具gatling（加特林）"></a>测试工具gatling（加特林）</h1><blockquote>
-<p>在学习Webflux响应式编程的过程中偶然听到了gatling这个负载测试工作，并且看着很简单。之前有听说过loadrunner和jmeter，并且使用过wrk这个小工具，但是没有一个详细完整的报告。因此看到这个工具的时候，就花了点时间在网上找资料学习了一下。这个文档只是为了记录我的学习过程。我是开发人员，因此不会关注太细，如有问题，请指正。</p>
-</blockquote>
-<h2 id="1、使用方式一"><a href="#1、使用方式一" class="headerlink" title="1、使用方式一"></a>1、使用方式一</h2><ul>
-<li>下载<br><a href="https://gatling.io/download/" target="_blank" rel="noopener">Download - Gatling Load and Performance testing</a></li></ul>
-        
-          <a class="article-more-a" href="/2019/01/17/gatling/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">gatling,test</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/17/gatling/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-elk日志采集" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/elk日志采集/">elk日志采集</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/14/elk日志采集/" class="archive-article-date">
-  	<time datetime="2019-01-14T10:53:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="elk日志采集"><a href="#elk日志采集" class="headerlink" title="elk日志采集"></a>elk日志采集</h1><blockquote>
-<p>在java项目中使用elk采集日志，将系统日志记录在本地文件系统中，使用filebeat实时采集到logstash</p>
-</blockquote>
-<h2 id="1-自定义字段"><a href="#1-自定义字段" class="headerlink" title="1. 自定义字段"></a>1. 自定义字段</h2><blockquote>
-<p>使用Intercepter存放和清除当前线程（每个请求）存储的值<br>MDC内部使用ThreadLocal作用存储方式，因此需要请求完成进行清除操作。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2019/01/14/elk日志采集/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">elk</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/elk日志采集/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-sentry使用" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/sentry使用/">sentry使用</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/14/sentry使用/" class="archive-article-date">
-  	<time datetime="2019-01-14T09:49:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="sentry配置"><a href="#sentry配置" class="headerlink" title="sentry配置"></a>sentry配置</h1><blockquote>
-<p>使用sentry 进行异常报警</p>
-</blockquote>
-<ol>
-<li><p>sentry安装<br>sentry 目前推荐使用docker安装，docker-compose启动<br>官方安装链接：<code>https://docs.sentry.io/server/installation</code></p>
+<li>HandlerMapping初始化</li>
+<li>HandlerMapping的唯一方法<code>getHandler</code></li>
+</ul>
+<h2 id="HandlerMapping初始化"><a href="#HandlerMapping初始化" class="headerlink" title="HandlerMapping初始化"></a>HandlerMapping初始化</h2><p>我们在第02_DispatcherServlet里已经看到过了Springmvc初始化handlerMapping策略的方法：<code>initHandlerMappings</code></p>
+<p><img src="https://i.loli.net/2020/07/05/mlUCtRydOArjesH.png" alt="image-20200705125443769"></p>
+<p>此处可以看到将HandlerMapping的实现类封装到了<code>handlerMappings</code>属性中。</p>
+<p>那HandlerMapping的实现类是在什么时候实例化的，并且里面有哪些东西呢？带着这个疑问我们往下走。</p>
+<p>这里我们以<code>RequestMappingHandlerMapping</code>为例：</p>
+<p><img src="https://i.loli.net/2020/07/05/2CvB3awGXkdShxq.png" alt="image-20200705155250466"></p>
+<p>在非SpringBoot的环境下，我们以前写spring的启动配置dispatchServlet.xml的时候总会加一行</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这个配置会为我们初始化三个类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RequestMappingHandlerMapping</span><br><span class="line">RequestMappingHandlerAdapter</span><br><span class="line">ExceptionHandlerExceptionResolver</span><br></pre></td></tr></table></figure>
+<p>但是在SpringBoot环境下，配置都是自动化添加的，那我们看一下<code>spring-boot-autoconfigure</code>的<code>spring.factories</code>，再搜索一下web。我们能在其中找到下面这个配置类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration</span><br></pre></td></tr></table></figure>
+<p>这个类中有一个静态类<code>EnableWebMvcConfiguration</code>的目录结构如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/3wK1CrQouRnxfMG.png" alt="image-20200705161212278"></p>
+<p>在其中，我们可以看到有一个方法<code>createRequestMappingHandlerMapping</code>。</p>
+<h3 id="InitializingBean接口"><a href="#InitializingBean接口" class="headerlink" title="InitializingBean接口"></a>InitializingBean接口</h3><p>在上面的<code>RequestMappingHandlerMapping</code>类图中，我们看到该类实现了<code>InitializingBean</code>接口，接口方法实现如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/ZENcSbBQnmYK6tR.png" alt="image-20200705163032594"></p>
+<p>方法中实例化了一个<em>BuilderConfiguration</em>对象，并为该对象设置了一些路径抓取器，路径方法匹配器等。最后还需要调用父类的方法</p>
+<p><img src="https://i.loli.net/2020/07/05/GzJ5tcf2O3Ujxue.png" alt="image-20200705163118853"></p>
+<p>该方法比较重要，看名字可以猜测是初始化HandlerMethods用的。方法实现如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/qTzPjWcpwZdnKhX.png" alt="image-20200705163614219"></p>
+<p>第一步是遍历AplicationContext中的所有Bean，只要不是以SCOPED_TARGET_NAME_PREFIX（private static final String SCOPED_TARGET_NAME_PREFIX = “scopedTarget.”;）开头就调用<code>processCandidatebean</code>方法，方法如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/c9tITeFulxfq1Oj.png" alt="image-20200705164023406"></p>
+<p>拿到Bean的类型，调用<code>isHandler(beanType)</code>方法，该方法如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/DFgn7bRI1Hk9Ja8.png" alt="image-20200705164259297"></p>
+<p>看到两个非常熟悉的注解<code>@Controller</code>和<code>@RequestMapping</code>。</p>
+<p>如果该Bean标注了以上两个注解，那么调用<code>detectHandlerMethos(beanName)</code>，方法如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/TFCSraUhEfpeIz4.png" alt="image-20200705164827326"></p>
+<p>看方法描述可知，该方法在指定的bean中寻找handler methods。</p>
+<p>我们先来看看该类中第一个重要的方法<code>getMappingForMethod(method, userType)</code>，方法如下：</p>
+<p><img src="https://i.loli.net/2020/07/05/5MQPE1N38yRxgDL.png" alt="image-20200705165129247"></p>
+<p>通过方法或者通过类级别标注的RequestMapping注解创建<code>RequestMappingInfo</code>，</p>
+<p><img src="https://i.loli.net/2020/07/05/tOZzFYm47xTJdoV.png" alt="image-20200705165914427"></p>
+<p><img src="https://i.loli.net/2020/07/05/1EXKZyv8CLSMOxl.png" alt="image-20200705165951303"></p>
+<p>这里可以看出RequestMappingInfo主要存放的就是RequestMapping注解标注的方法的相关信息请求信息。到这里RequestMappingInfo已经构造完成。然后我们回到之前的方法，在遍历完标注了@Controller或者@RequestMapping的类的方法并且生成了对应的RequestMappingInfo之后调用<code>registerHandlerMethod</code></p>
+<p><img src="https://i.loli.net/2020/07/05/fdCJnhjR1N2lU67.png" alt="image-20200705171114940"></p>
+<p>至此，Controller中的HandlerMethods方法遍历查找并且注册到了RequestMapptinHandlerMapping中的mappingRegistry属性中。第一步结束。</p>
+<p>我们再回到初始化之前，看 <code>initHandlerMethods</code> 接下来又做了什么?</p>
+<p>翻看第6张图，得到接下来调用 <code>handlerMethodsInitialized</code> 方法：</p>
+<p><img src="https://i.loli.net/2020/07/05/VqQhbi6Mg4SeNLH.png" alt="image-20200705172911972"></p>
+<p>从该方法看到handlerMethods初始化结束之后并没有做其他特别的事，但是有一行注释，我们发现。handlerMethods包括了两部分：springmvc自动监测到的和用户显示通过<code>registerMapping（）</code>方法添加的。</p>
+<p>到这里为止，<code>InitializingBean</code>方法执行结束。</p>
+<h3 id="ApplicationContextAware接口"><a href="#ApplicationContextAware接口" class="headerlink" title="ApplicationContextAware接口"></a>ApplicationContextAware接口</h3><p>回到之前看的类结构图，得知该还继承了<code>ApplicationObjectSupport</code>类，而该类又实现了<code>ApplicationContextAware</code>接口。那我们再来看看该接口方法做了什么。</p>
+<p><img src="https://i.loli.net/2020/07/05/tzvaSKgCTeoGPU4.png" alt="image-20200705182213910"></p>
+<p>从该方法得知：该类对子类暴露了一个方法<code>initApplicationContext</code>，我们从<code>RequestMappingHandlerMapping</code>的父类<code>AbstractHandlerMapping</code>中看到以下实现：</p>
+<p><img src="https://i.loli.net/2020/07/05/RHqcBpJN2u5aKwI.png" alt="image-20200705182451569"></p>
+<p>我们看到这里内部执行了三个方法，</p>
+<ul>
+<li><p>extendInterceptors(this.interceptors) 该方法体内部为空，给子类使用</p>
 </li>
-<li><p>添加maven依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.getsentry.raven&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;raven-logback&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;8.0.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<li><p>detectMappedInterceptors(this.adaptedInterceptors) 从所有Bean对象中找出实现了MappedInterceptor接口的Bean，添加到this.this.adaptedInterceptors中。</p>
 </li>
-<li><p>配置logback</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;appender name=&quot;Sentry&quot; class=&quot;com.getsentry.raven.logback.SentryAppender&quot;&gt;</span><br><span class="line">    &lt;dsn&gt;https://username:password@sentry.abc.com/117&lt;/dsn&gt;</span><br><span class="line">    &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;</span><br><span class="line">        &lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">    &lt;/filter&gt;</span><br><span class="line">&lt;/appender&gt;</span><br></pre></td></tr></table></figure>
+<li><p>initInterceptors() 将默认interceptors拦截器放入this.adaptedInterceptors中，</p>
+<ul>
+<li>比如SpringBoot配置类<code>EnableWebMvcConfiguration</code>默认添加了两个拦截器<code>ConversionServiceExposingInterceptor</code> <code>ResourceUrlProviderExposingInterceptor</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> RequestMappingHandlerMapping <span class="title">requestMappingHandlerMapping</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  @Qualifier(<span class="string">"mvcContentNegotiationManager"</span>)</span> ContentNegotiationManager contentNegotiationManager,</span></span><br><span class="line"><span class="function">  @<span class="title">Qualifier</span><span class="params">(<span class="string">"mvcConversionService"</span>)</span> FormattingConversionService conversionService,</span></span><br><span class="line"><span class="function">  @<span class="title">Qualifier</span><span class="params">(<span class="string">"mvcResourceUrlProvider"</span>)</span> ResourceUrlProvider resourceUrlProvider) </span>&#123;</span><br><span class="line">  <span class="comment">// Must be @Primary for MvcUriComponentsBuilder to work</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">super</span>.requestMappingHandlerMapping(contentNegotiationManager, conversionService,</span><br><span class="line">                                            resourceUrlProvider);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
+</ul>
+<h4 id="HandlerInterceptor"><a href="#HandlerInterceptor" class="headerlink" title="HandlerInterceptor"></a>HandlerInterceptor</h4><blockquote>
+<p>HandlerInterceptor接口主要有三个方法，三个方法会在dispatcherServlet执行过程中调用</p>
+</blockquote>
+<ul>
+<li>preHandle：执行HandlerAdaptor的handle方法前。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>preHandle：执行HandlerAdaptor的handle方法后。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="function"><span class="params">@Nullable ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>afterCompletion：doDispatch方法执行完成前，即使抛出异常也会执行。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="function"><span class="params">                             @Nullable Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，<code>ApplicationContextAware</code>接口方法initApplicationContext执行结束</p>
+<h2 id="HandlerExecutionChain-getHandler-HttpServletRequest-request"><a href="#HandlerExecutionChain-getHandler-HttpServletRequest-request" class="headerlink" title="HandlerExecutionChain getHandler(HttpServletRequest request)"></a>HandlerExecutionChain getHandler(HttpServletRequest request)</h2><p><img src="https://i.loli.net/2020/07/05/CvhNFjZwpLABr8u.png" alt="image-20200705174135770"></p>
+<p>我们来看第一个方法<code>getHandlerInternal(request)</code></p>
+<p><img src="https://i.loli.net/2020/07/05/CtJicMm3sWUbuvg.png" alt="image-20200705174449675"></p>
+<p>通过UrlPathHelper从request获取请求的path，然后根据path调用<code>lookupHandlerMethod()</code>方法获取处理这个request的HandlerMethod。</p>
+<p><code>lookupHandlerMethod</code>方法作用：查找当前请求的最佳匹配处理程序方法，如果找到多个匹配项，则选择最佳匹配项。这个方法的作用也比较明确，就不多说了。</p>
+<p>回到之前，找到HandlerMethod，如果没有找到，返回默认的Handler。接下来是最核心的方法<code>getHandlerExecutionChain(handler, request)</code></p>
+<p><img src="https://i.loli.net/2020/07/05/6rjf7LT3KNReGI2.png" alt="image-20200705180210185"></p>
+<p>从此方法可以看出通过HandlerMethod new了一个HandlerExecutionChain对象。然后将属性<code>adaptedInterceptors</code>中的<code>HandlerInterceptor</code>添加到HandlerExecutionChain中，形成了调用执行链。</p>
+<p>其中一个包括<code>includePatterns</code>和<code>excludePatterns</code>字符串集合并带有<code>HandlerInterceptor</code>的类。 很明显，就是对于某些地址做特殊包括和排除的拦截器。</p>
+<p><img src="https://i.loli.net/2020/07/05/mu1H5LvcBkjoJxr.png" alt="image-20200705185612898"></p>
+<p>接下来，判断请求或者Handler是否是CROS请求，如果是，则添加</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chain.addInterceptor(<span class="number">0</span>, <span class="keyword">new</span> CorsInterceptor(config));</span><br></pre></td></tr></table></figure>
+<p>到此，getHandler执行结束。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>RequestMappingHandlerMapping初始化过程中会遍历所有的Bean，找到注解了@Controller或者@RequestMapping的类，通过反射找到所有的注解了@RequestMapping的方法，将其信息封装到一个RequestMapingInfo类对象中；最后将Handler（可以理解为Controller）、Method（注解标记的方法）、RequestMappingInfo三者注册到mappingRegistry的registry属性中。</li>
+<li>执行doDispatch方法内部调用getHandler方法将HandlerInterceptor实现类封装得到HandlerExecutionChain对象。</li>
+<li>得到HandlerExecutionChain对象之后调用HandlerInterceptor的preHandle方法</li>
+<li>调用HandlerAdapter的handle方法后调用HandlerInterceptor的postHandle方法</li>
+<li>在doDispatch方法调用结束前调用HandlerInterceptor的afterCompletion方法（异常处理之后，preHandle返回false也会执行）</li>
 </ol>
 
       
@@ -420,7 +306,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">sentry</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringMVC</a>
         		</li>
       		
 		</ul>
@@ -429,16 +315,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/sentry使用/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://www.scemsjyd.com/2020/07/11/03_HandlerMapping/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/07/11/02_DispatcherServlet/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">02_DispatcherServlet</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -458,78 +403,30 @@
 
 
 
-
-  
-    <article id="post-first-blog" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/12/first-blog/">first blog</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/12/first-blog/" class="archive-article-date">
-  	<time datetime="2019-01-12T06:32:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>这是我的第一篇博客，只是为了测试<br></p></blockquote>
-        
-          <a class="article-more-a" href="/2019/01/12/first-blog/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/12/first-blog/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-    </nav>
+  
+
+  
+
+  
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'scemsjyd'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  
+
   
 
 
@@ -552,8 +449,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
