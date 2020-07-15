@@ -285,11 +285,11 @@
 <li>HandlerMapping的唯一方法<code>getHandler</code></li>
 </ul>
 <h2 id="HandlerMapping初始化"><a href="#HandlerMapping初始化" class="headerlink" title="HandlerMapping初始化"></a>HandlerMapping初始化</h2><p>我们在第02_DispatcherServlet里已经看到过了Springmvc初始化handlerMapping策略的方法：<code>initHandlerMappings</code></p>
-<p><img src="https://i.loli.net/2020/07/05/mlUCtRydOArjesH.png" alt="image-20200705125443769"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/mlUCtRydOArjesH.png" alt="image-20200705125443769"></p>
 <p>此处可以看到将HandlerMapping的实现类封装到了<code>handlerMappings</code>属性中。</p>
 <p>那HandlerMapping的实现类是在什么时候实例化的，并且里面有哪些东西呢？带着这个疑问我们往下走。</p>
 <p>这里我们以<code>RequestMappingHandlerMapping</code>为例：</p>
-<p><img src="https://i.loli.net/2020/07/05/2CvB3awGXkdShxq.png" alt="image-20200705155250466"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:52:49-2CvB3awGXkdShxq.png" alt="image-20200705155250466"></p>
 <p>在非SpringBoot的环境下，我们以前写spring的启动配置dispatchServlet.xml的时候总会加一行</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></span><br></pre></td></tr></table></figure>
 <p>这个配置会为我们初始化三个类</p>
@@ -297,44 +297,44 @@
 <p>但是在SpringBoot环境下，配置都是自动化添加的，那我们看一下<code>spring-boot-autoconfigure</code>的<code>spring.factories</code>，再搜索一下web。我们能在其中找到下面这个配置类：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration</span><br></pre></td></tr></table></figure>
 <p>这个类中有一个静态类<code>EnableWebMvcConfiguration</code>的目录结构如下：</p>
-<p><img src="https://i.loli.net/2020/07/05/3wK1CrQouRnxfMG.png" alt="image-20200705161212278"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:11-3wK1CrQouRnxfMG.png" alt="image-20200705161212278"></p>
 <p>在其中，我们可以看到有一个方法<code>createRequestMappingHandlerMapping</code>。</p>
 <h3 id="InitializingBean接口"><a href="#InitializingBean接口" class="headerlink" title="InitializingBean接口"></a>InitializingBean接口</h3><p>在上面的<code>RequestMappingHandlerMapping</code>类图中，我们看到该类实现了<code>InitializingBean</code>接口，接口方法实现如下：</p>
-<p><img src="https://i.loli.net/2020/07/05/ZENcSbBQnmYK6tR.png" alt="image-20200705163032594"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:32-ZENcSbBQnmYK6tR.png" alt="image-20200705163032594"></p>
 <p>方法中实例化了一个<em>BuilderConfiguration</em>对象，并为该对象设置了一些路径抓取器，路径方法匹配器等。最后还需要调用父类的方法</p>
-<p><img src="https://i.loli.net/2020/07/05/GzJ5tcf2O3Ujxue.png" alt="image-20200705163118853"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:43-GzJ5tcf2O3Ujxue.png" alt="image-20200705163118853"></p>
 <p>该方法比较重要，看名字可以猜测是初始化HandlerMethods用的。方法实现如下：</p>
-<p><img src="https://i.loli.net/2020/07/05/qTzPjWcpwZdnKhX.png" alt="image-20200705163614219"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:48-qTzPjWcpwZdnKhX.png" alt="image-20200705163614219"></p>
 <p>第一步是遍历AplicationContext中的所有Bean，只要不是以SCOPED_TARGET_NAME_PREFIX（private static final String SCOPED_TARGET_NAME_PREFIX = “scopedTarget.”;）开头就调用<code>processCandidatebean</code>方法，方法如下：</p>
-<p><img src="https://i.loli.net/2020/07/05/c9tITeFulxfq1Oj.png" alt="image-20200705164023406"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:56-c9tITeFulxfq1Oj.png" alt="image-20200705164023406"></p>
 <p>拿到Bean的类型，调用<code>isHandler(beanType)</code>方法，该方法如下：</p>
-<p><img src="https://i.loli.net/2020/07/05/DFgn7bRI1Hk9Ja8.png" alt="image-20200705164259297"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:05-DFgn7bRI1Hk9Ja8.png" alt="image-20200705164259297"></p>
 <p>看到两个非常熟悉的注解<code>@Controller</code>和<code>@RequestMapping</code>。</p>
 <p>如果该Bean标注了以上两个注解，那么调用<code>detectHandlerMethos(beanName)</code>，方法如下：</p>
-<p><img src="https://i.loli.net/2020/07/05/TFCSraUhEfpeIz4.png" alt="image-20200705164827326"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:08-TFCSraUhEfpeIz4.png" alt="image-20200705164827326"></p>
 <p>看方法描述可知，该方法在指定的bean中寻找handler methods。</p>
 <p>我们先来看看该类中第一个重要的方法<code>getMappingForMethod(method, userType)</code>，方法如下：</p>
-<p><img src="https://i.loli.net/2020/07/05/5MQPE1N38yRxgDL.png" alt="image-20200705165129247"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:22-5MQPE1N38yRxgDL.png" alt="image-20200705165129247"></p>
 <p>通过方法或者通过类级别标注的RequestMapping注解创建<code>RequestMappingInfo</code>，</p>
-<p><img src="https://i.loli.net/2020/07/05/tOZzFYm47xTJdoV.png" alt="image-20200705165914427"></p>
-<p><img src="https://i.loli.net/2020/07/05/1EXKZyv8CLSMOxl.png" alt="image-20200705165951303"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:33-tOZzFYm47xTJdoV.png" alt="image-20200705165914427"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:39-1EXKZyv8CLSMOxl.png" alt="image-20200705165951303"></p>
 <p>这里可以看出RequestMappingInfo主要存放的就是RequestMapping注解标注的方法的相关信息请求信息。到这里RequestMappingInfo已经构造完成。然后我们回到之前的方法，在遍历完标注了@Controller或者@RequestMapping的类的方法并且生成了对应的RequestMappingInfo之后调用<code>registerHandlerMethod</code></p>
-<p><img src="https://i.loli.net/2020/07/05/fdCJnhjR1N2lU67.png" alt="image-20200705171114940"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:44-fdCJnhjR1N2lU67.png" alt="image-20200705171114940"></p>
 <p>至此，Controller中的HandlerMethods方法遍历查找并且注册到了RequestMapptinHandlerMapping中的mappingRegistry属性中。第一步结束。</p>
 <p>我们再回到初始化之前，看 <code>initHandlerMethods</code> 接下来又做了什么?</p>
 <p>翻看第6张图，得到接下来调用 <code>handlerMethodsInitialized</code> 方法：</p>
-<p><img src="https://i.loli.net/2020/07/05/VqQhbi6Mg4SeNLH.png" alt="image-20200705172911972"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:56-VqQhbi6Mg4SeNLH.png" alt="image-20200705172911972"></p>
 <p>从该方法看到handlerMethods初始化结束之后并没有做其他特别的事，但是有一行注释，我们发现。handlerMethods包括了两部分：springmvc自动监测到的和用户显示通过<code>registerMapping（）</code>方法添加的。</p>
 <p>到这里为止，<code>InitializingBean</code>方法执行结束。</p>
 <h3 id="ApplicationContextAware接口"><a href="#ApplicationContextAware接口" class="headerlink" title="ApplicationContextAware接口"></a>ApplicationContextAware接口</h3><p>回到之前看的类结构图，得知该还继承了<code>ApplicationObjectSupport</code>类，而该类又实现了<code>ApplicationContextAware</code>接口。那我们再来看看该接口方法做了什么。</p>
-<p><img src="https://i.loli.net/2020/07/05/tzvaSKgCTeoGPU4.png" alt="image-20200705182213910"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:01-tzvaSKgCTeoGPU4.png" alt="image-20200705182213910"></p>
 <p>从该方法得知：该类对子类暴露了一个方法<code>initApplicationContext</code>，我们从<code>RequestMappingHandlerMapping</code>的父类<code>AbstractHandlerMapping</code>中看到以下实现：</p>
-<p><img src="https://i.loli.net/2020/07/05/RHqcBpJN2u5aKwI.png" alt="image-20200705182451569"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:09-RHqcBpJN2u5aKwI.png" alt="image-20200705182451569"></p>
 <p>我们看到这里内部执行了三个方法，</p>
 <ul>
 <li><p>extendInterceptors(this.interceptors) 该方法体内部为空，给子类使用</p>
 </li>
-<li><p>detectMappedInterceptors(this.adaptedInterceptors) 从所有Bean对象中找出实现了MappedInterceptor接口的Bean，添加到this.this.adaptedInterceptors中。</p>
+<li><p>detectMappedInterceptors(this.adaptedInterceptors) 从所有Bean对象中找出MappedInterceptor类的的Bean，添加到this.this.adaptedInterceptors中。</p>
 </li>
 <li><p>initInterceptors() 将默认interceptors拦截器放入this.adaptedInterceptors中，</p>
 <ul>
@@ -359,19 +359,35 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="function"><span class="params">                             @Nullable Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>至此，<code>ApplicationContextAware</code>接口方法initApplicationContext执行结束</p>
-<h2 id="HandlerExecutionChain-getHandler-HttpServletRequest-request"><a href="#HandlerExecutionChain-getHandler-HttpServletRequest-request" class="headerlink" title="HandlerExecutionChain getHandler(HttpServletRequest request)"></a>HandlerExecutionChain getHandler(HttpServletRequest request)</h2><p><img src="https://i.loli.net/2020/07/05/CvhNFjZwpLABr8u.png" alt="image-20200705174135770"></p>
+<h2 id="HandlerExecutionChain-getHandler-HttpServletRequest-request"><a href="#HandlerExecutionChain-getHandler-HttpServletRequest-request" class="headerlink" title="HandlerExecutionChain getHandler(HttpServletRequest request)"></a>HandlerExecutionChain getHandler(HttpServletRequest request)</h2><p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:54-CvhNFjZwpLABr8u.png" alt="image-20200705174135770"></p>
 <p>我们来看第一个方法<code>getHandlerInternal(request)</code></p>
-<p><img src="https://i.loli.net/2020/07/05/CtJicMm3sWUbuvg.png" alt="image-20200705174449675"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:59-CtJicMm3sWUbuvg.png" alt="image-20200705174449675"></p>
 <p>通过UrlPathHelper从request获取请求的path，然后根据path调用<code>lookupHandlerMethod()</code>方法获取处理这个request的HandlerMethod。</p>
 <p><code>lookupHandlerMethod</code>方法作用：查找当前请求的最佳匹配处理程序方法，如果找到多个匹配项，则选择最佳匹配项。这个方法的作用也比较明确，就不多说了。</p>
 <p>回到之前，找到HandlerMethod，如果没有找到，返回默认的Handler。接下来是最核心的方法<code>getHandlerExecutionChain(handler, request)</code></p>
-<p><img src="https://i.loli.net/2020/07/05/6rjf7LT3KNReGI2.png" alt="image-20200705180210185"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:14-6rjf7LT3KNReGI2.png" alt="image-20200705180210185"></p>
 <p>从此方法可以看出通过HandlerMethod new了一个HandlerExecutionChain对象。然后将属性<code>adaptedInterceptors</code>中的<code>HandlerInterceptor</code>添加到HandlerExecutionChain中，形成了调用执行链。</p>
-<p>其中一个包括<code>includePatterns</code>和<code>excludePatterns</code>字符串集合并带有<code>HandlerInterceptor</code>的类。 很明显，就是对于某些地址做特殊包括和排除的拦截器。</p>
-<p><img src="https://i.loli.net/2020/07/05/mu1H5LvcBkjoJxr.png" alt="image-20200705185612898"></p>
+<p>其中一个包括<code>includePatterns</code>和<code>excludePatterns</code>字符串集合并带有<code>MappedInterceptor</code>的类。 很明显，就是对于某些地址做特殊包括和排除的拦截器。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:33-mu1H5LvcBkjoJxr.png" alt="image-20200705185612898"></p>
 <p>接下来，判断请求或者Handler是否是CROS请求，如果是，则添加</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chain.addInterceptor(<span class="number">0</span>, <span class="keyword">new</span> CorsInterceptor(config));</span><br></pre></td></tr></table></figure>
 <p>到此，getHandler执行结束。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h3><ul>
+<li>实现HandlerInterceptor接口</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.springmvcexample.handlerMapping;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.HandlerInterceptor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.ModelAndView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogHandlerInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LogHandlerInterceptor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">"LogHandlerInterceptor 构造方法被调用"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        log.info(<span class="string">"preHandle hanlder = &#123;&#125;"</span>, handler);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        log.info(<span class="string">"postHandle hanlder = &#123;&#125;, modelAndView = &#123;&#125;"</span>, handler, modelAndView);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        log.info(<span class="string">"postHandle hanlder = &#123;&#125;, Exception = &#123;&#125;"</span>, handler, ex);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>： 实现<code>HandlerInterceptor</code>接口的实现类使用@Component注解之后，仍然无法使用，因为该实例没有被放入<code>AbstractHandlerMapping</code>的<code>adaptedInterceptors</code>属性中。</p>
+<ul>
+<li>继承<code>WebMvcConfigurationSupport</code>重写<code>addInterceptors</code>方法，将自定义的拦截器放入<code>adaptedInterceptors</code>中。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.springmvcexample.handlerMapping;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.InterceptorRegistry;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.handler.MappedInterceptor;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurationSupport</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.addInterceptors(registry);</span><br><span class="line">        <span class="comment">// 第一种直接添加自定义的拦截器</span></span><br><span class="line"><span class="comment">//        registry.addInterceptor(new LogHandlerInterceptor());</span></span><br><span class="line">        <span class="comment">// 如果需要对指定url的请求调用拦截器，使用MappedInterceptor</span></span><br><span class="line">        String[] includes = <span class="keyword">new</span> String[]&#123;<span class="string">"/hello/&#123;name&#125;"</span>&#125;;</span><br><span class="line">        String[] excludes = <span class="keyword">new</span> String[]&#123;<span class="string">"/echo/&#123;name&#125;"</span>&#125;;</span><br><span class="line">        registry.addInterceptor(<span class="keyword">new</span> MappedInterceptor(includes, excludes, <span class="keyword">new</span> LogHandlerInterceptor()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果是异步请求使用<code>WebRequestInterceptor</code>，这里不作具体描述。</li>
+</ul>
+<h3 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h3><ul>
+<li>自定义HandlerMapping</li>
+</ul>
+<p>参考spring boot actuator 的  <code>WebMvcEndpointHandlerMapping</code></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>RequestMappingHandlerMapping初始化过程中会遍历所有的Bean，找到注解了@Controller或者@RequestMapping的类，通过反射找到所有的注解了@RequestMapping的方法，将其信息封装到一个RequestMapingInfo类对象中；最后将Handler（可以理解为Controller）、Method（注解标记的方法）、RequestMappingInfo三者注册到mappingRegistry的registry属性中。</li>
 <li>执行doDispatch方法内部调用getHandler方法将HandlerInterceptor实现类封装得到HandlerExecutionChain对象。</li>
@@ -1354,11 +1370,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql,mvcc</a>
+                <a href="javascript:void(0)" class="js-tag color4">elk</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">elk</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql,mvcc</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1366,11 +1382,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
