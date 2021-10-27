@@ -1,81 +1,4 @@
-Start building sites … 
-hugo v0.89.0-DEV+extended linux/amd64 BuildDate=unknown
-
-                   | ZH-CN  
--------------------+--------
-  Pages            |    33  
-  Paginator pages  |     1  
-  Non-page files   |     0  
-  Static files     |    83  
-  Processed images |     0  
-  Aliases          |     6  
-  Sitemaps         |     1  
-  Cleaned          |     0  
-
-Built in 378 ms
-Watching for changes in /opt/server/hugo/{archetypes,content,data,layouts,static,themes}
-Watching for config changes in /opt/server/hugo/config.toml
-Environment: "production"
-Serving pages from memory
-Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
-Web Server is available at http://localhost:20002/ (bind address 0.0.0.0)
-Press Ctrl+C to stop
-Start building sites … 
-hugo v0.89.0-DEV+extended linux/amd64 BuildDate=unknown
-
-                   | ZH-CN  
--------------------+--------
-  Pages            |    33  
-  Paginator pages  |     1  
-  Non-page files   |     0  
-  Static files     |    83  
-  Processed images |     0  
-  Aliases          |     6  
-  Sitemaps         |     1  
-  Cleaned          |     0  
-
-Built in 379 ms
-Watching for changes in /opt/server/hugo/{archetypes,content,data,layouts,static,themes}
-Watching for config changes in /opt/server/hugo/config.toml
-Environment: "production"
-Serving pages from memory
-Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
-Web Server is available at http://localhost:20002/ (bind address 0.0.0.0)
-Press Ctrl+C to stop
-
-Change of Static files detected, rebuilding site.
-2021-10-27 16:40:12.686 +0800
-Syncing favicon_package_v0.16.zip to /
-
-Change of Static files detected, rebuilding site.
-2021-10-27 16:40:16.687 +0800
-Syncing android-chrome-192x192.png to /
-Syncing mstile-150x150.png to /
-Syncing favicon-16x16.png to /
-Syncing safari-pinned-tab.svg to /
-Syncing favicon.ico to /
-Syncing site.webmanifest to /
-Syncing android-chrome-512x512.png to /
-Syncing apple-touch-icon.png to /
-Syncing browserconfig.xml to /
-Syncing favicon-32x32.png to /
-
-Change of Static files detected, rebuilding site.
-2021-10-27 16:42:15.186 +0800
-Syncing favicon_package_v0.16.zip to /
-
-Change of Static files detected, rebuilding site.
-2021-10-27 16:42:20.187 +0800
-Syncing android-chrome-192x192.png to /
-Syncing mstile-150x150.png to /
-Syncing favicon-16x16.png to /
-Syncing safari-pinned-tab.svg to /
-Syncing favicon.ico to /
-Syncing site.webmanifest to /
-Syncing android-chrome-512x512.png to /
-Syncing apple-touch-icon.png to /
-Syncing browserconfig.xml to /
-Syncing favicon-32x32.png to /
+nohup: 忽略输入
 Start building sites … 
 hugo v0.89.0-DEV+extended linux/amd64 BuildDate=unknown
 
@@ -90,7 +13,7 @@ hugo v0.89.0-DEV+extended linux/amd64 BuildDate=unknown
   Sitemaps         |     1  
   Cleaned          |     0  
 
-Built in 377 ms
+Built in 380 ms
 Watching for changes in /opt/server/hugo/{archetypes,content,data,layouts,static,themes}
 Watching for config changes in /opt/server/hugo/config.toml
 Environment: "production"
@@ -100,8 +23,67 @@ Web Server is available at http://localhost:20002/ (bind address 0.0.0.0)
 Press Ctrl+C to stop
 
 Change of config file detected, rebuilding site.
-2021-10-27 16:58:02.569 +0800
-ERROR 2021/10/27 16:58:02 Failed to reload config:
+2021-10-27 17:53:21.455 +0800
+Rebuilt in 379 ms
 
-ERROR 2021/10/27 16:58:02 "/opt/server/hugo/config.toml:11:14": unmarshal failed: toml: incomplete number
-Rebuilt in 0 ms
+Change detected, rebuilding site.
+2021-10-27 18:03:53.954 +0800
+Source changed "/opt/server/hugo/content/posts/emoji-support.md": WRITE
+Total in 67 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:04:33.455 +0800
+Source changed "/opt/server/hugo/content/posts/emoji-support.md": WRITE
+Total in 122 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:04:59.955 +0800
+Source changed "/opt/server/hugo/content/posts/featured-image.jpg": WRITE
+Total in 51 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:05:00.455 +0800
+Source changed "/opt/server/hugo/content/posts/featured-image.jpg": WRITE
+Total in 55 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:05:25.454 +0800
+Source changed "/opt/server/hugo/content/posts/emoji-support.md": WRITE
+Total in 61 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:05:42.954 +0800
+Source changed "/opt/server/hugo/content/posts/emoji-support.md": WRITE
+Total in 114 ms
+adding created directory to watchlist /opt/server/hugo/content/posts/emoji-support
+
+Change detected, rebuilding site.
+2021-10-27 18:07:43.955 +0800
+Total in 50 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:07:52.455 +0800
+Source changed "/opt/server/hugo/content/posts/featured-image.jpg": RENAME
+Source changed "/opt/server/hugo/content/posts/emoji-support/featured-image.jpg": CREATE
+Total in 59 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:08:04.954 +0800
+Source changed "/opt/server/hugo/content/posts/emoji-support.md": RENAME
+Source changed "/opt/server/hugo/content/posts/emoji-support/index.md": CREATE
+Total in 117 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:08:53.454 +0800
+Source changed "/opt/server/hugo/content/posts/test.md": WRITE
+Total in 98 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:09:15.955 +0800
+Source changed "/opt/server/hugo/content/posts/test.md": WRITE
+Total in 78 ms
+
+Change detected, rebuilding site.
+2021-10-27 18:09:58.454 +0800
+Source changed "/opt/server/hugo/content/posts/test.md": REMOVE
+Total in 108 ms
