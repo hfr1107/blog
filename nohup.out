@@ -1,0 +1,107 @@
+Start building sites … 
+hugo v0.89.0-DEV+extended linux/amd64 BuildDate=unknown
+
+                   | ZH-CN  
+-------------------+--------
+  Pages            |    33  
+  Paginator pages  |     1  
+  Non-page files   |     0  
+  Static files     |    83  
+  Processed images |     0  
+  Aliases          |     6  
+  Sitemaps         |     1  
+  Cleaned          |     0  
+
+Built in 378 ms
+Watching for changes in /opt/server/hugo/{archetypes,content,data,layouts,static,themes}
+Watching for config changes in /opt/server/hugo/config.toml
+Environment: "production"
+Serving pages from memory
+Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
+Web Server is available at http://localhost:20002/ (bind address 0.0.0.0)
+Press Ctrl+C to stop
+Start building sites … 
+hugo v0.89.0-DEV+extended linux/amd64 BuildDate=unknown
+
+                   | ZH-CN  
+-------------------+--------
+  Pages            |    33  
+  Paginator pages  |     1  
+  Non-page files   |     0  
+  Static files     |    83  
+  Processed images |     0  
+  Aliases          |     6  
+  Sitemaps         |     1  
+  Cleaned          |     0  
+
+Built in 379 ms
+Watching for changes in /opt/server/hugo/{archetypes,content,data,layouts,static,themes}
+Watching for config changes in /opt/server/hugo/config.toml
+Environment: "production"
+Serving pages from memory
+Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
+Web Server is available at http://localhost:20002/ (bind address 0.0.0.0)
+Press Ctrl+C to stop
+
+Change of Static files detected, rebuilding site.
+2021-10-27 16:40:12.686 +0800
+Syncing favicon_package_v0.16.zip to /
+
+Change of Static files detected, rebuilding site.
+2021-10-27 16:40:16.687 +0800
+Syncing android-chrome-192x192.png to /
+Syncing mstile-150x150.png to /
+Syncing favicon-16x16.png to /
+Syncing safari-pinned-tab.svg to /
+Syncing favicon.ico to /
+Syncing site.webmanifest to /
+Syncing android-chrome-512x512.png to /
+Syncing apple-touch-icon.png to /
+Syncing browserconfig.xml to /
+Syncing favicon-32x32.png to /
+
+Change of Static files detected, rebuilding site.
+2021-10-27 16:42:15.186 +0800
+Syncing favicon_package_v0.16.zip to /
+
+Change of Static files detected, rebuilding site.
+2021-10-27 16:42:20.187 +0800
+Syncing android-chrome-192x192.png to /
+Syncing mstile-150x150.png to /
+Syncing favicon-16x16.png to /
+Syncing safari-pinned-tab.svg to /
+Syncing favicon.ico to /
+Syncing site.webmanifest to /
+Syncing android-chrome-512x512.png to /
+Syncing apple-touch-icon.png to /
+Syncing browserconfig.xml to /
+Syncing favicon-32x32.png to /
+Start building sites … 
+hugo v0.89.0-DEV+extended linux/amd64 BuildDate=unknown
+
+                   | ZH-CN  
+-------------------+--------
+  Pages            |    33  
+  Paginator pages  |     1  
+  Non-page files   |     0  
+  Static files     |    94  
+  Processed images |     0  
+  Aliases          |     6  
+  Sitemaps         |     1  
+  Cleaned          |     0  
+
+Built in 377 ms
+Watching for changes in /opt/server/hugo/{archetypes,content,data,layouts,static,themes}
+Watching for config changes in /opt/server/hugo/config.toml
+Environment: "production"
+Serving pages from memory
+Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
+Web Server is available at http://localhost:20002/ (bind address 0.0.0.0)
+Press Ctrl+C to stop
+
+Change of config file detected, rebuilding site.
+2021-10-27 16:58:02.569 +0800
+ERROR 2021/10/27 16:58:02 Failed to reload config:
+
+ERROR 2021/10/27 16:58:02 "/opt/server/hugo/config.toml:11:14": unmarshal failed: toml: incomplete number
+Rebuilt in 0 ms

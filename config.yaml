@@ -1,0 +1,13 @@
+---
+baseurl: "/"
+DefaultContentLanguage: "zh-cn"
+hasCJKLanguage: true
+languageCode: "zh-cn"
+title: "山脚下的脚下山"
+theme: "LoveIt"
+metaDataFormat: "yaml"
+algolia:
+  index: "scemsjyd_blog"
+  key: "c51059bbf1d8f75f1ade06c3d358501b"
+  appID: "94TQNWQOYB"
+---

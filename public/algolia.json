@@ -1,0 +1,214 @@
+[
+    {
+        "title": "01_springmvc_flow",
+        "uri": "posts/01_springmvc_flow",
+        "content": "SpringMVC SpringMVC    SpringMVC          SpringMVC      DispatcherServlet                   request   MultipartHttpServletRequest         getFile    File               getFileMap  FileName  File   Map                             request   MultipartHttpServletRequest                                          Locale            Locale          LocaleResolver      LocaleResolver   request   Locale Locale  zh cn                                 SpringMVC          Locale   ViewResolver                                 SpringMVC         properties                         css    SpringMVC                              SpringMVC          ThemeResolver ThemeSource Theme                                          ThemeResolver                                   ThemeSource                         Handler   SpringMVC                 Handler                  Handler         HandlerMapping                        SpringMVC  Handler                 ok   Servlet                   request response             Servlet         Handler          HandlerAdapter          Handler         HandlerMapping                 HandlerAdapter                                                                      SpringMVC   HandlerExceptionResolver                   ModelAndView      render        ViewName   ViewName  View    Handler         View     ViewName       request  ViewName     request   ViewName  RequestToViewNameTranslator       RequestToViewNameTranslator Spring MVC               request ViewName          Translator        ViewResolver   String       Locale   View      View                            html                                                 ViewResolver        ViewResolver                                                         FlashMap  FlashMap    redirect",
+        "objectID": "posts/01_springmvc_flow",
+        "subtitle": "",
+        "date": "2016-10-27T07:58:21.000Z",
+        "lastmod": "2016-10-27T07:58:21.000Z",
+        "draft": false,
+        "author": "山脚下的脚下山",
+        "authorLink": "",
+        "description": "",
+        "tags": [
+            "springmvc"
+        ],
+        "categories": [
+            "spring"
+        ],
+        "hiddenFromHomePage": false,
+        "hiddenFromSearch": false,
+        "featuredImage": "",
+        "featuredImagePreview": "",
+        "toc": {
+            "enable": true
+        },
+        "math": {
+            "enable": false
+        },
+        "lightgallery": false,
+        "license": ""
+    },
+    {
+        "title": "02_springmvc_init",
+        "uri": "posts/02_springmvc_init",
+        "content": "DispatcherServlet Init   dispatcherServlet springmvc    servlet          servlet         init service destroy 1       init         1 1 Servlet         1 2               Servlet        init    1 3       Servlet       2        service        3      Servlet           destroy         init   dispatcherServlet init             initServletBean     SpringMVC                   springmvc                    service  service servlet                  DispatcherServlet service         doDispatch",
+        "objectID": "posts/02_springmvc_init",
+        "subtitle": "",
+        "date": "2016-10-28T07:58:34.000Z",
+        "lastmod": "2016-10-28T07:58:34.000Z",
+        "draft": false,
+        "author": "山脚下的脚下山",
+        "authorLink": "",
+        "description": "",
+        "tags": [
+            "springmvc"
+        ],
+        "categories": [
+            "spring"
+        ],
+        "hiddenFromHomePage": false,
+        "hiddenFromSearch": false,
+        "featuredImage": "",
+        "featuredImagePreview": "",
+        "toc": {
+            "enable": true
+        },
+        "math": {
+            "enable": false
+        },
+        "lightgallery": false,
+        "license": ""
+    },
+    {
+        "title": "03_springmvc_handlermapping",
+        "uri": "posts/03_springmvc_handlermapping",
+        "content": "HandlerMapping   HandlerMapping      request       Handler    Interceptor           HandlerExecutionChain                  HandlerMapping                 Nullable   HandlerExecutionChain getHandler HttpServletRequest request  throws Exception                   HandlerMapping    HandlerMapping     getHandler HandlerMapping        02_DispatcherServlet       Springmvc   handlerMapping      initHandlerMappings        HandlerMapping        handlerMappings      HandlerMapping                                            RequestMappingHandlerMapping      SpringBoot          spring     dispatchServlet xml                        RequestMappingHandlerMapping RequestMappingHandlerAdapter ExceptionHandlerExceptionResolver    SpringBoot                     spring boot autoconfigure spring factories      web                  org springframework boot autoconfigure web servlet WebMvcAutoConfiguration           EnableWebMvcConfiguration                        createRequestMappingHandlerMapping  InitializingBean       RequestMappingHandlerMapping             InitializingBean                      BuilderConfiguration                                                            HandlerMethods                 AplicationContext    Bean      SCOPEDTARGETNAMEPREFIX private static final String SCOPEDTARGETNAMEPREFIX    scopedTarget         processCandidatebean           Bean      isHandler beanType                       Controller  RequestMapping     Bean              detectHandlerMethos beanName                       bean   handler methods                   getMappingForMethod method  userType                      RequestMapping    RequestMappingInfo        RequestMappingInfo       RequestMapping                    RequestMappingInfo                           Controller   RequestMapping             RequestMappingInfo    registerHandlerMethod    Controller  HandlerMethods            RequestMapptinHandlerMapping  mappingRegistry                        initHandlerMethods              6           handlerMethodsInitialized           handlerMethods                               handlerMethods       springmvc             registerMapping               InitializingBean        ApplicationContextAware                     ApplicationObjectSupport         ApplicationContextAware                                        initApplicationContext    RequestMappingHandlerMapping   AbstractHandlerMapping                          extendInterceptors this interceptors                 detectMappedInterceptors this adaptedInterceptors     Bean     MappedInterceptor   Bean    this this adaptedInterceptors   initInterceptors      interceptors     this adaptedInterceptors     SpringBoot   EnableWebMvcConfiguration          ConversionServiceExposingInterceptor ResourceUrlProviderExposingInterceptor  Bean  Primary  Override public RequestMappingHandlerMapping requestMappingHandlerMapping   Qualifier  mvcContentNegotiationManager   ContentNegotiationManager contentNegotiationManager   Qualifier  mvcConversionService   FormattingConversionService conversionService   Qualifier  mvcResourceUrlProvider   ResourceUrlProvider resourceUrlProvider        Primary MvcUriComponentsBuilder work return super requestMappingHandlerMapping contentNegotiationManager  conversionService  resourceUrlProvider     HandlerInterceptor  HandlerInterceptor                dispatcherServlet        preHandle   HandlerAdaptor handle     default boolean preHandle HttpServletRequest request  HttpServletResponse response  Object handler  throws Exception   return true    preHandle   HandlerAdaptor handle     default void postHandle HttpServletRequest request  HttpServletResponse response  Object handler   Nullable ModelAndView modelAndView  throws Exception     afterCompletion doDispatch                    default void afterCompletion HttpServletRequest request  HttpServletResponse response  Object handler   Nullable Exception ex  throws Exception        ApplicationContextAware    initApplicationContext     getHandler     HandlerExecutionChain getHandler HttpServletRequest request           getHandlerInternal request    UrlPathHelper request     path     path  lookupHandlerMethod          request HandlerMethod  lookupHandlerMethod                                                                     HandlerMethod             Handler           getHandlerExecutionChain handler  request            HandlerMethod new   HandlerExecutionChain        adaptedInterceptors  HandlerInterceptor   HandlerExecutionChain                  includePatterns excludePatterns        MappedInterceptor                                        Handler   CROS           chain addInterceptor 0  new CorsInterceptor config       getHandler                HandlerInterceptor   package com example springmvcexample handlerMapping  import lombok extern slf4j Slf4j  import org springframework web servlet HandlerInterceptor  import org springframework web servlet ModelAndView  import javax servlet http HttpServletRequest  import javax servlet http HttpServletResponse   Slf4j public class LogHandlerInterceptor implements HandlerInterceptor   public LogHandler",
+        "objectID": "posts/03_springmvc_handlermapping",
+        "subtitle": "",
+        "date": "2016-10-29T07:58:58.000Z",
+        "lastmod": "2016-10-29T07:58:58.000Z",
+        "draft": false,
+        "author": "山脚下的脚下山",
+        "authorLink": "",
+        "description": "",
+        "tags": [
+            "springmvc"
+        ],
+        "categories": [
+            "spring"
+        ],
+        "hiddenFromHomePage": false,
+        "hiddenFromSearch": false,
+        "featuredImage": "",
+        "featuredImagePreview": "",
+        "toc": {
+            "enable": true
+        },
+        "math": {
+            "enable": false
+        },
+        "lightgallery": false,
+        "license": ""
+    },
+    {
+        "title": "04_springmvc_handleradapter",
+        "uri": "posts/04_springmvc_handleradapter",
+        "content": "HandlerAdapter  HandlerAdapter        Spring MVC  HandlerAdapter            SpringMvc          HandlerMapping          Handler DispatcherServlet     Handler  HandlerAdapter HandlerAdapter                          1  HandlerAdapter                 url   Method     requestMapping                                           Annotation                            ModelAndView     2  DispatcherServlet   HandlerMapping     handler method                   handlerAdapter   handlerAdapter  supports         handlerAdapter     3      handlerAdapter  handler        handler method    annotation    spring mvc   request      handle method                  handler method     handlerAdapter          handlermapping       handler                      initStrategies  initHandlerAdapters   Spring            HandlerAdapter                  RequestMappingHandlerAdapter HandlerFunctionAdapter HttpRequestHandlerAdapter SimpleControllerHandlerAdapter                     detectAllHandlerAdapters   false   Spring        beanName   handlerAdapter                HandlerAdapter       dispatcherServlet properties           org springframework web servlet HandlerAdapter org springframework web servlet mvc HttpRequestHandlerAdapter   org springframework web servlet mvc SimpleControllerHandlerAdapter   org springframework web servlet mvc method annotation RequestMappingHandlerAdapter   org springframework web servlet function support HandlerFunctionAdapter RequestMappingHandlerAdapterUML                   HandlerAdapter                    InitializationBean           RequestMappingHandlerAdapter   InitializationBean                     afterPropertiesSet   InitControllerAdviceCache   Spring         ControllerAdvice  ModelAttribute  InitBinder    RequestBodyAdvice  ResponseBodyAdvice                     Spring      ControllerAdvice       1         ControllerAdvice         ModelAttribute      1         ControllerAdvice         InitBinder      1         ControllerAdvice        RequestBodyAdvice ResponseBodyAdvice              1              2                                                  4                               HandlerMethodArgumentResolver                                    RequestParamMethodArgumentResolver        RequestParam      RequestParamMapMethodArgumentResolver      RequestParam        Map      requestParam name    Override public boolean supportsParameter MethodParameter parameter    RequestParam requestParam   parameter getParameterAnnotation RequestParam class   return  requestParam    null    Map class isAssignableFrom parameter getParameterType        StringUtils hasText requestParam name      PathVariableMethodArgumentResolver      PathVariable           Map   pathVariable value         Override public boolean supportsParameter MethodParameter parameter      parameter hasParameterAnnotation PathVariable class     return false     Map class isAssignableFrom parameter nestedIfOptional   getNestedParameterType       PathVariable pathVariable   parameter getParameterAnnotation PathVariable class   return  pathVariable    null    StringUtils hasText pathVariable value        return true    PathVariableMapMethodArgumentResolver      PathVariable        Map   pathVariable value          Override public boolean supportsParameter MethodParameter parameter    PathVariable ann   parameter getParameterAnnotation PathVariable class   return  ann    null    Map class isAssignableFrom parameter getParameterType        StringUtils hasText ann value        MatrixVariableMethodArgumentResolver      MatrixVariable            Map   matrixVariable name                                 Override public boolean supportsParameter MethodParameter parameter      parameter hasParameterAnnotation MatrixVariable class     return false     Map class isAssignableFrom parameter nestedIfOptional   getNestedParameterType       MatrixVariable matrixVariable   parameter getParameterAnnotation MatrixVariable class   return  matrixVariable    null    StringUtils hasText matrixVariable name        return true                 http   localhost 8080 mv1 123 q 123 456 q 456          RequestMapping   mv1  x   y    public String matrixVairable1   PathVariable String x   PathVariable String y   MatrixVariable name    q   pathVar    x   int q1   MatrixVariable name    q   pathVar    y   int q2    return String format  x    s  y    s  q1    s  q2    s   x  y  q1  q2               http   localhost 8080 mv2 q 123 q 456          RequestMapping   mv2  a   b    public String matrixVairable2   MatrixVariable name    q   pathVar    a   int q1   MatrixVariable name    q   pathVar    b   int q2    return String format  a    s  b    s   q1  q2               http   localhost 8080 mv4 a 123 b 456       Cannot convert value type  java lang String  required type  java util Map   no matching editors conversion strategy found     RequestMapping   mv4  a   b    public String matrixVairable4   MatrixVariable name    a   pathVar    a   Map m1   MatrixVariable name    b   pathVar    b   Map m2  throws JsonProcessingException   ObjectMapper objectMapper   new ObjectMapper    return String format  a    s  b ",
+        "objectID": "posts/04_springmvc_handleradapter",
+        "subtitle": "",
+        "date": "2016-10-30T07:59:23.000Z",
+        "lastmod": "2016-10-30T07:59:23.000Z",
+        "draft": false,
+        "author": "山脚下的脚下山",
+        "authorLink": "",
+        "description": "",
+        "tags": [
+            "springmvc"
+        ],
+        "categories": [
+            "spring"
+        ],
+        "hiddenFromHomePage": false,
+        "hiddenFromSearch": false,
+        "featuredImage": "",
+        "featuredImagePreview": "",
+        "toc": {
+            "enable": true
+        },
+        "math": {
+            "enable": false
+        },
+        "lightgallery": false,
+        "license": ""
+    },
+    {
+        "title": "05_springmvc_handlerExceptionResolver",
+        "uri": "posts/05_springmvc_handlerExceptionResolver",
+        "content": "HandlerExceptionResolver   Spring         HandlerExceptionResolver                         public interface HandlerExceptionResolver    Nullable ModelAndView resolveException  HttpServletRequest request  HttpServletResponse response   Nullable Object handler  Exception ex                    DispatcherServlet initStrategies     initHandlerExceptionResolvers       HandlerExceptionResolver          Initialize HandlerExceptionResolver used class  no bean defined given name BeanFactory namespace  default no exception resolver     private void initHandlerExceptionResolvers ApplicationContext context    this handlerExceptionResolvers   null   this detectAllHandlerExceptionResolvers       Find HandlerExceptionResolvers ApplicationContext  including ancestor contexts            HandlerExceptionResolver   Map matchingBeans   BeanFactoryUtils  beansOfTypeIncludingAncestors context  HandlerExceptionResolver class  true  false     matchingBeans isEmpty      this handlerExceptionResolvers   new ArrayList matchingBeans values        keep HandlerExceptionResolvers sorted order  AnnotationAwareOrderComparator sort this handlerExceptionResolvers       else   try   HandlerExceptionResolver   context getBean HANDLEREXCEPTIONRESOLVERBEANNAME  HandlerExceptionResolver class   this handlerExceptionResolvers   Collections singletonList her     catch  NoSuchBeanDefinitionException ex       Ignore  no HandlerExceptionResolver fine too         Ensure least HandlerExceptionResolvers  registering    default HandlerExceptionResolvers no resolvers found                 this handlerExceptionResolvers    null    this handlerExceptionResolvers   getDefaultStrategies context  HandlerExceptionResolver class    logger isTraceEnabled      logger trace  No HandlerExceptionResolvers declared servlet      getServletName         using default strategies DispatcherServlet properties                                try   catch         dispatchException      processDispatchResult      exception                            processHandlerException        ModelAndView private void processDispatchResult HttpServletRequest request  HttpServletResponse response   Nullable HandlerExecutionChain mappedHandler   Nullable ModelAndView mv   Nullable Exception exception  throws Exception   boolean errorView   false   exception    null     exception instanceof ModelAndViewDefiningException    logger debug  ModelAndViewDefiningException encountered   exception   mv     ModelAndViewDefiningException  exception  getModelAndView      else   Object handler    mappedHandler    null   mappedHandler getHandler     null           mv   processHandlerException request  response  handler  exception   errorView    mv    null          handler return view render   mv    null     mv wasCleared      render mv  request  response    errorView    WebUtils clearErrorRequestAttributes request                    protected ModelAndView processHandlerException HttpServletRequest request  HttpServletResponse response   Nullable Object handler  Exception ex  throws Exception             Check registered HandlerExceptionResolvers    ModelAndView exMv   null   this handlerExceptionResolvers    null     HandlerExceptionResolver resolver   this handlerExceptionResolvers                     exMv   resolver resolveException request  response  handler  ex    exMv    null    break              throw ex    ExceptionHandlerMethodResolver                                     ExceptionHandler                               HandlerExeptionResolver             InitializationBean     InitializationBean  Override public void afterPropertiesSet        first  may add ResponseBodyAdvice beans      initExceptionHandlerAdviceCache          this argumentResolvers    null    List resolvers   getDefaultArgumentResolvers    this argumentResolvers   new HandlerMethodArgumentResolverComposite   addResolvers resolvers           this returnValueHandlers    null    List handlers   getDefaultReturnValueHandlers    this returnValueHandlers   new HandlerMethodReturnValueHandlerComposite   addHandlers handlers                 ControllerAdvice                      ExceptionHandler            private void initExceptionHandlerAdviceCache                 Spring         ControllerAdvice Bean List adviceBeans   ControllerAdviceBean findAnnotatedBeans getApplicationContext      ControllerAdviceBean adviceBean   adviceBeans    Class beanType   adviceBean getBeanType     beanType    null    throw new IllegalStateException  Unresolvable type ControllerAdviceBean      adviceBean             ControllerAdvice Bean   ExceptionHandlerMethodResolver              ExceptionHandlerMethodResolver resolver   new ExceptionHandlerMethodResolver beanType          ControllerAdvice    ExceptionHandler     new     resolver hasExceptionMappings      this exceptionHandlerAdviceCache put adviceBean  resolver              ControllerAdvice     ResponseBodyAdvice   responseBodyAdvice     ResponseBodyAdvice class isAssignableFrom beanType     this responseBodyAdvice add adviceBean                                                                                HandlerAdapter      ",
+        "objectID": "posts/05_springmvc_handlerExceptionResolver",
+        "subtitle": "",
+        "date": "2016-11-01T02:59:42.000Z",
+        "lastmod": "2016-11-01T02:59:42.000Z",
+        "draft": false,
+        "author": "山脚下的脚下山",
+        "authorLink": "",
+        "description": "",
+        "tags": [
+            "springmvc"
+        ],
+        "categories": [
+            "spring"
+        ],
+        "hiddenFromHomePage": false,
+        "hiddenFromSearch": false,
+        "featuredImage": "",
+        "featuredImagePreview": "",
+        "toc": {
+            "enable": true
+        },
+        "math": {
+            "enable": false
+        },
+        "lightgallery": false,
+        "license": ""
+    },
+    {
+        "title": "06_springmvc_validator",
+        "uri": "posts/06_springmvc_validator",
+        "content": "Spring MVC                        Hibernate Validator  Hibernate Validator   JSR 303       SpringMVC                1 Bean Validator      Bean Validator JSR 303 JSR Java Specification Requests       Java        303                  This JSR will define meta data model API JavaBeanTM validation based annotations  overrides extended meta data use XML validation descriptors    Hibernate Validator                           Hibernate Validator     JSR 303         constraint                 constraint    Annotation                                                                                                           DecimalMax                                   DecimalMin                                   Pattern                       Email                                        Max                                   Min                                   AssertFalse          false       AssertTrue          true       Digits                        NegativeOrZero               0             NotBlank                                  NotEmpty         null   empty       NotNull         null       Null        null       PositiveOrZero           0       Positive               0             Size                               Future                          FutureOrPresent                             Past                          PastOrPresent                           2 Hibernate Validator      SpringBoot org springframework boot spring boot starter validation      javax validation validation api 2 0 0 Final org hibernate validator hibernate validator 6 1 5 Final 2 1        public class User    NotNull private String name   Min value  1   private String age          ValidatorFactory factory   Validation buildDefaultValidatorFactory    validator   factory getValidator    Set  constraintViolations   validator validate  department    assertEquals  1  constraintViolations size      assertEquals   must not null   constraintViolations iterator   next   getMessage      Validation  Bean Validation     buildDefaultValidatorFactory         Bean Validation         ValidatorFactory                                  Validation byDefaultProvider   configure   buildValidatorFactory         ValidatorFactory getValidator                    validate                   ConstraintViolation   ConstraintViolation                                 2 2           constraint     groups          class        javax validation Validator   validate           groups  class               group         HandlerMethodArgumentResolver    04_HandlerAdaptor                           SpringMVC               RequestResponseBodyMethodProcessor         HandlerMethodArgumentResolver        RequestBody         validateIfApplicable                      ValidationAutoConfiguration  RestController  Validated public class TestController    RequestMapping   test   public String test  RequestParam  age    Max 200  Integer age    return String format  age    s   age       spring    ValidationAutoConfiguration MethodValidationPostProcessor     https   blog csdn net roberts939299 article details 73730410",
+        "objectID": "posts/06_springmvc_validator",
+        "subtitle": "",
+        "date": "2016-11-01T07:59:42.000Z",
+        "lastmod": "2016-11-01T07:59:42.000Z",
+        "draft": false,
+        "author": "山脚下的脚下山",
+        "authorLink": "",
+        "description": "",
+        "tags": [
+            "springmvc"
+        ],
+        "categories": [
+            "spring"
+        ],
+        "hiddenFromHomePage": false,
+        "hiddenFromSearch": false,
+        "featuredImage": "",
+        "featuredImagePreview": "",
+        "toc": {
+            "enable": true
+        },
+        "math": {
+            "enable": false
+        },
+        "lightgallery": false,
+        "license": ""
+    },
+    {
+        "weight": 5,
+        "uri": "posts/emoji-support",
+        "content": "Emoji           Hugo        emojify                      Shortcodes        emoji               enableEmoji   true                 emoji                      emoji                 tent                  joy                    tent               joy          emoji                                                                       grinning    grinning    smiley    smiley      smile    smile    grin    grin      laughing    laughing satisfied    sweatsmile    sweatsmile      rofl    rofl    joy    joy      slightlysmilingface    slightlysmilingface    upsidedownface    upsidedownface      wink    wink    blush    blush      innocent    innocent                                                           hearteyes    hearteyes    kissingheart    kissingheart      kissing    kissing    relaxed    relaxed      kissingclosedeyes    kissingclosedeyes    kissingsmilingeyes    kissingsmilingeyes                                                        yum    yum    stuckouttongue    stuckouttongue      stuckouttonguewinkingeye    stuckouttonguewinkingeye    stuckouttongueclosedeyes    stuckouttongueclosedeyes      moneymouthface    moneymouthface                                                            hugs    hugs    thinking    thinking                                                       zippermouthface    zippermouthface    neutralface    neutralface      expressionless    expressionless    nomouth    nomouth      smirk    smirk    unamused    unamused      rolleyes    rolleyes    grimacing    grimacing      lyingface    lyingface                                                            relieved    relieved    pensive    pensive      sleepy    sleepy    droolingface    droolingface      sleeping    sleeping                                                            mask    mask    facewiththermometer    facewiththermometer      facewithheadbandage    facewithheadbandage    nauseatedface    nauseatedface      sneezingface    sneezingface    dizzyface    dizzyface                                                         cowboyhatface    cowboyhatface                                                             sunglasses    sunglasses    nerdface    nerdface                                                        confused    confused    worried    worried      slightlyfrowningface    slightlyfrowningface    frowningface    frowningface      openmouth    openmouth    hushed    hushed      astonished    astonished    flushed    flushed      frowning    frowning    anguished    anguished      fearful    fearful    coldsweat    coldsweat      disappointedrelieved    disappointedrelieved    cry    cry      sob    sob    scream    scream      confounded    confounded    persevere    persevere      disappointed    disappointed    sweat    sweat      weary    weary    tiredface    tiredface                                                        triumph    triumph    pout    pout rage      angry    angry    smilingimp    smilingimp      imp    imp    skull    skull      skullandcrossbones    skullandcrossbones                                                              hankey    hankey poop shit    clownface    clownface      japaneseogre    japaneseogre    japanesegoblin    japanesegoblin      ghost    ghost    alien    alien      spaceinvader    spaceinvader    robot    robot                                                       smileycat    smileycat    smilecat    smilecat      joycat    joycat    hearteyescat    hearteyescat      smirkcat    smirkcat    kissingcat    kissingcat      screamcat    screamcat    cryingcatface    cryingcatface      poutingcat    poutingcat                                                           seenoevil    seenoevil    hearnoevil    hearnoevil      speaknoevil    speaknoevil                                                         kiss    kiss    loveletter    loveletter      cupid    cupid    giftheart    giftheart      sparklingheart    sparklingheart    heartpulse    heartpulse      heartbeat    heartbeat    revolvinghearts    revolvinghearts      twohearts    twohearts    heartdecoration    heartdecoration      heavyheartexclamation    heavyheartexclamation    brokenheart    brokenheart      heart    heart    yellowheart    yellowheart      greenheart    greenheart    blueheart    blueheart      purpleheart    purpleheart    blackheart    blackheart      100    100    anger    anger      boom    boom collision    dizzy    dizzy      sweatdrops    sweatdrops    dash    dash      hole    hole    bomb    bomb      speechballoon    speechballoon    eyespeechbubble    eyespeechbubble      rightangerbubble    rightangerbubble    thoughtballoon    thoughtballoon      zzz    zzz                                                                   wave    wave    raisedbackofhand    raisedbackofhand      raisedhandwithfingerssplayed    raisedhandwithfingerssplayed    hand    hand raised_hand      vulcansalute    vulcansalute                                                              okhand    okhand    v    v      crossedfingers    crossedfingers    metal    metal      callmehand    callmehand                   ",
+        "objectID": "posts/emoji-support",
+        "title": "Emoji 支持",
+        "date": "2019-10-01T09:55:28.000Z",
+        "lastmod": "2019-10-01T09:55:28.000Z",
+        "draft": false,
+        "author": "Dillon",
+        "authorLink": "https://dillonzq.com",
+        "description": "Hugo 和 LoveIt 中的 Emoji 的用法指南.",
+        "resources": [
+            {
+                "name": "featured-image",
+                "src": "featured-image.jpg"
+            }
+        ],
+        "tags": [
+            "emoji"
+        ],
+        "categories": [
+            "Markdown"
+        ],
+        "lightgallery": true
+    }
+]
