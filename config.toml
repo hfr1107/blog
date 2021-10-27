@@ -8,7 +8,7 @@ theme = "LoveIt"
 # themes directory
 # 主题目录
 #themesDir = "../.."
-publishDir = docs
+publishDir = "docs"
 # website title
 # 网站标题
 title = "山脚下的脚下山"
