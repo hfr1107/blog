@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>03_springmvc_handlermapping - 山脚下的脚下山</title><meta name="Description" content="山脚下的脚下山の博客"><meta property="og:title" content="03_springmvc_handlermapping" />
+<meta property="og:description" content="HandlerMapping HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在Ha" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/" /><meta property="og:image" content="https://scemsjyd.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2016-10-29T15:58:58+08:00" />
+<meta property="article:modified_time" content="2016-10-29T15:58:58+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.github.io/logo.png"/>
+
+<meta name="twitter:title" content="03_springmvc_handlermapping"/>
+<meta name="twitter:description" content="HandlerMapping HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在Ha"/>
+<meta name="application-name" content="山脚下的脚下山の博客">
+<meta name="apple-mobile-web-app-title" content="山脚下的脚下山の博客"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/" /><link rel="prev" href="https://scemsjyd.github.io/hugo/02_springmvc_init/" /><link rel="next" href="https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/hugo/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "03_springmvc_handlermapping",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.github.io\/hugo\/03_springmvc_handlermapping\/"
+        },"image": ["https:\/\/scemsjyd.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "springmvc","wordcount":  4253 ,
+        "url": "https:\/\/scemsjyd.github.io\/hugo\/03_springmvc_handlermapping\/","datePublished": "2016-10-29T15:58:58+08:00","dateModified": "2016-10-29T15:58:58+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "山脚下的脚下山"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/hugo/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/hugo/hugo/posts/"> 文章 </a><a class="menu-item" href="/hugo/hugo/tags/"> 标签 </a><a class="menu-item" href="/hugo/hugo/categories/"> 分类 </a><a class="menu-item" href="/hugo/hugo/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/hugo/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/hugo/hugo/posts/" title="">文章</a><a class="menu-item" href="/hugo/hugo/tags/" title="">标签</a><a class="menu-item" href="/hugo/hugo/categories/" title="">分类</a><a class="menu-item" href="/hugo/hugo/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">03_springmvc_handlermapping</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/hugo/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>山脚下的脚下山</a></span>&nbsp;<span class="post-category">收录于 <a href="/hugo/categories/spring/"><i class="far fa-folder fa-fw"></i>spring</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2016-10-29">2016-10-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 4253 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 9 分钟&nbsp;<span id="/hugo/03_springmvc_handlermapping/" class="leancloud_visitors" data-flag-title="03_springmvc_handlermapping">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#handlermapping初始化">HandlerMapping初始化</a>
+      <ul>
+        <li><a href="#initializingbean接口">InitializingBean接口</a></li>
+        <li><a href="#applicationcontextaware接口">ApplicationContextAware接口</a></li>
+        <li><a href="#handlerinterceptor">HandlerInterceptor</a></li>
+      </ul>
+    </li>
+    <li><a href="#gethandler方法">getHandler方法</a></li>
+    <li><a href="#使用">使用</a>
+      <ul>
+        <li><a href="#基础用法">基础用法</a></li>
+        <li><a href="#高级用法">高级用法</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="handlermapping">HandlerMapping</h1>
+<blockquote>
+<p>HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在HandlerExecutionChain对象内，返回给中央调度器。</p>
+<p>HandlerMapping接口只有一个方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Nullable</span>
+<span class="n">HandlerExecutionChain</span> <span class="nf">getHandler</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p>这里我们主要讲清楚两个问题：</p>
+<ul>
+<li>HandlerMapping初始化</li>
+<li>HandlerMapping的唯一方法<code>getHandler</code></li>
+</ul>
+<h2 id="handlermapping初始化">HandlerMapping初始化</h2>
+<p>我们在第02_DispatcherServlet里已经看到过了Springmvc初始化handlerMapping策略的方法：<code>initHandlerMappings</code></p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/mlUCtRydOArjesH.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/mlUCtRydOArjesH.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/mlUCtRydOArjesH.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/mlUCtRydOArjesH.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/mlUCtRydOArjesH.png"
+        title="image-20200705125443769" /></p>
+<p>此处可以看到将HandlerMapping的实现类封装到了<code>handlerMappings</code>属性中。</p>
+<p>那HandlerMapping的实现类是在什么时候实例化的，并且里面有哪些东西呢？带着这个疑问我们往下走。</p>
+<p>这里我们以<code>RequestMappingHandlerMapping</code>为例：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:52:49-2CvB3awGXkdShxq.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:52:49-2CvB3awGXkdShxq.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:52:49-2CvB3awGXkdShxq.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:52:49-2CvB3awGXkdShxq.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:52:49-2CvB3awGXkdShxq.png"
+        title="image-20200705155250466" /></p>
+<p>在非SpringBoot的环境下，我们以前写spring的启动配置dispatchServlet.xml的时候总会加一行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;mvc:annotation-driven/&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这个配置会为我们初始化三个类</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">RequestMappingHandlerMapping
+RequestMappingHandlerAdapter
+ExceptionHandlerExceptionResolver
+</code></pre></td></tr></table>
+</div>
+</div><p>但是在SpringBoot环境下，配置都是自动化添加的，那我们看一下<code>spring-boot-autoconfigure</code>的<code>spring.factories</code>，再搜索一下web。我们能在其中找到下面这个配置类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration
+</code></pre></td></tr></table>
+</div>
+</div><p>这个类中有一个静态类<code>EnableWebMvcConfiguration</code>的目录结构如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:11-3wK1CrQouRnxfMG.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:11-3wK1CrQouRnxfMG.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:11-3wK1CrQouRnxfMG.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:11-3wK1CrQouRnxfMG.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:11-3wK1CrQouRnxfMG.png"
+        title="image-20200705161212278" /></p>
+<p>在其中，我们可以看到有一个方法<code>createRequestMappingHandlerMapping</code>。</p>
+<h3 id="initializingbean接口">InitializingBean接口</h3>
+<p>在上面的<code>RequestMappingHandlerMapping</code>类图中，我们看到该类实现了<code>InitializingBean</code>接口，接口方法实现如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:32-ZENcSbBQnmYK6tR.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:32-ZENcSbBQnmYK6tR.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:32-ZENcSbBQnmYK6tR.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:32-ZENcSbBQnmYK6tR.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:32-ZENcSbBQnmYK6tR.png"
+        title="image-20200705163032594" /></p>
+<p>方法中实例化了一个<em>BuilderConfiguration</em>对象，并为该对象设置了一些路径抓取器，路径方法匹配器等。最后还需要调用父类的方法</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:43-GzJ5tcf2O3Ujxue.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:43-GzJ5tcf2O3Ujxue.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:43-GzJ5tcf2O3Ujxue.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:43-GzJ5tcf2O3Ujxue.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:43-GzJ5tcf2O3Ujxue.png"
+        title="image-20200705163118853" /></p>
+<p>该方法比较重要，看名字可以猜测是初始化HandlerMethods用的。方法实现如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:48-qTzPjWcpwZdnKhX.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:48-qTzPjWcpwZdnKhX.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:48-qTzPjWcpwZdnKhX.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:48-qTzPjWcpwZdnKhX.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:48-qTzPjWcpwZdnKhX.png"
+        title="image-20200705163614219" /></p>
+<p>第一步是遍历AplicationContext中的所有Bean，只要不是以SCOPED_TARGET_NAME_PREFIX（private static final String SCOPED_TARGET_NAME_PREFIX = &ldquo;scopedTarget.&quot;;）开头就调用<code>processCandidatebean</code>方法，方法如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:56-c9tITeFulxfq1Oj.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:56-c9tITeFulxfq1Oj.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:56-c9tITeFulxfq1Oj.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:56-c9tITeFulxfq1Oj.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:53:56-c9tITeFulxfq1Oj.png"
+        title="image-20200705164023406" /></p>
+<p>拿到Bean的类型，调用<code>isHandler(beanType)</code>方法，该方法如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:05-DFgn7bRI1Hk9Ja8.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:05-DFgn7bRI1Hk9Ja8.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:05-DFgn7bRI1Hk9Ja8.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:05-DFgn7bRI1Hk9Ja8.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:05-DFgn7bRI1Hk9Ja8.png"
+        title="image-20200705164259297" /></p>
+<p>看到两个非常熟悉的注解<code>@Controller</code>和<code>@RequestMapping</code>。</p>
+<p>如果该Bean标注了以上两个注解，那么调用<code>detectHandlerMethos(beanName)</code>，方法如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:08-TFCSraUhEfpeIz4.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:08-TFCSraUhEfpeIz4.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:08-TFCSraUhEfpeIz4.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:08-TFCSraUhEfpeIz4.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:08-TFCSraUhEfpeIz4.png"
+        title="image-20200705164827326" /></p>
+<p>看方法描述可知，该方法在指定的bean中寻找handler methods。</p>
+<p>我们先来看看该类中第一个重要的方法<code>getMappingForMethod(method, userType)</code>，方法如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:22-5MQPE1N38yRxgDL.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:22-5MQPE1N38yRxgDL.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:22-5MQPE1N38yRxgDL.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:22-5MQPE1N38yRxgDL.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:22-5MQPE1N38yRxgDL.png"
+        title="image-20200705165129247" /></p>
+<p>通过方法或者通过类级别标注的RequestMapping注解创建<code>RequestMappingInfo</code>，</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:33-tOZzFYm47xTJdoV.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:33-tOZzFYm47xTJdoV.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:33-tOZzFYm47xTJdoV.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:33-tOZzFYm47xTJdoV.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:33-tOZzFYm47xTJdoV.png"
+        title="image-20200705165914427" /></p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:39-1EXKZyv8CLSMOxl.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:39-1EXKZyv8CLSMOxl.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:39-1EXKZyv8CLSMOxl.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:39-1EXKZyv8CLSMOxl.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:39-1EXKZyv8CLSMOxl.png"
+        title="image-20200705165951303" /></p>
+<p>这里可以看出RequestMappingInfo主要存放的就是RequestMapping注解标注的方法的相关信息请求信息。到这里RequestMappingInfo已经构造完成。然后我们回到之前的方法，在遍历完标注了@Controller或者@RequestMapping的类的方法并且生成了对应的RequestMappingInfo之后调用<code>registerHandlerMethod</code></p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:44-fdCJnhjR1N2lU67.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:44-fdCJnhjR1N2lU67.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:44-fdCJnhjR1N2lU67.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:44-fdCJnhjR1N2lU67.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:44-fdCJnhjR1N2lU67.png"
+        title="image-20200705171114940" /></p>
+<p>至此，Controller中的HandlerMethods方法遍历查找并且注册到了RequestMapptinHandlerMapping中的mappingRegistry属性中。第一步结束。</p>
+<p>我们再回到初始化之前，看 <code>initHandlerMethods</code> 接下来又做了什么?</p>
+<p>翻看第6张图，得到接下来调用 <code>handlerMethodsInitialized</code> 方法：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:56-VqQhbi6Mg4SeNLH.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:56-VqQhbi6Mg4SeNLH.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:56-VqQhbi6Mg4SeNLH.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:56-VqQhbi6Mg4SeNLH.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:54:56-VqQhbi6Mg4SeNLH.png"
+        title="image-20200705172911972" /></p>
+<p>从该方法看到handlerMethods初始化结束之后并没有做其他特别的事，但是有一行注释，我们发现。handlerMethods包括了两部分：springmvc自动监测到的和用户显示通过<code>registerMapping（）</code>方法添加的。</p>
+<p>到这里为止，<code>InitializingBean</code>方法执行结束。</p>
+<h3 id="applicationcontextaware接口">ApplicationContextAware接口</h3>
+<p>回到之前看的类结构图，得知该还继承了<code>ApplicationObjectSupport</code>类，而该类又实现了<code>ApplicationContextAware</code>接口。那我们再来看看该接口方法做了什么。</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:01-tzvaSKgCTeoGPU4.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:01-tzvaSKgCTeoGPU4.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:01-tzvaSKgCTeoGPU4.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:01-tzvaSKgCTeoGPU4.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:01-tzvaSKgCTeoGPU4.png"
+        title="image-20200705182213910" /></p>
+<p>从该方法得知：该类对子类暴露了一个方法<code>initApplicationContext</code>，我们从<code>RequestMappingHandlerMapping</code>的父类<code>AbstractHandlerMapping</code>中看到以下实现：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:09-RHqcBpJN2u5aKwI.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:09-RHqcBpJN2u5aKwI.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:09-RHqcBpJN2u5aKwI.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:09-RHqcBpJN2u5aKwI.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:55:09-RHqcBpJN2u5aKwI.png"
+        title="image-20200705182451569" /></p>
+<p>我们看到这里内部执行了三个方法，</p>
+<ul>
+<li>
+<p>extendInterceptors(this.interceptors) 该方法体内部为空，给子类使用</p>
+</li>
+<li>
+<p>detectMappedInterceptors(this.adaptedInterceptors) 从所有Bean对象中找出MappedInterceptor类的的Bean，添加到this.this.adaptedInterceptors中。</p>
+</li>
+<li>
+<p>initInterceptors() 将默认interceptors拦截器放入this.adaptedInterceptors中，</p>
+<ul>
+<li>比如SpringBoot配置类<code>EnableWebMvcConfiguration</code>默认添加了两个拦截器<code>ConversionServiceExposingInterceptor</code> <code>ResourceUrlProviderExposingInterceptor</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Bean</span>
+<span class="nd">@Primary</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">RequestMappingHandlerMapping</span> <span class="nf">requestMappingHandlerMapping</span><span class="o">(</span>
+  <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">&#34;mvcContentNegotiationManager&#34;</span><span class="o">)</span> <span class="n">ContentNegotiationManager</span> <span class="n">contentNegotiationManager</span><span class="o">,</span>
+  <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">&#34;mvcConversionService&#34;</span><span class="o">)</span> <span class="n">FormattingConversionService</span> <span class="n">conversionService</span><span class="o">,</span>
+  <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">&#34;mvcResourceUrlProvider&#34;</span><span class="o">)</span> <span class="n">ResourceUrlProvider</span> <span class="n">resourceUrlProvider</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// Must be @Primary for MvcUriComponentsBuilder to work
+</span><span class="c1"></span>  <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">requestMappingHandlerMapping</span><span class="o">(</span><span class="n">contentNegotiationManager</span><span class="o">,</span> <span class="n">conversionService</span><span class="o">,</span>
+                                            <span class="n">resourceUrlProvider</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="handlerinterceptor">HandlerInterceptor</h3>
+<blockquote>
+<p>HandlerInterceptor接口主要有三个方法，三个方法会在dispatcherServlet执行过程中调用</p>
+</blockquote>
+<ul>
+<li>preHandle：执行HandlerAdaptor的handle方法前。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">default</span> <span class="kt">boolean</span> <span class="nf">preHandle</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="n">Object</span> <span class="n">handler</span><span class="o">)</span>
+			<span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+
+<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>preHandle：执行HandlerAdaptor的handle方法后。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">default</span> <span class="kt">void</span> <span class="nf">postHandle</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="n">Object</span> <span class="n">handler</span><span class="o">,</span>
+<span class="nd">@Nullable</span> <span class="n">ModelAndView</span> <span class="n">modelAndView</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>afterCompletion：doDispatch方法执行完成前，即使抛出异常也会执行。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">default</span> <span class="kt">void</span> <span class="nf">afterCompletion</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="n">Object</span> <span class="n">handler</span><span class="o">,</span>
+                             <span class="nd">@Nullable</span> <span class="n">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>至此，<code>ApplicationContextAware</code>接口方法initApplicationContext执行结束</p>
+<h2 id="gethandler方法">getHandler方法</h2>
+<blockquote>
+<p>HandlerExecutionChain getHandler(HttpServletRequest request)</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:54-CvhNFjZwpLABr8u.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:54-CvhNFjZwpLABr8u.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:54-CvhNFjZwpLABr8u.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:54-CvhNFjZwpLABr8u.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:54-CvhNFjZwpLABr8u.png"
+        title="image-20200705174135770" /></p>
+<p>我们来看第一个方法<code>getHandlerInternal(request)</code></p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:59-CtJicMm3sWUbuvg.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:59-CtJicMm3sWUbuvg.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:59-CtJicMm3sWUbuvg.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:59-CtJicMm3sWUbuvg.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:57:59-CtJicMm3sWUbuvg.png"
+        title="image-20200705174449675" /></p>
+<p>通过UrlPathHelper从request获取请求的path，然后根据path调用<code>lookupHandlerMethod()</code>方法获取处理这个request的HandlerMethod。</p>
+<p><code>lookupHandlerMethod</code>方法作用：查找当前请求的最佳匹配处理程序方法，如果找到多个匹配项，则选择最佳匹配项。这个方法的作用也比较明确，就不多说了。</p>
+<p>回到之前，找到HandlerMethod，如果没有找到，返回默认的Handler。接下来是最核心的方法<code>getHandlerExecutionChain(handler, request)</code></p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:14-6rjf7LT3KNReGI2.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:14-6rjf7LT3KNReGI2.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:14-6rjf7LT3KNReGI2.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:14-6rjf7LT3KNReGI2.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:14-6rjf7LT3KNReGI2.png"
+        title="image-20200705180210185" /></p>
+<p>从此方法可以看出通过HandlerMethod new了一个HandlerExecutionChain对象。然后将属性<code>adaptedInterceptors</code>中的<code>HandlerInterceptor</code>添加到HandlerExecutionChain中，形成了调用执行链。</p>
+<p>其中一个包括<code>includePatterns</code>和<code>excludePatterns</code>字符串集合并带有<code>MappedInterceptor</code>的类。 很明显，就是对于某些地址做特殊包括和排除的拦截器。</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:33-mu1H5LvcBkjoJxr.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:33-mu1H5LvcBkjoJxr.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:33-mu1H5LvcBkjoJxr.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:33-mu1H5LvcBkjoJxr.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/2020-07-15-22:58:33-mu1H5LvcBkjoJxr.png"
+        title="image-20200705185612898" /></p>
+<p>接下来，判断请求或者Handler是否是CROS请求，如果是，则添加</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">chain</span><span class="o">.</span><span class="na">addInterceptor</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="k">new</span> <span class="n">CorsInterceptor</span><span class="o">(</span><span class="n">config</span><span class="o">));</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>到此，getHandler执行结束。</p>
+<h2 id="使用">使用</h2>
+<h3 id="基础用法">基础用法</h3>
+<ul>
+<li>实现HandlerInterceptor接口</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.example.springmvcexample.handlerMapping</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">lombok.extern.slf4j.Slf4j</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.HandlerInterceptor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.ModelAndView</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletResponse</span><span class="o">;</span>
+
+<span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LogHandlerInterceptor</span> <span class="kd">implements</span> <span class="n">HandlerInterceptor</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">LogHandlerInterceptor</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;LogHandlerInterceptor 构造方法被调用&#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">preHandle</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="n">Object</span> <span class="n">handler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;preHandle hanlder = {}&#34;</span><span class="o">,</span> <span class="n">handler</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">postHandle</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="n">Object</span> <span class="n">handler</span><span class="o">,</span> <span class="n">ModelAndView</span> <span class="n">modelAndView</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;postHandle hanlder = {}, modelAndView = {}&#34;</span><span class="o">,</span> <span class="n">handler</span><span class="o">,</span> <span class="n">modelAndView</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">afterCompletion</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="n">Object</span> <span class="n">handler</span><span class="o">,</span> <span class="n">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;postHandle hanlder = {}, Exception = {}&#34;</span><span class="o">,</span> <span class="n">handler</span><span class="o">,</span> <span class="n">ex</span><span class="o">);</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>注意</strong>： 实现<code>HandlerInterceptor</code>接口的实现类使用@Component注解之后，仍然无法使用，因为该实例没有被放入<code>AbstractHandlerMapping</code>的<code>adaptedInterceptors</code>属性中。</p>
+<ul>
+<li>继承<code>WebMvcConfigurationSupport</code>重写<code>addInterceptors</code>方法，将自定义的拦截器放入<code>adaptedInterceptors</code>中。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.example.springmvcexample.handlerMapping</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.Configuration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.config.annotation.InterceptorRegistry</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.handler.MappedInterceptor</span><span class="o">;</span>
+
+<span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebMvcConfig</span> <span class="kd">extends</span> <span class="n">WebMvcConfigurationSupport</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">addInterceptors</span><span class="o">(</span><span class="n">InterceptorRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">addInterceptors</span><span class="o">(</span><span class="n">registry</span><span class="o">);</span>
+        <span class="c1">// 第一种直接添加自定义的拦截器
+</span><span class="c1">//        registry.addInterceptor(new LogHandlerInterceptor());
+</span><span class="c1"></span>        <span class="c1">// 如果需要对指定url的请求调用拦截器，使用MappedInterceptor
+</span><span class="c1"></span>        <span class="n">String</span><span class="o">[]</span> <span class="n">includes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]{</span><span class="s">&#34;/hello/{name}&#34;</span><span class="o">};</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">excludes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]{</span><span class="s">&#34;/echo/{name}&#34;</span><span class="o">};</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">addInterceptor</span><span class="o">(</span><span class="k">new</span> <span class="n">MappedInterceptor</span><span class="o">(</span><span class="n">includes</span><span class="o">,</span> <span class="n">excludes</span><span class="o">,</span> <span class="k">new</span> <span class="n">LogHandlerInterceptor</span><span class="o">()));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>如果是异步请求使用<code>WebRequestInterceptor</code>，这里不作具体描述。</li>
+</ul>
+<h3 id="高级用法">高级用法</h3>
+<ul>
+<li>自定义HandlerMapping</li>
+</ul>
+<p>参考spring boot actuator 的  <code>WebMvcEndpointHandlerMapping</code></p>
+<h2 id="总结">总结</h2>
+<ol>
+<li>RequestMappingHandlerMapping初始化过程中会遍历所有的Bean，找到注解了@Controller或者@RequestMapping的类，通过反射找到所有的注解了@RequestMapping的方法，将其信息封装到一个RequestMapingInfo类对象中；最后将Handler（可以理解为Controller）、Method（注解标记的方法）、RequestMappingInfo三者注册到mappingRegistry的registry属性中。</li>
+<li>执行doDispatch方法内部调用getHandler方法将HandlerInterceptor实现类封装得到HandlerExecutionChain对象。</li>
+<li>得到HandlerExecutionChain对象之后调用HandlerInterceptor的preHandle方法</li>
+<li>调用HandlerAdapter的handle方法后调用HandlerInterceptor的postHandle方法</li>
+<li>在doDispatch方法调用结束前调用HandlerInterceptor的afterCompletion方法（异常处理之后，preHandle返回false也会执行）</li>
+</ol>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2016-10-29</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/hugo/03_springmvc_handlermapping/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/" data-title="03_springmvc_handlermapping" data-hashtags="springmvc"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/" data-hashtag="springmvc"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/" data-title="03_springmvc_handlermapping"><i class="fab fa-hacker-news fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/" data-title="03_springmvc_handlermapping"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/line.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/" data-title="03_springmvc_handlermapping"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/hugo/tags/springmvc/">springmvc</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/hugo/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/hugo/02_springmvc_init/" class="prev" rel="prev" title="02_springmvc_init"><i class="fas fa-angle-left fa-fw"></i>02_springmvc_init</a>
+            <a href="/hugo/04_springmvc_handleradapter/" class="next" rel="next" title="04_springmvc_handleradapter">04_springmvc_handleradapter<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/hugo/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/hugo/lib/valine/valine.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"QGzwQXOqs5JOhN4RGPOkR2mR-MdYXbMMI","appKey":"WBmoGyJtbqUswvfLh6L8iEBr","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://leancloud.hugoloveit.com","visitor":true}},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/hugo/js/theme.min.js"></script></body>
+</html>

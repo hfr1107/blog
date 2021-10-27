@@ -1,0 +1,57 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>所有文章 - 山脚下的脚下山</title>
+        <link>https://scemsjyd.github.io/hugo/posts/</link>
+        <description>所有文章 | 山脚下的脚下山</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>scemsjyd@gmail.com (Adam.Jin)</managingEditor>
+            <webMaster>scemsjyd@gmail.com (Adam.Jin)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 01 Oct 2019 17:55:28 &#43;0800</lastBuildDate><atom:link href="https://scemsjyd.github.io/hugo/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Emoji 支持</title>
+    <link>https://scemsjyd.github.io/hugo/emoji-support/</link>
+    <pubDate>Tue, 01 Oct 2019 17:55:28 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.github.io/hugo/emoji-support/</guid>
+    <description><![CDATA[<p>Emoji 可以通过多种方式在 Hugo 项目中启用.</p>]]></description>
+</item><item>
+    <title>06_springmvc_validator</title>
+    <link>https://scemsjyd.github.io/hugo/06_springmvc_validator/</link>
+    <pubDate>Tue, 01 Nov 2016 15:59:42 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.github.io/hugo/06_springmvc_validator/</guid>
+    <description><![CDATA[参数校验器 Spring MVC中的参数校验器并没有自己大量从新开发，而是使用了Hibernate-Validator，而Hibernate-Valida]]></description>
+</item><item>
+    <title>05_springmvc_handlerExceptionResolver</title>
+    <link>https://scemsjyd.github.io/hugo/05_springmvc_handlerexceptionresolver/</link>
+    <pubDate>Tue, 01 Nov 2016 10:59:42 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.github.io/hugo/05_springmvc_handlerexceptionresolver/</guid>
+    <description><![CDATA[HandlerExceptionResolver Spring的处理器异常解析器HandlerExceptionResolver接口的实现负责处理各类控制器执行过程中出现的异常 1 2 3 4 5 public]]></description>
+</item><item>
+    <title>04_springmvc_handleradapter</title>
+    <link>https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/</link>
+    <pubDate>Sun, 30 Oct 2016 15:59:23 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/</guid>
+    <description><![CDATA[HandlerAdapter HandlerAdapter是处理器适配器，Spring MVC通过HandlerAdapter来实际调用处理函数。它是SpringMvc处]]></description>
+</item><item>
+    <title>03_springmvc_handlermapping</title>
+    <link>https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/</link>
+    <pubDate>Sat, 29 Oct 2016 15:58:58 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/</guid>
+    <description><![CDATA[HandlerMapping HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在Ha]]></description>
+</item><item>
+    <title>02_springmvc_init</title>
+    <link>https://scemsjyd.github.io/hugo/02_springmvc_init/</link>
+    <pubDate>Fri, 28 Oct 2016 15:58:34 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.github.io/hugo/02_springmvc_init/</guid>
+    <description><![CDATA[DispatcherServlet Init dispatcherServlet是springmvc的核心 servlet的生命周期 ==servlet==的三个重要方法init service destroy 1.]]></description>
+</item><item>
+    <title>01_springmvc_flow</title>
+    <link>https://scemsjyd.github.io/hugo/01_springmvc_flow/</link>
+    <pubDate>Thu, 27 Oct 2016 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.github.io/hugo/01_springmvc_flow/</guid>
+    <description><![CDATA[SpringMVC SpringMVC流程图 SpringMVC 九大组件 翻看SpringMVC源码会发现 DispatcherServlet 用于处理上传请求。处理方法是将普通的request包装成Multipa]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>04_springmvc_handleradapter - 山脚下的脚下山</title><meta name="Description" content="山脚下的脚下山の博客"><meta property="og:title" content="04_springmvc_handleradapter" />
+<meta property="og:description" content="HandlerAdapter HandlerAdapter是处理器适配器，Spring MVC通过HandlerAdapter来实际调用处理函数。它是SpringMvc处" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/" /><meta property="og:image" content="https://scemsjyd.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2016-10-30T15:59:23+08:00" />
+<meta property="article:modified_time" content="2016-10-30T15:59:23+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.github.io/logo.png"/>
+
+<meta name="twitter:title" content="04_springmvc_handleradapter"/>
+<meta name="twitter:description" content="HandlerAdapter HandlerAdapter是处理器适配器，Spring MVC通过HandlerAdapter来实际调用处理函数。它是SpringMvc处"/>
+<meta name="application-name" content="山脚下的脚下山の博客">
+<meta name="apple-mobile-web-app-title" content="山脚下的脚下山の博客"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/" /><link rel="prev" href="https://scemsjyd.github.io/hugo/03_springmvc_handlermapping/" /><link rel="next" href="https://scemsjyd.github.io/hugo/05_springmvc_handlerexceptionresolver/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/hugo/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "04_springmvc_handleradapter",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.github.io\/hugo\/04_springmvc_handleradapter\/"
+        },"image": ["https:\/\/scemsjyd.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "springmvc","wordcount":  5023 ,
+        "url": "https:\/\/scemsjyd.github.io\/hugo\/04_springmvc_handleradapter\/","datePublished": "2016-10-30T15:59:23+08:00","dateModified": "2016-10-30T15:59:23+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "山脚下的脚下山"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/hugo/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/hugo/hugo/posts/"> 文章 </a><a class="menu-item" href="/hugo/hugo/tags/"> 标签 </a><a class="menu-item" href="/hugo/hugo/categories/"> 分类 </a><a class="menu-item" href="/hugo/hugo/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/hugo/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/hugo/hugo/posts/" title="">文章</a><a class="menu-item" href="/hugo/hugo/tags/" title="">标签</a><a class="menu-item" href="/hugo/hugo/categories/" title="">分类</a><a class="menu-item" href="/hugo/hugo/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">04_springmvc_handleradapter</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/hugo/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>山脚下的脚下山</a></span>&nbsp;<span class="post-category">收录于 <a href="/hugo/categories/spring/"><i class="far fa-folder fa-fw"></i>spring</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2016-10-30">2016-10-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 5023 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 11 分钟&nbsp;<span id="/hugo/04_springmvc_handleradapter/" class="leancloud_visitors" data-flag-title="04_springmvc_handleradapter">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#initializationbean">InitializationBean</a>
+      <ul>
+        <li><a href="#-initcontrolleradvicecache">❶ InitControllerAdviceCache</a></li>
+        <li><a href="#-参数解析器">❷ 参数解析器</a>
+          <ul>
+            <li><a href="#requestparammethodargumentresolver"><code>RequestParamMethodArgumentResolver</code></a></li>
+            <li><a href="#requestparammapmethodargumentresolver"><code>RequestParamMapMethodArgumentResolver</code></a></li>
+            <li><a href="#pathvariablemapmethodargumentresolver"><code>PathVariableMapMethodArgumentResolver</code></a></li>
+            <li><a href="#matrixvariablemethodargumentresolver"><code>MatrixVariableMethodArgumentResolver</code></a></li>
+            <li><a href="#matrixvariablemapmethodargumentresolver"><code>MatrixVariableMapMethodArgumentResolver</code></a></li>
+            <li><a href="#servletmodelattributemethodprocessor"><code>ServletModelAttributeMethodProcessor</code></a></li>
+            <li><a href="#requestresponsebodymethodprocessor"><code>RequestResponseBodyMethodProcessor</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#initbinder参数解析器">❸InitBinder参数解析器</a></li>
+        <li><a href="#返回值解析器">❹返回值解析器</a></li>
+      </ul>
+    </li>
+    <li><a href="#handle流程">handle流程</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="handleradapter">HandlerAdapter</h1>
+<blockquote>
+<p>HandlerAdapter是处理器适配器，Spring MVC通过HandlerAdapter来实际调用处理函数。它是SpringMvc处理流程的第二步,当HandlerMapping获取了定位请求处理器Handler，DispatcherServlet会将得到的Handler告知HandlerAdapter，HandlerAdapter再根据请求去定位请求的具体处理方法是哪一个。</p>
+<ol>
+<li>
+<p>HandlerAdapter定义了如何处理请求的策略，通过请求url、请求Method和处理器的requestMapping定义，最终确定使用处理类的哪个方法来处理请求，并检查处理类相应处理方法的参数以及相关的Annotation配置，确定如何转换需要的参数传入调用方法，并最终调用返回ModelAndView。</p>
+</li>
+<li>
+<p>DispatcherServlet中根据HandlerMapping找到对应的handler method后，首先检查当前工程中注册的所有可用的handlerAdapter，根据handlerAdapter中的supports方法找到可以使用的handlerAdapter。</p>
+</li>
+<li>
+<p>通过调用handlerAdapter中的handler方法来处理及准备handler method的参数及annotation(这就是spring mvc如何将request中的参数变成handle method中的输入参数的地方)，最终调用实际的handler method。</p>
+</li>
+</ol>
+<p>handlerAdapter这个类的作用就是接过handlermapping解析请求得到的handler对象。在更精确的定位到能够执行请求的方法。</p>
+</blockquote>
+<ul>
+<li><code>initStrategies</code>调用<code>initHandlerAdapters</code></li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:28:34-mlUY7Z8SRfxDQeK.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:28:34-mlUY7Z8SRfxDQeK.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:28:34-mlUY7Z8SRfxDQeK.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:28:34-mlUY7Z8SRfxDQeK.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:28:34-mlUY7Z8SRfxDQeK.png"
+        title="image-20200713144810889" /></p>
+<p>❶从Spring的上下文环境中获取实现了<code>HandlerAdapter</code>接口的实现类，默认会有以下实现类：</p>
+<pre><code>RequestMappingHandlerAdapter
+HandlerFunctionAdapter
+HttpRequestHandlerAdapter
+SimpleControllerHandlerAdapter
+</code></pre>
+<p>❷对❶中查找到的实现类排序</p>
+<p>❸如果配置了<code>detectAllHandlerAdapters</code>属性为false，则从Spring上下文中获取一个beanName = <code>handlerAdapter</code>的实例</p>
+<p>❹如果前几步都没有获取到<code>HandlerAdapter</code>的实现类，则从<code>dispatcherServlet.properties</code>中获取默认的实现类。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">org.springframework.web.servlet.HandlerAdapter=org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,\
+	org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,\
+	org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter,\
+	org.springframework.web.servlet.function.support.HandlerFunctionAdapter
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>RequestMappingHandlerAdapter</code>UML类图，在没有自定义特殊情况下，该类便是<code>HandlerAdapter</code>的主要实现类。以下我们便以该类来讲解。</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:29:45-HtO7GVeNXJW4i2f.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:29:45-HtO7GVeNXJW4i2f.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:29:45-HtO7GVeNXJW4i2f.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:29:45-HtO7GVeNXJW4i2f.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:29:45-HtO7GVeNXJW4i2f.png"
+        title="RequestMappingHandlerAdapter" /></p>
+<h2 id="initializationbean">InitializationBean</h2>
+<blockquote>
+<p>由以上类图可知：<code>RequestMappingHandlerAdapter</code>实现了<code>InitializationBean</code>接口，所以我们看一眼该接口方法做了什么？</p>
+</blockquote>
+<ul>
+<li>afterPropertiesSet</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:30:28-CQzUfMZ8EAHhvrV.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:30:28-CQzUfMZ8EAHhvrV.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:30:28-CQzUfMZ8EAHhvrV.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:30:28-CQzUfMZ8EAHhvrV.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:30:28-CQzUfMZ8EAHhvrV.png"
+        title="image-20200713210108442" /></p>
+<h3 id="-initcontrolleradvicecache">❶ InitControllerAdviceCache</h3>
+<p>遍历Spring上下文实例，找出<code>@ControllerAdvice</code>、<code>@ModelAttribute</code>、<code>@InitBinder</code>和实现了<code>RequestBodyAdvice</code>或者<code>ResponseBodyAdvice</code>相关的处理方法，并缓存起来。具体如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:31:26-B9vuAZRX6fMJcV3.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:31:26-B9vuAZRX6fMJcV3.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:31:26-B9vuAZRX6fMJcV3.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:31:26-B9vuAZRX6fMJcV3.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:31:26-B9vuAZRX6fMJcV3.png"
+        title="image-20200713211625660" /></p>
+<ol>
+<li>从Spring上下文找到<code>@ControllerAdvice</code>注解的类</li>
+<li>遍历1.中找到的标记了<code>@ControllerAdvice</code>的类中找到注解了<code>@ModelAttribute</code>的方法</li>
+<li>遍历1.中找到的标记了<code>@ControllerAdvice</code>的类中找到注解了<code>@InitBinder</code>的方法</li>
+<li>遍历1.中找到的标记了<code>@ControllerAdvice</code>的类中找到实现了<code>RequestBodyAdvice</code>和<code>ResponseBodyAdvice</code>的实现</li>
+</ol>
+<h3 id="-参数解析器">❷ 参数解析器</h3>
+<blockquote>
+<ol>
+<li>解析特定注解的参数</li>
+<li>参数校验</li>
+</ol>
+</blockquote>
+<p>获取默认的参数解析器，针对各种类型参数具体解析器如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:33:51-PcSAfYzLbMH3TyQ.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:33:51-PcSAfYzLbMH3TyQ.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:33:51-PcSAfYzLbMH3TyQ.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:33:51-PcSAfYzLbMH3TyQ.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-15/23:33:51-PcSAfYzLbMH3TyQ.png"
+        title="image-20200713212613258" /></p>
+<p>由该方法可知，参数解析器包含了4大块：<code>基于注解的</code>，<code>基于类型的</code>，<code>自定义的</code>，<code>其他</code></p>
+<p>所以接口都实现了<code>HandlerMethodArgumentResolver</code>接口。该接口有两个方法，一个判断是否支持该类型参数，一个用于解析参数。</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714110456697.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714110456697.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714110456697.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714110456697.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714110456697.png"
+        title="image-20200714110456697" /></p>
+<ul>
+<li>
+<h4 id="requestparammethodargumentresolver"><code>RequestParamMethodArgumentResolver</code></h4>
+<ul>
+<li>主要用来解析<code>@RequestParam</code>注解的参数</li>
+</ul>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714105830467.png"
+        data-srcset="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714105830467.png, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714105830467.png 1.5x, https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714105830467.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714105830467.png"
+        title="image-20200714105830467" /></p>
+<ul>
+<li>
+<h4 id="requestparammapmethodargumentresolver"><code>RequestParamMapMethodArgumentResolver</code></h4>
+<ul>
+<li>用来解析@RequestParam注解并参数类型为Map的参数，并且requestParam.name为空</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsParameter</span><span class="o">(</span><span class="n">MethodParameter</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">RequestParam</span> <span class="n">requestParam</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="na">getParameterAnnotation</span><span class="o">(</span><span class="n">RequestParam</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">requestParam</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">Map</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">parameter</span><span class="o">.</span><span class="na">getParameterType</span><span class="o">())</span> <span class="o">&amp;&amp;</span>
+          <span class="o">!</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">requestParam</span><span class="o">.</span><span class="na">name</span><span class="o">()));</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>PathVariableMethodArgumentResolver</code>
+<ul>
+<li>用来解析<code>@PathVariable</code>注解的参数；参数类型是Map，并且pathVariable.value()存在的参数</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsParameter</span><span class="o">(</span><span class="n">MethodParameter</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">parameter</span><span class="o">.</span><span class="na">hasParameterAnnotation</span><span class="o">(</span><span class="n">PathVariable</span><span class="o">.</span><span class="na">class</span><span class="o">))</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">parameter</span><span class="o">.</span><span class="na">nestedIfOptional</span><span class="o">().</span><span class="na">getNestedParameterType</span><span class="o">()))</span> <span class="o">{</span>
+    <span class="n">PathVariable</span> <span class="n">pathVariable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="na">getParameterAnnotation</span><span class="o">(</span><span class="n">PathVariable</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">pathVariable</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">pathVariable</span><span class="o">.</span><span class="na">value</span><span class="o">()));</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<h4 id="pathvariablemapmethodargumentresolver"><code>PathVariableMapMethodArgumentResolver</code></h4>
+<ul>
+<li>用来解析<code>@PathVariable</code>注解的参数类型是Map，并且pathVariable.value()不存在的参数</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsParameter</span><span class="o">(</span><span class="n">MethodParameter</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">PathVariable</span> <span class="n">ann</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="na">getParameterAnnotation</span><span class="o">(</span><span class="n">PathVariable</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">ann</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">Map</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">parameter</span><span class="o">.</span><span class="na">getParameterType</span><span class="o">())</span> <span class="o">&amp;&amp;</span>
+          <span class="o">!</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">ann</span><span class="o">.</span><span class="na">value</span><span class="o">()));</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<h4 id="matrixvariablemethodargumentresolver"><code>MatrixVariableMethodArgumentResolver</code></h4>
+<ul>
+<li>用于解析<code>@MatrixVariable</code>注解的参数；*参数类型是Map，并且matrixVariable.name存在的参数，也能被解析，但是没有默认的数据绑定器，所以会报错。</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsParameter</span><span class="o">(</span><span class="n">MethodParameter</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">parameter</span><span class="o">.</span><span class="na">hasParameterAnnotation</span><span class="o">(</span><span class="n">MatrixVariable</span><span class="o">.</span><span class="na">class</span><span class="o">))</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">parameter</span><span class="o">.</span><span class="na">nestedIfOptional</span><span class="o">().</span><span class="na">getNestedParameterType</span><span class="o">()))</span> <span class="o">{</span>
+    <span class="n">MatrixVariable</span> <span class="n">matrixVariable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="na">getParameterAnnotation</span><span class="o">(</span><span class="n">MatrixVariable</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">matrixVariable</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">matrixVariable</span><span class="o">.</span><span class="na">name</span><span class="o">()));</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>示例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm">* 请求示例： GET http://localhost:8080/mv1/123;q=123/456;q=456 
+</span><span class="cm">* 正常响应
+</span><span class="cm">*/</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/mv1/{x}/{y}&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">matrixVairable1</span><span class="o">(</span>
+ <span class="nd">@PathVariable</span> <span class="n">String</span> <span class="n">x</span><span class="o">,</span>
+ <span class="nd">@PathVariable</span> <span class="n">String</span> <span class="n">y</span><span class="o">,</span>
+ <span class="nd">@MatrixVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;q&#34;</span><span class="o">,</span> <span class="n">pathVar</span> <span class="o">=</span> <span class="s">&#34;x&#34;</span><span class="o">)</span> <span class="kt">int</span> <span class="n">q1</span><span class="o">,</span>
+ <span class="nd">@MatrixVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;q&#34;</span><span class="o">,</span> <span class="n">pathVar</span> <span class="o">=</span> <span class="s">&#34;y&#34;</span><span class="o">)</span> <span class="kt">int</span> <span class="n">q2</span><span class="o">)</span> <span class="o">{</span>
+
+ <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;x = %s, y = %s, q1 = %s, q2 = %s&#34;</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">q1</span><span class="o">,</span> <span class="n">q2</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * 请求示例： GET http://localhost:8080/mv2/q=123/q=456 
+</span><span class="cm"> * 正常响应
+</span><span class="cm"> */</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/mv2/{a}/{b}&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">matrixVairable2</span><span class="o">(</span>
+  <span class="nd">@MatrixVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;q&#34;</span><span class="o">,</span> <span class="n">pathVar</span> <span class="o">=</span> <span class="s">&#34;a&#34;</span><span class="o">)</span> <span class="kt">int</span> <span class="n">q1</span><span class="o">,</span>
+  <span class="nd">@MatrixVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;q&#34;</span><span class="o">,</span> <span class="n">pathVar</span> <span class="o">=</span> <span class="s">&#34;b&#34;</span><span class="o">)</span> <span class="kt">int</span> <span class="n">q2</span><span class="o">)</span> <span class="o">{</span>
+
+  <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;a = %s, b = %s&#34;</span><span class="o">,</span> <span class="n">q1</span><span class="o">,</span> <span class="n">q2</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * 请求示例： GET http://localhost:8080/mv4/a=123/b=456; 
+</span><span class="cm"> * 结果报错：Cannot convert value of type &#39;java.lang.String&#39; to required type &#39;java.util.Map&#39;: no matching editors or conversion strategy found
+</span><span class="cm"> */</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/mv4/{a}/{b}&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">matrixVairable4</span><span class="o">(</span>
+  <span class="nd">@MatrixVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;a&#34;</span><span class="o">,</span> <span class="n">pathVar</span> <span class="o">=</span> <span class="s">&#34;a&#34;</span><span class="o">)</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">m1</span><span class="o">,</span>
+  <span class="nd">@MatrixVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;b&#34;</span><span class="o">,</span> <span class="n">pathVar</span> <span class="o">=</span> <span class="s">&#34;b&#34;</span><span class="o">)</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">m2</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">JsonProcessingException</span> <span class="o">{</span>
+  <span class="n">ObjectMapper</span> <span class="n">objectMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectMapper</span><span class="o">();</span>
+  <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;a = %s, b = %s&#34;</span><span class="o">,</span> <span class="n">objectMapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">m1</span><span class="o">),</span> <span class="n">objectMapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">m2</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<h4 id="matrixvariablemapmethodargumentresolver"><code>MatrixVariableMapMethodArgumentResolver</code></h4>
+<ul>
+<li>用于解析<code>@MatrixVariable</code>注解的参数类型是Map，并且matrixVariable.name不存在的参数</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsParameter</span><span class="o">(</span><span class="n">MethodParameter</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">MatrixVariable</span> <span class="n">matrixVariable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="na">getParameterAnnotation</span><span class="o">(</span><span class="n">MatrixVariable</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">matrixVariable</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">Map</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">parameter</span><span class="o">.</span><span class="na">getParameterType</span><span class="o">())</span> <span class="o">&amp;&amp;</span>
+          <span class="o">!</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">matrixVariable</span><span class="o">.</span><span class="na">name</span><span class="o">()));</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>示例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> *  请求示例： GET http://localhost:8080/mv3/a1=123;a2=321/b1=456;b2=654
+</span><span class="cm"> */</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/mv3/{a}/{b}&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">matrixVairable3</span><span class="o">(</span>
+  <span class="nd">@MatrixVariable</span><span class="o">(</span><span class="n">pathVar</span> <span class="o">=</span> <span class="s">&#34;a&#34;</span><span class="o">)</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">m1</span><span class="o">,</span>
+  <span class="nd">@MatrixVariable</span><span class="o">(</span><span class="n">pathVar</span> <span class="o">=</span> <span class="s">&#34;b&#34;</span><span class="o">)</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">m2</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">JsonProcessingException</span> <span class="o">{</span>
+  <span class="n">ObjectMapper</span> <span class="n">objectMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectMapper</span><span class="o">();</span>
+  <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;a = %s, b = %s&#34;</span><span class="o">,</span> <span class="n">objectMapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">m1</span><span class="o">),</span> <span class="n">objectMapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">m2</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>注意</strong>： <code>@MatrixVariable</code>在SpringBoot中默认是无法使用矩阵参数的，需要修改Path解析</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebConfig</span> <span class="kd">implements</span> <span class="n">WebMvcConfigurer</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">configurePathMatch</span><span class="o">(</span><span class="n">PathMatchConfigurer</span> <span class="n">configurer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">UrlPathHelper</span> <span class="n">urlPathHelper</span><span class="o">=</span><span class="k">new</span> <span class="n">UrlPathHelper</span><span class="o">();</span>
+        <span class="n">urlPathHelper</span><span class="o">.</span><span class="na">setRemoveSemicolonContent</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+        <span class="n">configurer</span><span class="o">.</span><span class="na">setUrlPathHelper</span><span class="o">(</span><span class="n">urlPathHelper</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<h4 id="servletmodelattributemethodprocessor"><code>ServletModelAttributeMethodProcessor</code></h4>
+<ul>
+<li>
+<p>有两个相同的参数解析器，一个构造函数传false，一个传true</p>
+</li>
+<li>
+<p><strong>被<code>@ModelAttribute</code>注解注释的方法会在此controller每个方法执行前被执行</strong></p>
+</li>
+<li>
+<p>解析<code>@ModelAttribute</code>注解的参数</p>
+</li>
+<li>
+<p>解析<code>@ModelAttribute</code>注解的响应</p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsParameter</span><span class="o">(</span><span class="n">MethodParameter</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">parameter</span><span class="o">.</span><span class="na">hasParameterAnnotation</span><span class="o">(</span><span class="n">ModelAttribute</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">||</span>
+          <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">annotationNotRequired</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">BeanUtils</span><span class="o">.</span><span class="na">isSimpleProperty</span><span class="o">(</span><span class="n">parameter</span><span class="o">.</span><span class="na">getParameterType</span><span class="o">())));</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsReturnType</span><span class="o">(</span><span class="n">MethodParameter</span> <span class="n">returnType</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">returnType</span><span class="o">.</span><span class="na">hasMethodAnnotation</span><span class="o">(</span><span class="n">ModelAttribute</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">||</span>
+          <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">annotationNotRequired</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">BeanUtils</span><span class="o">.</span><span class="na">isSimpleProperty</span><span class="o">(</span><span class="n">returnType</span><span class="o">.</span><span class="na">getParameterType</span><span class="o">())));</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>示例</p>
+<ol>
+<li>使用<code>@ModelAttribute</code>注解无返回值的方法</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@ModelAttribute</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">myModel</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="n">String</span> <span class="n">abc</span><span class="o">,</span> <span class="n">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;attributeName&#34;</span><span class="o">,</span> <span class="n">abc</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&#34;/method&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">method</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="s">&#34;method&#34;</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>在<code>@RequestMapping</code>返回视图名称，<code>@ModelAttribute</code>返回模型数据</p>
+<ol start="2">
+<li>使用<code>@ModelAttribute</code>注解带有返回值的方法</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@ModelAttribute</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">myModel</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="n">String</span> <span class="n">abc</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">abc</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@ModelAttribute</span>
+<span class="kd">public</span> <span class="n">Student</span> <span class="nf">myModel</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="n">String</span> <span class="n">abc</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Student</span> <span class="n">student</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Student</span><span class="o">(</span><span class="n">abc</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">student</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@ModelAttribute</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">myModel</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="kt">int</span> <span class="n">number</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">number</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@ModelAttribute</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">&#34;name&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">myModel</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="c1">// 上面4个等同于下面
+</span><span class="c1"></span><span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;string&#34;</span><span class="o">,</span> <span class="n">abc</span><span class="o">);</span>
+<span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;int&#34;</span><span class="o">,</span> <span class="n">number</span><span class="o">);</span>
+<span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;student&#34;</span><span class="o">,</span> <span class="n">student</span><span class="o">);</span>
+<span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;name&#34;</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>对于这种情况，返回值对象会被默认放到隐含的<code>Model</code>中，在<code>Model</code>中的<code>key</code>为**<code>返回值首字母小写</code>**，<code>value</code>为返回的值。</p>
+<ol start="3">
+<li>使用@ModelAttribute注解的参数</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&#34;/modelattribute&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ModelAttributeParamController</span> <span class="o">{</span>
+
+    <span class="nd">@ModelAttribute</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&#34;attributeName&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">myModel</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span> <span class="n">String</span> <span class="n">abc</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">abc</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@ModelAttribute</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">myModel3</span><span class="o">(</span><span class="n">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;name&#34;</span><span class="o">,</span> <span class="s">&#34;zong&#34;</span><span class="o">);</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;age&#34;</span><span class="o">,</span> <span class="n">20</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&#34;/param&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">param</span><span class="o">(</span><span class="nd">@ModelAttribute</span><span class="o">(</span><span class="s">&#34;attributeName&#34;</span><span class="o">)</span> <span class="n">String</span> <span class="n">str</span><span class="o">,</span>
+                       <span class="nd">@ModelAttribute</span><span class="o">(</span><span class="s">&#34;name&#34;</span><span class="o">)</span> <span class="n">String</span> <span class="n">str2</span><span class="o">,</span>
+                       <span class="nd">@ModelAttribute</span><span class="o">(</span><span class="s">&#34;age&#34;</span><span class="o">)</span> <span class="kt">int</span> <span class="n">str3</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&#34;param&#34;</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>使用<code>@ModelAttribute</code>注解的参数，意思是从前面的<code>Model</code>中提取对应名称的属性。</p>
+<ul>
+<li>
+<h4 id="requestresponsebodymethodprocessor"><code>RequestResponseBodyMethodProcessor</code></h4>
+<ul>
+<li>解析<code>@RequestBody</code>注解的参数</li>
+<li>解析<code>@ResponseBody</code>注解的响应</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// 参数类型
+</span><span class="c1"></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsParameter</span><span class="o">(</span><span class="n">MethodParameter</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">parameter</span><span class="o">.</span><span class="na">hasParameterAnnotation</span><span class="o">(</span><span class="n">RequestBody</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="c1">// 响应类型
+</span><span class="c1"></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supportsReturnType</span><span class="o">(</span><span class="n">MethodParameter</span> <span class="n">returnType</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">AnnotatedElementUtils</span><span class="o">.</span><span class="na">hasAnnotation</span><span class="o">(</span><span class="n">returnType</span><span class="o">.</span><span class="na">getContainingClass</span><span class="o">(),</span> <span class="n">ResponseBody</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">||</span>
+          <span class="n">returnType</span><span class="o">.</span><span class="na">hasMethodAnnotation</span><span class="o">(</span><span class="n">ResponseBody</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其他解析器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 解析@RequestPart注解，解析上传的文件
+RequestPartMethodArgumentResolver
+
+# 解析@RequestHeader注解，解析Header中的值到参数中
+RequestHeaderMethodArgumentResolver
+RequestHeaderMapMethodArgumentResolver
+
+# 解析@CookieValue注解，解析cookie中的值到参数中
+ServletCookieValueMethodArgumentResolver
+
+# 解析@Value注解，解析@Value(&#34;${xxx}&#34;，配置环境变量的值到参数中，例如xxx = servlet.port)
+ExpressionValueMethodArgumentResolver
+
+# 解析@SessionAttribute注解，解析session.getAttribute中的值到参数中
+SessionAttributeMethodArgumentResolver
+
+# 解析@ReqReuqestMappingHandlerAdapterAttribute中的值到参数中
+RequestAttributeMethodArgumentResolver
+
+......
+更多参考ReuqestMappingHandlerAdapter.getDefaultArgumentResolvers方法
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="initbinder参数解析器">❸InitBinder参数解析器</h3>
+<blockquote>
+<p>调用<code>@InitBinder</code>注解的方法，解析被注解的方法的参数。</p>
+</blockquote>
+<p>支持的参数解析器如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * Return the list of argument resolvers to use for {@code @InitBinder}
+</span><span class="cm"> * methods including built-in and custom resolvers.
+</span><span class="cm"> */</span>
+<span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">HandlerMethodArgumentResolver</span><span class="o">&gt;</span> <span class="nf">getDefaultInitBinderArgumentResolvers</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">HandlerMethodArgumentResolver</span><span class="o">&gt;</span> <span class="n">resolvers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+
+  <span class="c1">// Annotation-based argument resolution
+</span><span class="c1"></span>  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestParamMethodArgumentResolver</span><span class="o">(</span><span class="n">getBeanFactory</span><span class="o">(),</span> <span class="kc">false</span><span class="o">));</span>
+  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestParamMapMethodArgumentResolver</span><span class="o">());</span>
+  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">PathVariableMethodArgumentResolver</span><span class="o">());</span>
+  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">PathVariableMapMethodArgumentResolver</span><span class="o">());</span>
+  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">MatrixVariableMethodArgumentResolver</span><span class="o">());</span>
+  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">MatrixVariableMapMethodArgumentResolver</span><span class="o">());</span>
+  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ExpressionValueMethodArgumentResolver</span><span class="o">(</span><span class="n">getBeanFactory</span><span class="o">()));</span>
+  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">SessionAttributeMethodArgumentResolver</span><span class="o">());</span>
+  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestAttributeMethodArgumentResolver</span><span class="o">());</span>
+
+  <span class="c1">// Type-based argument resolution
+</span><span class="c1"></span>  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ServletRequestMethodArgumentResolver</span><span class="o">());</span>
+  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ServletResponseMethodArgumentResolver</span><span class="o">());</span>
+
+  <span class="c1">// Custom arguments
+</span><span class="c1"></span>  <span class="k">if</span> <span class="o">(</span><span class="n">getCustomArgumentResolvers</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">resolvers</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">getCustomArgumentResolvers</span><span class="o">());</span>
+  <span class="o">}</span>
+
+  <span class="c1">// Catch-all
+</span><span class="c1"></span>  <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestParamMethodArgumentResolver</span><span class="o">(</span><span class="n">getBeanFactory</span><span class="o">(),</span> <span class="kc">true</span><span class="o">));</span>
+
+  <span class="k">return</span> <span class="n">resolvers</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>调用流程：</p>
+<p>Controller标注的<code>@RequestMapping</code>方法的参数解析时，比如：<code>RequestParamMethodArgumentResolver</code>解析器。有如下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="o">...</span><span class="na">省略</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">binderFactory</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// 创建WebDataBinder对象，其中调用@InitBinder注解的方法
+</span><span class="c1"></span>  <span class="n">WebDataBinder</span> <span class="n">binder</span> <span class="o">=</span> <span class="n">binderFactory</span><span class="o">.</span><span class="na">createBinder</span><span class="o">(</span><span class="n">webRequest</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">namedValueInfo</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+  <span class="k">try</span> <span class="o">{</span>
+    <span class="n">arg</span> <span class="o">=</span> <span class="n">binder</span><span class="o">.</span><span class="na">convertIfNecessary</span><span class="o">(</span><span class="n">arg</span><span class="o">,</span> <span class="n">parameter</span><span class="o">.</span><span class="na">getParameterType</span><span class="o">(),</span> <span class="n">parameter</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">catch</span> <span class="o">(</span><span class="n">ConversionNotSupportedException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="n">MethodArgumentConversionNotSupportedException</span><span class="o">(</span><span class="n">arg</span><span class="o">,</span> <span class="n">ex</span><span class="o">.</span><span class="na">getRequiredType</span><span class="o">(),</span>
+                                                            <span class="n">namedValueInfo</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">parameter</span><span class="o">,</span> <span class="n">ex</span><span class="o">.</span><span class="na">getCause</span><span class="o">());</span>
+  <span class="o">}</span>
+  <span class="k">catch</span> <span class="o">(</span><span class="n">TypeMismatchException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="n">MethodArgumentTypeMismatchException</span><span class="o">(</span><span class="n">arg</span><span class="o">,</span> <span class="n">ex</span><span class="o">.</span><span class="na">getRequiredType</span><span class="o">(),</span>
+                                                  <span class="n">namedValueInfo</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">parameter</span><span class="o">,</span> <span class="n">ex</span><span class="o">.</span><span class="na">getCause</span><span class="o">());</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="o">...</span><span class="na">省略</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">final</span> <span class="n">WebDataBinder</span> <span class="nf">createBinder</span><span class="o">(</span>
+  <span class="n">NativeWebRequest</span> <span class="n">webRequest</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">Object</span> <span class="n">target</span><span class="o">,</span> <span class="n">String</span> <span class="n">objectName</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+
+  <span class="n">WebDataBinder</span> <span class="n">dataBinder</span> <span class="o">=</span> <span class="n">createBinderInstance</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">objectName</span><span class="o">,</span> <span class="n">webRequest</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">initializer</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 为initbinder方法添加消息转换大，属性编辑器等
+</span><span class="c1"></span>    <span class="k">this</span><span class="o">.</span><span class="na">initializer</span><span class="o">.</span><span class="na">initBinder</span><span class="o">(</span><span class="n">dataBinder</span><span class="o">,</span> <span class="n">webRequest</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="c1">// 调用@InitBinder方法
+</span><span class="c1"></span>  <span class="n">initBinder</span><span class="o">(</span><span class="n">dataBinder</span><span class="o">,</span> <span class="n">webRequest</span><span class="o">);</span>
+  <span class="k">return</span> <span class="n">dataBinder</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>调用<code>@ControllerAdvice</code>中<code>@InitBinder</code>的全局方法和<code>@Controller</code>中的单属于每个controller的<code>@InitBinder</code>方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">initBinder</span><span class="o">(</span><span class="n">WebDataBinder</span> <span class="n">dataBinder</span><span class="o">,</span> <span class="n">NativeWebRequest</span> <span class="n">request</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+  <span class="k">for</span> <span class="o">(</span><span class="n">InvocableHandlerMethod</span> <span class="n">binderMethod</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">binderMethods</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isBinderMethodApplicable</span><span class="o">(</span><span class="n">binderMethod</span><span class="o">,</span> <span class="n">dataBinder</span><span class="o">))</span> <span class="o">{</span>
+    	<span class="c1">// 调用@initBinder注解的方法
+</span><span class="c1"></span>      <span class="n">Object</span> <span class="n">returnValue</span> <span class="o">=</span> <span class="n">binderMethod</span><span class="o">.</span><span class="na">invokeForRequest</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">dataBinder</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">returnValue</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalStateException</span><span class="o">(</span>
+          <span class="s">&#34;@InitBinder methods must not return a value (should be void): &#34;</span> <span class="o">+</span> <span class="n">binderMethod</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>调用参数解析器解析initBinder参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">protected</span> <span class="n">Object</span><span class="o">[]</span> <span class="nf">getMethodArgumentValues</span><span class="o">(</span><span class="n">NativeWebRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="n">ModelAndViewContainer</span> <span class="n">mavContainer</span><span class="o">,</span>
+			<span class="n">Object</span><span class="o">...</span> <span class="n">providedArgs</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+			<span class="o">...</span> <span class="n">省略</span>
+      <span class="c1">// 此处resolvers便是afterPropertiesSet中调用getDefaultInitBinderArgumentResolvers()
+</span><span class="c1"></span>			<span class="k">if</span> <span class="o">(!</span><span class="k">this</span><span class="o">.</span><span class="na">resolvers</span><span class="o">.</span><span class="na">supportsParameter</span><span class="o">(</span><span class="n">parameter</span><span class="o">))</span> <span class="o">{</span>
+				<span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalStateException</span><span class="o">(</span><span class="n">formatArgumentError</span><span class="o">(</span><span class="n">parameter</span><span class="o">,</span> <span class="s">&#34;No suitable resolver&#34;</span><span class="o">));</span>
+			<span class="o">}</span>
+			<span class="k">try</span> <span class="o">{</span>
+				<span class="n">args</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">resolvers</span><span class="o">.</span><span class="na">resolveArgument</span><span class="o">(</span><span class="n">parameter</span><span class="o">,</span> <span class="n">mavContainer</span><span class="o">,</span> <span class="n">request</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">dataBinderFactory</span><span class="o">);</span>
+			<span class="o">}</span>
+			<span class="o">...</span> <span class="n">省略</span>
+	<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="返回值解析器">❹返回值解析器</h3>
+<blockquote>
+<p>处理返回值</p>
+</blockquote>
+<p>源码位置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">invokeAndHandle</span><span class="o">(</span><span class="n">ServletWebRequest</span> <span class="n">webRequest</span><span class="o">,</span> <span class="n">ModelAndViewContainer</span> <span class="n">mavContainer</span><span class="o">,</span>
+			<span class="n">Object</span><span class="o">...</span> <span class="n">providedArgs</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+		<span class="c1">// ①调用handle，Controller方法的处理函数得到返回值
+</span><span class="c1"></span>		<span class="n">Object</span> <span class="n">returnValue</span> <span class="o">=</span> <span class="n">invokeForRequest</span><span class="o">(</span><span class="n">webRequest</span><span class="o">,</span> <span class="n">mavContainer</span><span class="o">,</span> <span class="n">providedArgs</span><span class="o">);</span>
+		<span class="n">setResponseStatus</span><span class="o">(</span><span class="n">webRequest</span><span class="o">);</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">returnValue</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">isRequestNotModified</span><span class="o">(</span><span class="n">webRequest</span><span class="o">)</span> <span class="o">||</span> <span class="n">getResponseStatus</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">mavContainer</span><span class="o">.</span><span class="na">isRequestHandled</span><span class="o">())</span> <span class="o">{</span>
+				<span class="n">disableContentCachingIfNecessary</span><span class="o">(</span><span class="n">webRequest</span><span class="o">);</span>
+				<span class="n">mavContainer</span><span class="o">.</span><span class="na">setRequestHandled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+				<span class="k">return</span><span class="o">;</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">getResponseStatusReason</span><span class="o">()))</span> <span class="o">{</span>
+			<span class="n">mavContainer</span><span class="o">.</span><span class="na">setRequestHandled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+			<span class="k">return</span><span class="o">;</span>
+		<span class="o">}</span>
+
+		<span class="n">mavContainer</span><span class="o">.</span><span class="na">setRequestHandled</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+		<span class="n">Assert</span><span class="o">.</span><span class="na">state</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">returnValueHandlers</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">,</span> <span class="s">&#34;No return value handlers&#34;</span><span class="o">);</span>
+		<span class="k">try</span> <span class="o">{</span>
+      <span class="c1">// ②处理返回值
+</span><span class="c1"></span>			<span class="k">this</span><span class="o">.</span><span class="na">returnValueHandlers</span><span class="o">.</span><span class="na">handleReturnValue</span><span class="o">(</span>
+					<span class="n">returnValue</span><span class="o">,</span> <span class="n">getReturnValueType</span><span class="o">(</span><span class="n">returnValue</span><span class="o">),</span> <span class="n">mavContainer</span><span class="o">,</span> <span class="n">webRequest</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isTraceEnabled</span><span class="o">())</span> <span class="o">{</span>
+				<span class="n">logger</span><span class="o">.</span><span class="na">trace</span><span class="o">(</span><span class="n">formatErrorForReturnValue</span><span class="o">(</span><span class="n">returnValue</span><span class="o">),</span> <span class="n">ex</span><span class="o">);</span>
+			<span class="o">}</span>
+			<span class="k">throw</span> <span class="n">ex</span><span class="o">;</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>①处调用请求的处理，②处调用返回值处理逻辑。</p>
+<p>返回值处理逻辑如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * Iterate over registered {@link HandlerMethodReturnValueHandler HandlerMethodReturnValueHandlers} and invoke the one that supports it.
+</span><span class="cm"> * @throws IllegalStateException if no suitable {@link HandlerMethodReturnValueHandler} is found.
+</span><span class="cm"> */</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleReturnValue</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="n">Object</span> <span class="n">returnValue</span><span class="o">,</span> <span class="n">MethodParameter</span> <span class="n">returnType</span><span class="o">,</span>
+                              <span class="n">ModelAndViewContainer</span> <span class="n">mavContainer</span><span class="o">,</span> <span class="n">NativeWebRequest</span> <span class="n">webRequest</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+	<span class="c1">// 获取处理返回值的解析器
+</span><span class="c1"></span>  <span class="n">HandlerMethodReturnValueHandler</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">selectHandler</span><span class="o">(</span><span class="n">returnValue</span><span class="o">,</span> <span class="n">returnType</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">handler</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalArgumentException</span><span class="o">(</span><span class="s">&#34;Unknown return value type: &#34;</span> <span class="o">+</span> <span class="n">returnType</span><span class="o">.</span><span class="na">getParameterType</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+  <span class="o">}</span>
+  <span class="c1">// 根据返回的对应解析器处理返回值
+</span><span class="c1"></span>  <span class="n">handler</span><span class="o">.</span><span class="na">handleReturnValue</span><span class="o">(</span><span class="n">returnValue</span><span class="o">,</span> <span class="n">returnType</span><span class="o">,</span> <span class="n">mavContainer</span><span class="o">,</span> <span class="n">webRequest</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="handle流程">handle流程</h2>
+<blockquote>
+<p>handle方法是HandleAdapter的核心方法，Controller中业务的处理逻辑也是在此方法中被调用</p>
+</blockquote>
+<p><code>RequestMappingHandlerAdapter</code>中的<code>handle</code>方法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * This implementation expects the handler to be an {@link HandlerMethod}.
+</span><span class="cm"> */</span>
+<span class="nd">@Override</span>
+<span class="nd">@Nullable</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="n">ModelAndView</span> <span class="nf">handle</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span>   <span class="n">Object</span> <span class="n">handler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+
+  <span class="k">return</span> <span class="n">handleInternal</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">,</span> <span class="o">(</span><span class="n">HandlerMethod</span><span class="o">)</span> <span class="n">handler</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>![image-20200725153200873](/Users/Adam.Jin/Library/Mobile Documents/com~apple~CloudDocs/笔记/技术/Java/springmvc/04_HandlerAdapter.assets/image-20200725153200873.png)</p>
+<p>invokeHandlerMethod方法：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/15:57:15-image-20200725155710291.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/15:57:15-image-20200725155710291.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/15:57:15-image-20200725155710291.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/15:57:15-image-20200725155710291.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/15:57:15-image-20200725155710291.png"
+        title="image-20200725155710291" /></p>
+<p>❶、获取DataBinderFactory代码如下：</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:05:07-image-20200725160459638.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:05:07-image-20200725160459638.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:05:07-image-20200725160459638.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:05:07-image-20200725160459638.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:05:07-image-20200725160459638.png"
+        title="image-20200725160459638" /></p>
+<p>❷、获取ModelFactory的逻辑与DataBinderFacotory差不多</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:24-image-20200725160743451.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:24-image-20200725160743451.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:24-image-20200725160743451.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:24-image-20200725160743451.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:24-image-20200725160743451.png"
+        title="image-20200725160743451" /></p>
+<p>❼、参数名解析参考https://blog.csdn.net/qq271859852/article/details/84963672</p>
+<p>❽、填充model数据，包括SessionAtrribute中的数据。</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:16-image-20200725161203519.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:16-image-20200725161203519.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:16-image-20200725161203519.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:16-image-20200725161203519.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:16-image-20200725161203519.png"
+        title="image-20200725161203519" /></p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:14-image-20200725161310748.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:14-image-20200725161310748.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:14-image-20200725161310748.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:14-image-20200725161310748.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:13:14-image-20200725161310748.png"
+        title="image-20200725161310748" /></p>
+<p>接着调用invokeAndHandle方法</p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:17:53-image-20200725161740953.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:17:53-image-20200725161740953.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:17:53-image-20200725161740953.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:17:53-image-20200725161740953.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:17:53-image-20200725161740953.png"
+        title="image-20200725161740953" /></p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:19:37-image-20200725161931914.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:19:37-image-20200725161931914.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:19:37-image-20200725161931914.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:19:37-image-20200725161931914.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:19:37-image-20200725161931914.png"
+        title="image-20200725161931914" /></p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:21:34-image-20200725162130625.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:21:34-image-20200725162130625.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:21:34-image-20200725162130625.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:21:34-image-20200725162130625.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:21:34-image-20200725162130625.png"
+        title="image-20200725162130625" /></p>
+<p><img
+        class="lazyload"
+        src="/hugo/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:44:37-image-20200725164435096.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:44:37-image-20200725164435096.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:44:37-image-20200725164435096.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:44:37-image-20200725164435096.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-07-25/16:44:37-image-20200725164435096.png"
+        title="image-20200725164435096" /></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2016-10-30</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/hugo/04_springmvc_handleradapter/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/" data-title="04_springmvc_handleradapter" data-hashtags="springmvc"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/" data-hashtag="springmvc"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/" data-title="04_springmvc_handleradapter"><i class="fab fa-hacker-news fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/" data-title="04_springmvc_handleradapter"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/line.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.github.io/hugo/04_springmvc_handleradapter/" data-title="04_springmvc_handleradapter"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/hugo/tags/springmvc/">springmvc</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/hugo/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/hugo/03_springmvc_handlermapping/" class="prev" rel="prev" title="03_springmvc_handlermapping"><i class="fas fa-angle-left fa-fw"></i>03_springmvc_handlermapping</a>
+            <a href="/hugo/05_springmvc_handlerexceptionresolver/" class="next" rel="next" title="05_springmvc_handlerExceptionResolver">05_springmvc_handlerExceptionResolver<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/hugo/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/hugo/lib/valine/valine.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"QGzwQXOqs5JOhN4RGPOkR2mR-MdYXbMMI","appKey":"WBmoGyJtbqUswvfLh6L8iEBr","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://leancloud.hugoloveit.com","visitor":true}},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/hugo/js/theme.min.js"></script></body>
+</html>
