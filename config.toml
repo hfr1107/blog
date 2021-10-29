@@ -91,13 +91,13 @@ enableEmoji = true
         weight = 6
     [languages.zh-cn.params]
       # 网站描述
-      description = "山脚下的脚下山の博客"
+      description = "山脚下の脚下山"
       # 网站关键词
       keywords = ["blog", "golang", "java"]
       # 应用图标配置
       [languages.zh-cn.params.app]
         # 当添加到 iOS 主屏幕或者 Android 启动器时的标题, 覆盖默认标题
-        title = "山脚下的脚下山の博客"
+        title = "山脚下の脚下山"
         # 是否隐藏网站图标资源链接
         noFavicon = false
         # 更现代的 SVG 网站图标, 可替代旧的 .png 和 .ico 文件
@@ -259,7 +259,7 @@ enableEmoji = true
       logo = ""
       # title name
       # 标题名称
-      name = "山脚下的脚下山の博客"
+      name = "山脚下の脚下山"
       # you can add extra information before the name (HTML format is supported), such as icons
       # 你可以在名称 (允许 HTML 格式) 之前添加其他信息, 例如图标
       pre = "<i class='far fa-kiss-wink-heart fa-fw'></i>"
