@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>09_K8S_交付实战-交付jenkins到k8s集群 - 山脚下的脚下山</title><meta name="Description" content="转载，原为老男孩教育视频内容"><meta property="og:title" content="09_K8S_交付实战-交付jenkins到k8s集群" />
+<meta property="og:description" content="转载，原为老男孩教育视频内容" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-01T15:58:21+08:00" />
+<meta property="article:modified_time" content="2020-10-01T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="09_K8S_交付实战-交付jenkins到k8s集群"/>
+<meta name="twitter:description" content="转载，原为老男孩教育视频内容"/>
+<meta name="application-name" content="山脚下の脚下山">
+<meta name="apple-mobile-web-app-title" content="山脚下の脚下山"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" /><link rel="prev" href="https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/" /><link rel="next" href="https://scemsjyd.com/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "09_K8S_交付实战-交付jenkins到k8s集群",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 转载","wordcount":  2527 ,
+        "url": "https:\/\/scemsjyd.com\/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4\/","datePublished": "2020-10-01T15:58:21+08:00","dateModified": "2020-10-01T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "老男孩"
+            },"description": "转载，原为老男孩教育视频内容"
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> 主页 </a><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/" title="">主页</a><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">09_K8S_交付实战-交付jenkins到k8s集群</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://space.bilibili.com/394449264" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>老男孩</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BD%AC%E8%BD%BD/"><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-01">2020-10-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2527 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;<span id="/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" class="leancloud_visitors" data-flag-title="09_K8S_交付实战-交付jenkins到k8s集群">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-准备jenkins镜像">1 准备jenkins镜像</a>
+      <ul>
+        <li><a href="#11-下载官方镜像">1.1 下载官方镜像</a></li>
+        <li><a href="#12-修改官方镜像">1.2 修改官方镜像</a>
+          <ul>
+            <li><a href="#121-创建目录">1.2.1 创建目录</a></li>
+            <li><a href="#122-创建dockerfile">1.2.2 创建dockerfile</a></li>
+            <li><a href="#123-准备dockerfile所需文件">1.2.3 准备dockerfile所需文件</a></li>
+            <li><a href="#124-harbor中创建私有仓库infra">1.2.4 harbor中创建私有仓库infra</a></li>
+            <li><a href="#125-构建自定义的jenkins镜像">1.2.5 构建自定义的jenkins镜像</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#2-准备jenkins运行环境">2 准备jenkins运行环境</a>
+      <ul>
+        <li><a href="#21-专有名称空间和secret资源">2.1 专有名称空间和secret资源</a>
+          <ul>
+            <li><a href="#211-创建专有namespace">2.1.1 创建专有namespace</a></li>
+            <li><a href="#212-创建访问harbor的secret规则">2.1.2 创建访问harbor的secret规则</a></li>
+          </ul>
+        </li>
+        <li><a href="#22-创建nfs共享存储">2.2 创建NFS共享存储</a>
+          <ul>
+            <li><a href="#221-运维机部署nfs">2.2.1 运维机部署NFS</a></li>
+            <li><a href="#222-node节点安装nfs">2.2.2 node节点安装nfs</a></li>
+          </ul>
+        </li>
+        <li><a href="#23-运维机创建jenkins资源清单">2.3 运维机创建jenkins资源清单</a>
+          <ul>
+            <li><a href="#231-创建depeloy清单">2.3.1 创建depeloy清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#232-创建service清单">2.3.2 创建service清单</a>
+          <ul>
+            <li><a href="#233-创建ingress清单">2.3.3 创建ingress清单</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-交付jenkins">3 交付jenkins</a>
+      <ul>
+        <li><a href="#31-应用jenkins资源清单">3.1 应用jenkins资源清单</a>
+          <ul>
+            <li><a href="#312-部署jenkins">3.1.2 部署jenkins</a></li>
+            <li><a href="#312-验证jenkins容器状态">3.1.2 验证jenkins容器状态</a></li>
+            <li><a href="#313-查看持久化结果和密码">3.1.3 查看持久化结果和密码</a></li>
+            <li><a href="#314-替换jenkins插件源">3.1.4 替换jenkins插件源</a></li>
+          </ul>
+        </li>
+        <li><a href="#32-解析jenkins">3.2 解析jenkins</a></li>
+        <li><a href="#33-初始化jenkins">3.3 初始化jenkins</a></li>
+        <li><a href="#34-给jenkins配置maven环境">3.4 给jenkins配置maven环境</a>
+          <ul>
+            <li><a href="#341-下载并解压">3.4.1 下载并解压</a></li>
+            <li><a href="#342-初始化maven配置">3.4.2 初始化maven配置：</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="09_k8s_交付实战-交付jenkins到k8s集群">09_K8S_交付实战-交付jenkins到k8s集群</h1>
+<h2 id="1-准备jenkins镜像">1 准备jenkins镜像</h2>
+<p>准备镜像的操作在<code>7.200</code>运维机上完成</p>
+<h3 id="11-下载官方镜像">1.1 下载官方镜像</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker pull jenkins/jenkins:2.190.3
+docker tag jenkins/jenkins:2.190.3 harbor.zq.com/public/jenkins:v2.190.3
+docker push harbor.zq.com/public/jenkins:v2.190.3
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="12-修改官方镜像">1.2 修改官方镜像</h3>
+<p>基于官方jenkins镜像,编写dockerfile做个性化配置</p>
+<h4 id="121-创建目录">1.2.1 创建目录</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir -p /data/dockerfile/jenkins/
+cd /data/dockerfile/jenkins/
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="122-创建dockerfile">1.2.2 创建dockerfile</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/data/dockerfile/jenkins/Dockerfile &lt;&lt;&#39;EOF&#39;
+FROM harbor.zq.com/public/jenkins:v2.190.3
+#定义启动jenkins的用户
+USER root
+#修改时区为东八区
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp;\
+    echo &#39;Asia/Shanghai&#39; &gt;/etc/timezone
+#加载用户密钥，使用ssh拉取dubbo代码需要
+ADD id_rsa /root/.ssh/id_rsa
+#加载运维主机的docker配置文件，里面包含登录harbor仓库的认证信息。
+ADD config.json /root/.docker/config.json
+#在jenkins容器内安装docker客户端，docker引擎用的是宿主机的docker引擎
+ADD get-docker.sh /get-docker.sh
+# 跳过ssh时候输入yes的交互步骤，并执行安装docker
+RUN echo &#34;    StrictHostKeyChecking no&#34; &gt;/etc/ssh/ssh_config &amp;&amp;\
+    /get-docker.sh
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="123-准备dockerfile所需文件">1.2.3 准备dockerfile所需文件</h4>
+<p><strong>创建秘钥对:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">ssh-keygen -t rsa -b 2048 -C &#34;lg@126.com&#34; -N &#34;&#34; -f /root/.ssh/id_rsa
+cp /root/.ssh/id_rsa /data/dockerfile/jenkins/
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>邮箱请根据自己的邮箱自行修改
+创建完成后记得把公钥放到gitee的信任中</p>
+</blockquote>
+<p><strong>获取docker.sh脚本:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">curl -fsSL get.docker.com -o /data/dockerfile/jenkins/get-docker.sh
+chmod u+x /data/dockerfile/jenkins/get-docker.sh
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>拷贝config.json文件:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cp /root/.docker/config.json /data/dockerfile/jenkins/
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="124-harbor中创建私有仓库infra">1.2.4 harbor中创建私有仓库infra</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260224-22a79075-dfc1-4cfe-b45f-e15ccfc72859.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260224-22a79075-dfc1-4cfe-b45f-e15ccfc72859.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260224-22a79075-dfc1-4cfe-b45f-e15ccfc72859.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260224-22a79075-dfc1-4cfe-b45f-e15ccfc72859.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260224-22a79075-dfc1-4cfe-b45f-e15ccfc72859.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260224-22a79075-dfc1-4cfe-b45f-e15ccfc72859.png" /></p>
+<h4 id="125-构建自定义的jenkins镜像">1.2.5 构建自定义的jenkins镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/dockerfile/jenkins/
+docker build . -t harbor.zq.com/infra/jenkins:v2.190.3
+docker push harbor.zq.com/infra/jenkins:v2.190.3
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="2-准备jenkins运行环境">2 准备jenkins运行环境</h2>
+<h3 id="21-专有名称空间和secret资源">2.1 专有名称空间和secret资源</h3>
+<h4 id="211-创建专有namespace">2.1.1 创建专有namespace</h4>
+<p>创建专有名词空间<code>infra</code>的目录是将jenkins等运维相关软件放到同一个namespace下,便于统一管理以及和其他资源分开</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create ns infra
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="212-创建访问harbor的secret规则">2.1.2 创建访问harbor的secret规则</h4>
+<p><code>Secret</code>用来保存敏感信息，例如密码、OAuth 令牌和 ssh key等,有三种类型:</p>
+<ol>
+<li>Opaque：
+base64 编码格式的 Secret，用来存储密码、密钥等,可以反解,加密能力弱</li>
+<li>kubernetes.io/dockerconfigjson：
+用来存储私有docker registry的认证信息。</li>
+<li>kubernetes.io/service-account-token：
+用于被<code>serviceaccount</code>引用，serviceaccout 创建时Kubernetes会默认创建对应的secret
+前面dashborad部分以及用过了</li>
+</ol>
+<p>访问docker的私有仓库,必须要创建专有的secret类型,创建方法如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create secret docker-registry harbor \
+    --docker-server=harbor.zq.com \
+    --docker-username=admin \
+    --docker-password=Harbor12345 \
+    -n infra
+# 查看结果
+~]# kubectl -n infra get secrets
+NAME                  TYPE                                  DATA   AGE
+default-token-rkg7q   kubernetes.io/service-account-token   3      19s
+harbor                kubernetes.io/dockerconfigjson        1      12s
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>解释命令：
+创建一条secret，资源类型是docker-registry，名字是 harbor
+并指定docker仓库地址、访问用户、密码、仓库名</p>
+</blockquote>
+<h3 id="22-创建nfs共享存储">2.2 创建NFS共享存储</h3>
+<p>jenkins中一些数据需要持久化的，可以使用共享存储进行挂载：
+这里使用最简单的NFS共享存储，因为k8s默认支持nfs模块
+如果使用其他类型的共享存储</p>
+<h4 id="221-运维机部署nfs">2.2.1 运维机部署NFS</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">yum install nfs-utils -y
+echo &#39;/data/nfs-volume 10.4.7.0/24(rw,no_root_squash)&#39; &gt;&gt;/etc/exports
+mkdir -p /data/nfs-volume/jenkins_home
+systemctl start nfs
+systemctl enable nfs
+# 查看结果
+~]# showmount -e
+Export list for hdss7-200:
+/data/nfs-volume 10.4.7.0/24
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="222-node节点安装nfs">2.2.2 node节点安装nfs</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">yum install nfs-utils -y
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="23-运维机创建jenkins资源清单">2.3 运维机创建jenkins资源清单</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/k8s-yaml/jenkins
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="231-创建depeloy清单">2.3.1 创建depeloy清单</h4>
+<p>有两个需要注意的地方:</p>
+<ol>
+<li>挂载了宿主机的docker.sock
+使容器内的docker客户端可以直接与宿主机的docker引擎进行通信</li>
+<li>在使用私有仓库的时候，资源清单中，一定要声明：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">imagePullSecrets:
+- name: harbor
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/data/k8s-yaml/jenkins/dp.yaml &lt;&lt;EOF
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: jenkins
+  namespace: infra
+  labels:
+    name: jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+        name: jenkins
+    spec:
+      volumes:
+      - name: data
+        nfs:
+          server: hdss7-200
+          path: /data/nfs-volume/jenkins_home
+      - name: docker
+        hostPath:
+          path: /run/docker.sock
+          type: &#39;&#39;
+      containers:
+      - name: jenkins
+        image: harbor.zq.com/infra/jenkins:v2.190.3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        env:
+        - name: JAVA_OPTS
+          value: -Xmx512m -Xms512m
+        volumeMounts:
+        - name: data
+          mountPath: /var/jenkins_home
+        - name: docker
+          mountPath: /run/docker.sock
+      imagePullSecrets:
+      - name: harbor
+      securityContext:
+        runAsUser: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  revisionHistoryLimit: 7
+  progressDeadlineSeconds: 600
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="232-创建service清单">2.3.2 创建service清单</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/data/k8s-yaml/jenkins/svc.yaml &lt;&lt;EOF
+kind: Service
+apiVersion: v1
+metadata:
+  name: jenkins
+  namespace: infra
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  selector:
+    app: jenkins
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="233-创建ingress清单">2.3.3 创建ingress清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/data/k8s-yaml/jenkins/ingress.yaml &lt;&lt;EOF
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: jenkins
+  namespace: infra
+spec:
+  rules:
+  - host: jenkins.zq.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: jenkins
+          servicePort: 80
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="3-交付jenkins">3 交付jenkins</h2>
+<h3 id="31-应用jenkins资源清单">3.1 应用jenkins资源清单</h3>
+<h4 id="312-部署jenkins">3.1.2 部署jenkins</h4>
+<p>任意node节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create -f http://k8s-yaml.zq.com/jenkins/dp.yaml
+kubectl create -f http://k8s-yaml.zq.com/jenkins/svc.yaml
+kubectl create -f http://k8s-yaml.zq.com/jenkins/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>启动时间很长,等待结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl get pod -n infra
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="312-验证jenkins容器状态">3.1.2 验证jenkins容器状态</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker exec -it 8ff92f08e3aa /bin/bash
+# 查看用户
+whoami
+# 查看时区
+date
+# 查看是否能用宿主机的docker引擎
+docker ps
+# 看是否能免密访问gitee
+ssh -i /root/.ssh/id_rsa -T git@gitee.com
+# 是否能访问是否harbor仓库
+docker login harbor.zq.com
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260157-328ee975-afc6-4915-a129-7e6beae415c2.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260157-328ee975-afc6-4915-a129-7e6beae415c2.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260157-328ee975-afc6-4915-a129-7e6beae415c2.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260157-328ee975-afc6-4915-a129-7e6beae415c2.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260157-328ee975-afc6-4915-a129-7e6beae415c2.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204260157-328ee975-afc6-4915-a129-7e6beae415c2.png" /></p>
+<h4 id="313-查看持久化结果和密码">3.1.3 查看持久化结果和密码</h4>
+<p>到运维机上查看持久化数据是否成功存放到共享存储</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# ll /data/nfs-volume/jenkins_home
+total 36
+-rw-r--r--  1 root root 1643 May  5 13:18 config.xml
+-rw-r--r--  1 root root   50 May  5 13:13 copy_reference_file.log
+-rw-r--r--  1 root root  156 May  5 13:14 hudson.model.UpdateCenter.xml
+-rw-------  1 root root 1712 May  5 13:14 identity.key.enc
+-rw-r--r--  1 root root    7 May  5 13:14 jenkins.install.UpgradeWizard.state
+-rw-r--r--  1 root root  171 May  5 13:14 jenkins.telemetry.Correlator.xml
+drwxr-xr-x  2 root root    6 May  5 13:13 jobs
+drwxr-xr-x  3 root root   19 May  5 13:14 logs
+-rw-r--r--  1 root root  907 May  5 13:14 nodeMonitors.xml
+drwxr-xr-x  2 root root    6 May  5 13:14 nodes
+drwxr-xr-x  2 root root    6 May  5 13:13 plugins
+-rw-r--r--  1 root root   64 May  5 13:13 secret.key
+-rw-r--r--  1 root root    0 May  5 13:13 secret.key.not-so-secret
+drwx------  4 root root  265 May  5 13:14 secrets
+drwxr-xr-x  2 root root   67 May  5 13:19 updates
+drwxr-xr-x  2 root root   24 May  5 13:14 userContent
+drwxr-xr-x  3 root root   56 May  5 13:14 users
+drwxr-xr-x 11 root root 4096 May  5 13:13 war
+</code></pre></td></tr></table>
+</div>
+</div><p>找到jenkins初始化的密码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# cat /data/nfs-volume/jenkins_home/secrets/initialAdminPassword
+02f69d78026d489e87b01332f1caa85a
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="314-替换jenkins插件源">3.1.4 替换jenkins插件源</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/nfs-volume/jenkins_home/updates
+sed -i &#39;s#http:\/\/updates.jenkins-ci.org\/download#https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins#g&#39; default.json
+sed -i &#39;s#http:\/\/www.google.com#https:\/\/www.baidu.com#g&#39; default.json
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="32-解析jenkins">3.2 解析jenkins</h3>
+<p>jenkins部署成功后后,需要给他添加外网的域名解析</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vi /var/named/zq.com.zone
+jenkins         A    10.4.7.10
+# 重启服务
+systemctl restart named
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="33-初始化jenkins">3.3 初始化jenkins</h3>
+<p>浏览器访问<code>[http://jenkins.zq.com](http://jenkins.zq.com)</code>,使用前面的密码进入jenkins
+进入后操作:</p>
+<ol>
+<li>跳过安装自动安装插件的步骤</li>
+<li>在<code>manage jenkins</code>-&gt;<code>Configure Global Security</code>菜单中设置
+2.1 允许匿名读：勾选<code>allow anonymous read access</code>
+2.2 允许跨域：勾掉<code>prevent cross site request forgery exploits</code></li>
+<li>搜索并安装蓝海插件<code>blue ocean</code></li>
+<li>设置用户名密码为<code>admin:admin123</code></li>
+</ol>
+<h3 id="34-给jenkins配置maven环境">3.4 给jenkins配置maven环境</h3>
+<p>因为jenkins的数据目录已经挂载到了NFS中做持久化,因此可以直接将maven放到NFS目录中,同时也就部署进了jenkins</p>
+<h4 id="341-下载并解压">3.4.1 下载并解压</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget https://archive.apache.org/dist/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz
+tar -zxf apache-maven-3.6.1-bin.tar.gz -C /data/nfs-volume/jenkins_home/
+mv /data/nfs-volume/jenkins_home/{apache-,}maven-3.6.1
+cd /data/nfs-volume/jenkins_home/maven-3.6.1
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="342-初始化maven配置">3.4.2 初始化maven配置：</h4>
+<p>修改下载仓库地址,除了<code>&lt;mirror&gt;</code>中是新增的阿里云仓库地址外,其他内容都是<code>settings.xml</code>中原有的配置(只是清除了注释内容)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;conf/settings.xml  &lt;&lt;&#39;EOF&#39;
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;settings xmlns=&#34;http://maven.apache.org/SETTINGS/1.0.0&#34;
+          xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;
+          xsi:schemaLocation=&#34;http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd&#34;&gt;
+  &lt;pluginGroups&gt;
+  &lt;/pluginGroups&gt;
+  &lt;proxies&gt;
+  &lt;/proxies&gt;
+  &lt;servers&gt;
+  &lt;/servers&gt;
+  &lt;mirrors&gt;
+	&lt;mirror&gt;
+	  &lt;id&gt;nexus-aliyun&lt;/id&gt;
+	  &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+	  &lt;name&gt;Nexus aliyun&lt;/name&gt;
+	  &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
+	&lt;/mirror&gt;
+  &lt;/mirrors&gt;
+  &lt;profiles&gt;
+  &lt;/profiles&gt;
+&lt;/settings&gt;
+EOF
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" data-title="09_K8S_交付实战-交付jenkins到k8s集群" data-hashtags="K8S,转载"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" data-title="09_K8S_交付实战-交付jenkins到k8s集群" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" data-title="09_K8S_交付实战-交付jenkins到k8s集群"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" data-title="09_K8S_交付实战-交付jenkins到k8s集群"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/" class="prev" rel="prev" title="10_K8S_交付实战-流水线构建dubbo服务"><i class="fas fa-angle-left fa-fw"></i>10_K8S_交付实战-流水线构建dubbo服务</a>
+            <a href="/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/" class="next" rel="next" title="08_K8S_交付实战-架构说明并准备zk集群">08_K8S_交付实战-架构说明并准备zk集群<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>12_K8S_配置中心实战-交付apollo三组件 - 山脚下的脚下山</title><meta name="Description" content="转载，原为老男孩教育视频内容"><meta property="og:title" content="12_K8S_配置中心实战-交付apollo三组件" />
+<meta property="og:description" content="转载，原为老男孩教育视频内容" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-01T15:58:21+08:00" />
+<meta property="article:modified_time" content="2020-10-01T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="12_K8S_配置中心实战-交付apollo三组件"/>
+<meta name="twitter:description" content="转载，原为老男孩教育视频内容"/>
+<meta name="application-name" content="山脚下の脚下山">
+<meta name="apple-mobile-web-app-title" content="山脚下の脚下山"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" /><link rel="prev" href="https://scemsjyd.com/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" /><link rel="next" href="https://scemsjyd.com/11_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-configmap%E8%B5%84%E6%BA%90/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "12_K8S_配置中心实战-交付apollo三组件",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 转载","wordcount":  4954 ,
+        "url": "https:\/\/scemsjyd.com\/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6\/","datePublished": "2020-10-01T15:58:21+08:00","dateModified": "2020-10-01T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "老男孩"
+            },"description": "转载，原为老男孩教育视频内容"
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> 主页 </a><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/" title="">主页</a><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">12_K8S_配置中心实战-交付apollo三组件</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://space.bilibili.com/394449264" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>老男孩</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BD%AC%E8%BD%BD/"><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-01">2020-10-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 4954 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 10 分钟&nbsp;<span id="/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" class="leancloud_visitors" data-flag-title="12_K8S_配置中心实战-交付apollo三组件">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-apollo简单说明">1 apollo简单说明</a>
+      <ul>
+        <li><a href="#11-apollo最简架构图">1.1 apollo最简架构图：</a></li>
+        <li><a href="#12-apollo组件部署关系">1.2 apollo组件部署关系</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-为appllo准备数据库">2 为appllo准备数据库</a>
+      <ul>
+        <li><a href="#21-下载安装mysql">2.1 下载安装mysql</a>
+          <ul>
+            <li><a href="#211-yum安装mysql">2.1.1 yum安装mysql</a></li>
+            <li><a href="#212-创建简单配置文件">2.1.2 创建简单配置文件</a></li>
+            <li><a href="#212-启动mysql并初始设置">2.1.2 启动mysql并初始设置</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-初始化appllo数据库">3 初始化appllo数据库</a>
+      <ul>
+        <li><a href="#31-configdb数据库">3.1 configdb数据库</a>
+          <ul>
+            <li><a href="#311下载脚本并执行">3.1.1下载脚本并执行：</a></li>
+            <li><a href="#312-授权并修改初始数据">3.1.2 授权并修改初始数据：</a></li>
+            <li><a href="#313-添加config域名解析">3.1.3 添加config域名解析：</a></li>
+          </ul>
+        </li>
+        <li><a href="#32-portal数据库">3.2 portal数据库</a>
+          <ul>
+            <li><a href="#321-下载并执行">3.2.1 下载并执行</a></li>
+            <li><a href="#322-授权用户并更新初始数据">3.2.2 授权用户并更新初始数据</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#4-部署configservice">4 部署configservice</a>
+      <ul>
+        <li><a href="#41-制作docker镜像">4.1 制作docker镜像</a>
+          <ul>
+            <li><a href="#411-下载程序包">4.1.1 下载程序包</a></li>
+            <li><a href="#412-修改连接数据库配置">4.1.2 修改连接数据库配置：</a></li>
+            <li><a href="#413-创建启动脚本">4.1.3 创建启动脚本：</a></li>
+            <li><a href="#414-编写dockerfile">4.1.4 编写dockerfile</a></li>
+            <li><a href="#415-构建docker镜像">4.1.5 构建docker镜像</a></li>
+          </ul>
+        </li>
+        <li><a href="#42-编写资源配置清单">4.2 编写资源配置清单：</a>
+          <ul>
+            <li><a href="#421-创建config的configmap资源清单">4.2.1 创建config的configmap资源清单</a></li>
+            <li><a href="#422-创建deployment资源清单">4.2.2 创建Deployment资源清单</a></li>
+            <li><a href="#423-创建service资源清单">4.2.3 创建service资源清单</a></li>
+            <li><a href="#424-创建ingress资源清单">4.2.4 创建ingress资源清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#43-应用资源配置清单">4.3 应用资源配置清单：</a>
+          <ul>
+            <li><a href="#431-任意node执行">4.3.1 任意node执行</a></li>
+            <li><a href="#432-检查启动情况">4.3.2 检查启动情况：</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#5-部署adminservice">5 部署adminservice</a>
+      <ul>
+        <li><a href="#51-制作docker镜像">5.1 制作docker镜像</a>
+          <ul>
+            <li><a href="#511-下载程序包">5.1.1 下载程序包</a></li>
+            <li><a href="#512-修改连接数据库配置">5.1.2 修改连接数据库配置：</a></li>
+            <li><a href="#513-创建启动脚本">5.1.3 创建启动脚本：</a></li>
+            <li><a href="#514-编写dockerfile">5.1.4 编写dockerfile</a></li>
+            <li><a href="#515-构建docker镜像">5.1.5 构建docker镜像</a></li>
+          </ul>
+        </li>
+        <li><a href="#52-制作资源配置清单">5.2 制作资源配置清单：</a>
+          <ul>
+            <li><a href="#521-创建configmap资源清单">5.2.1 创建configmap资源清单</a></li>
+            <li><a href="#522-创建deployment资源清单">5.2.2 创建Deployment资源清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#53-应用资源配置清单">5.3 应用资源配置清单</a>
+          <ul>
+            <li><a href="#531-任意node执行">5.3.1 任意node执行</a></li>
+            <li><a href="#532-检查启动情况">5.3.2 检查启动情况</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#6-部署portal">6 部署portal</a>
+      <ul>
+        <li><a href="#61-制作docker镜像">6.1 制作docker镜像</a>
+          <ul>
+            <li><a href="#611-下载程序包">6.1.1 下载程序包</a></li>
+            <li><a href="#612-修改配置文件">6.1.2 修改配置文件</a></li>
+            <li><a href="#613-创建启动脚本">6.1.3 创建启动脚本</a></li>
+            <li><a href="#614-制作dockerfile">6.1.4 制作dockerfile：</a></li>
+            <li><a href="#615-构建docker镜像">6.1.5 构建docker镜像</a></li>
+          </ul>
+        </li>
+        <li><a href="#62-编写资源配置清单">6.2 编写资源配置清单：</a>
+          <ul>
+            <li><a href="#621-创建configmap资源清单">6.2.1 创建configmap资源清单</a></li>
+            <li><a href="#622-创建deployment资源清单">6.2.2 创建Deployment资源清单</a></li>
+            <li><a href="#623-创建service资源清单">6.2.3 创建service资源清单</a></li>
+            <li><a href="#624-创建ingress资源清单">6.2.4 创建ingress资源清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#63-应用资源配置清单">6.3 应用资源配置清单</a>
+          <ul>
+            <li><a href="#631-在任意node执行">6.3.1 在任意node执行</a></li>
+            <li><a href="#632-检查启动情况">6.3.2 检查启动情况</a></li>
+            <li><a href="#633-网页验证">6.3.3 网页验证</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#7-配置服务使用apollo配置中心">7 配置服务使用apollo配置中心</a>
+      <ul>
+        <li><a href="#71-新建dubbo-service项目配置">7.1 新建dubbo-service项目配置</a>
+          <ul>
+            <li><a href="#711-在配置中心修改新增项目">7.1.1 在配置中心修改新增项目:</a></li>
+            <li><a href="#712-重新打包service镜像">7.1.2 重新打包service镜像</a></li>
+            <li><a href="#713-重新应用资源配置清单">7.1.3 重新应用资源配置清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#72-新建dubbo-web项目配置">7.2 新建dubbo-web项目配置</a>
+          <ul>
+            <li><a href="#721-在配置中心修改新增项目">7.2.1 在配置中心修改新增项目:</a></li>
+            <li><a href="#712-重新打包service镜像-1">7.1.2 重新打包service镜像</a></li>
+            <li><a href="#713-重新应用资源配置清单-1">7.1.3 重新应用资源配置清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#73-验证结果">7.3 验证结果</a>
+          <ul>
+            <li><a href="#731-修改dubbo-monitor资源">7.3.1 修改dubbo-monitor资源</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="12_k8s_配置中心实战-交付apollo三组件">12_K8S_配置中心实战-交付apollo三组件</h1>
+<h2 id="1-apollo简单说明">1 apollo简单说明</h2>
+<p><a href="https://github.com/ctripcorp/apollo" target="_blank" rel="noopener noreffer">官方地址</a>
+<a href="http://www.liuhaihua.cn/archives/522960.html" target="_blank" rel="noopener noreffer">概念请参考</a></p>
+<h3 id="11-apollo最简架构图">1.1 apollo最简架构图：</h3>
+<h3 id="12-apollo组件部署关系">1.2 apollo组件部署关系</h3>
+<ol>
+<li>configservice自带eureka注册中心、配置写入configDB数据库、优先部署、为client提供服务</li>
+<li>adminservice向eureka注册服务、与configservice共用数据库、为portal提供服务</li>
+<li>configservice和adminservice组成一套环境、多个环境就得部署多套config和admin</li>
+<li>portal是web端、各环境共用、只需部署一套、有自己单独的数据库</li>
+</ol>
+<h2 id="2-为appllo准备数据库">2 为appllo准备数据库</h2>
+<p>apollo需要使用数据库，如果是mysql，需要版本在5.6以上：
+本次环境mysql部署在10.4.7.11上，使用mysql5.7，为测试简单起见，各环境数据库使用同一个，不做隔离</p>
+<h3 id="21-下载安装mysql">2.1 下载安装mysql</h3>
+<h4 id="211-yum安装mysql">2.1.1 yum安装mysql</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">rpm -Uvh https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
+yum -y install yum-utils
+yum-config-manager --disable mysql80-community
+yum-config-manager --enable mysql57-community
+yum install mysql-server -y
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="212-创建简单配置文件">2.1.2 创建简单配置文件</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/etc/my.cnf &lt;&lt;&#39;EOF&#39;
+[mysqld]
+character_set_server = utf8mb4
+collation_server = utf8mb4_general_ci
+init_connect = &#34;SET NAMES &#39;utf8mb4&#39;&#34;
+[mysql]
+default-character-set = utf8mb4
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="212-启动mysql并初始设置">2.1.2 启动mysql并初始设置</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">systemctl start  mysqld
+systemctl enable mysqld
+mysql -u root -p`grep password /var/log/messages|awk &#39;{print $NF}&#39;`
+# 修改密码
+&gt; set global validate_password_policy=0;
+&gt; set global validate_password_length=1;
+&gt; set password=password(&#39;123456&#39;);
+&gt; flush privileges;
+# 检查字符集：需要四个都是utf8mb4
+&gt; \s
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="3-初始化appllo数据库">3 初始化appllo数据库</h2>
+<p><a href="https://github.com/ctripcorp/apollo/blob/1.5.1/scripts/db/migration/configdb/V1.0.0__initialization.sql" target="_blank" rel="noopener noreffer">configdb初始化脚本</a>
+<a href="https://github.com/ctripcorp/apollo/blob/master/scripts/db/migration/portaldb/V1.0.0__initialization.sql" target="_blank" rel="noopener noreffer">portal初始化脚本</a></p>
+<h3 id="31-configdb数据库">3.1 configdb数据库</h3>
+<h4 id="311下载脚本并执行">3.1.1下载脚本并执行：</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget -O apolloconfig.sql https://raw.githubusercontent.com/ctripcorp/apollo/1.5.1/scripts/db/migration/configdb/V1.0.0__initialization.sql
+# 导入sql文件
+mysql -uroot -p123456 &lt; apolloconfig.sql
+# 检查是否导入成功
+mysql -uroot -p123456 -e &#34;show databases;&#34;|grep ApolloConfigDB
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="312-授权并修改初始数据">3.1.2 授权并修改初始数据：</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mysql -uroot -p123456
+&gt; grant INSERT,DELETE,UPDATE,SELECT on ApolloConfigDB.* to &#39;apollo&#39;@&#39;10.4.7.%&#39;  identified by &#34;123456&#34;;
+# 修改数据
+&gt; use ApolloConfigDB
+&gt; update ServerConfig set Value=&#39;http://apollo-config.zq.com/eureka&#39; where Id=1;
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="313-添加config域名解析">3.1.3 添加config域名解析：</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vi /var/named/zq.com.zone
+mysql				A    10.4.7.11
+apollo-config		A    10.4.7.10
+apollo-admin		A    10.4.7.10
+apollo-portal		A    10.4.7.10
+# 重启并验证
+systemctl restart named
+dig -t A apollo-config.zq.com @10.4.7.11 +short
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="32-portal数据库">3.2 portal数据库</h3>
+<p>由于portal使用的是另一个portaldb，我们需要在数据库中新建portdb，并初始化</p>
+<h4 id="321-下载并执行">3.2.1 下载并执行</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget -O apollo-portal.sql https://raw.githubusercontent.com/ctripcorp/apollo/1.5.1/scripts/db/migration/portaldb/V1.0.0__initialization.sql
+# 导入sql文件
+mysql -uroot -p123456 &lt; apollo-portal.sql
+# 检查是否导入成功
+mysql -uroot -p123456 -e &#34;show databases;&#34;|grep ApolloPortalDB
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="322-授权用户并更新初始数据">3.2.2 授权用户并更新初始数据</h4>
+<p>都使用<code>apollo</code>用户来管理数据库是为了方便,如果有相关的安全考虑可以给config和portal分别使用不同的数据库账号</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mysql -uroot -p123456
+&gt; grant INSERT,DELETE,UPDATE,SELECT on ApolloPortalDB.* to &#34;apollo&#34;@&#34;10.4.7.%&#34; identified by &#34;123456&#34;;
+# 更新部门名
+&gt; update ApolloPortalDB.ServerConfig set Value=&#39;[{&#34;orgId&#34;:&#34;zq01&#34;,&#34;orgName&#34;:&#34;研发部&#34;},{&#34;orgId&#34;:&#34;zq02&#34;,&#34;orgName&#34;:&#34;运维部&#34;}]&#39; where Id=2;
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="4-部署configservice">4 部署configservice</h2>
+<h3 id="41-制作docker镜像">4.1 制作docker镜像</h3>
+<p>操作在<code>7.200</code>上完成</p>
+<h4 id="411-下载程序包">4.1.1 下载程序包</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget https://github.com/ctripcorp/apollo/releases/download/v1.5.1/apollo-configservice-1.5.1-github.zip
+mkdir /data/dockerfile/apollo-configservice
+unzip -o apollo-configservice-1.5.1-github.zip -d /data/dockerfile/apollo-configservice/
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="412-修改连接数据库配置">4.1.2 修改连接数据库配置：</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/dockerfile/apollo-configservice/config
+# 修改数据库连接地址
+sed -i &#39;s#fill-in-the-correct-server#mysql.zq.com#g&#39; application-github.properties
+# 修改数据库连接用户和密码
+sed -i &#39;s#FillInCorrectUser#apollo#g&#39;     application-github.properties
+sed -i &#39;s#FillInCorrectPassword#123456#g&#39; application-github.properties
+# 查看结果
+config]# egrep -v &#34;^#|$^&#34; application-github.properties
+spring.datasource.url = jdbc:mysql://mysql.zq.com:3306/ApolloConfigDB?characterEncoding=utf8
+spring.datasource.username = apollo
+spring.datasource.password = 123456
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="413-创建启动脚本">4.1.3 创建启动脚本：</h4>
+<p>程序中自带的<code>start.sh</code>启动脚本时不适用与K8S运行,因此需要专门下载他们提供的K8S内使用的脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 1.从官网下载启动脚本
+cd /data/dockerfile/apollo-configservice/scripts/
+wget https://raw.githubusercontent.com/ctripcorp/apollo/1.5.1/scripts/apollo-on-kubernetes/apollo-config-server/scripts/startup-kubernetes.sh
+# 2. 添加一行使用主机名的变量
+sed -i &#39;5i APOLLO_CONFIG_SERVICE_NAME=$(hostname -i)&#39; startup-kubernetes.sh
+# 3.根据需要修改下jvm限制
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="414-编写dockerfile">4.1.4 编写dockerfile</h4>
+<p><a href="https://github.com/ctripcorp/apollo/blob/1.5.1/scripts/apollo-on-kubernetes/apollo-config-server/Dockerfile" target="_blank" rel="noopener noreffer">dockerfile官方地址</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd ..
+cat &gt;Dockerfile &lt;&lt;&#39;EOF&#39;
+FROM harbor.zq.com/base/jre8:8u112
+ENV VERSION 1.5.1
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp;\
+    echo &#34;Asia/Shanghai&#34; &gt; /etc/timezone
+ADD apollo-configservice-${VERSION}.jar /apollo-configservice/apollo-configservice.jar
+ADD config/  /apollo-configservice/config
+ADD scripts/ /apollo-configservice/scripts
+CMD [&#34;sh&#34;,&#34;/apollo-configservice/scripts/startup-kubernetes.sh&#34;]
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="415-构建docker镜像">4.1.5 构建docker镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker build . -t harbor.zq.com/infra/apollo-configservice:v1.5.1
+docker push       harbor.zq.com/infra/apollo-configservice:v1.5.1
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="42-编写资源配置清单">4.2 编写资源配置清单：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/k8s-yaml/apollo-configservice
+cd /data/k8s-yaml/apollo-configservice
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="421-创建config的configmap资源清单">4.2.1 创建config的configmap资源清单</h4>
+<p>给configservice创建cm资源的清单的目的是方便修改
+其实里面的内容就是前面修改的<code>application-github.properties</code>文件
+如果确定不会修改,可以不创建此cm,直接写死配置到docker镜像中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;cm.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apollo-configservice-cm
+  namespace: infra
+data:
+  application-github.properties: |
+    # DataSource
+    spring.datasource.url = jdbc:mysql://mysql.zq.com:3306/ApolloConfigDB?characterEncoding=utf8
+    spring.datasource.username = apollo
+    spring.datasource.password = 123456
+    eureka.service.url = http://apollo-config.zq.com/eureka
+  app.properties: |
+    appId=100003171
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>在同一个configmap资源中,可以添加多个配置文件,上述配置就有两个,分别是:
+<code>application-github.properties</code>和<code>app.properties</code></p>
+</blockquote>
+<h4 id="422-创建deployment资源清单">4.2.2 创建Deployment资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;dp.yaml &lt;&lt;&#39;EOF&#39;
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: apollo-configservice
+  namespace: infra
+  labels:
+    name: apollo-configservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: apollo-configservice
+  template:
+    metadata:
+      labels:
+        app: apollo-configservice
+        name: apollo-configservice
+    spec:
+      volumes:
+      - name: configmap-volume
+        configMap:
+          name: apollo-configservice-cm
+      containers:
+      - name: apollo-configservice
+        image: harbor.zq.com/infra/apollo-configservice:v1.5.1
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: configmap-volume
+          mountPath: /apollo-configservice/config
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+      - name: harbor
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsUser: 0
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  revisionHistoryLimit: 7
+  progressDeadlineSeconds: 600
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="423-创建service资源清单">4.2.3 创建service资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;svc.yaml &lt;&lt;&#39;EOF&#39;
+kind: Service
+apiVersion: v1
+metadata:
+  name: apollo-configservice
+  namespace: infra
+spec:
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: apollo-configservice
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="424-创建ingress资源清单">4.2.4 创建ingress资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;ingress.yaml &lt;&lt;&#39;EOF&#39;
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: apollo-configservice
+  namespace: infra
+spec:
+  rules:
+  - host: apollo-config.zq.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: apollo-configservice
+          servicePort: 8080
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>service中不一定必须暴露8080,分配的clusterIP中所有的端口都可以
+但ingress中的servicePort一定要与service中暴露的端口匹配</p>
+</blockquote>
+<h3 id="43-应用资源配置清单">4.3 应用资源配置清单：</h3>
+<h4 id="431-任意node执行">4.3.1 任意node执行</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create -f http://k8s-yaml.zq.com/apollo-configservice/cm.yaml
+kubectl create -f http://k8s-yaml.zq.com/apollo-configservice/dp.yaml
+kubectl create -f http://k8s-yaml.zq.com/apollo-configservice/svc.yaml
+kubectl create -f http://k8s-yaml.zq.com/apollo-configservice/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="432-检查启动情况">4.3.2 检查启动情况：</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl -n infra get pod|grep apollo-config
+# 检查命令
+kubectl -n infra logs apollo-configservice-64fc749978-9nz5h --tail=4
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581895-435fc5dd-2685-4c88-b68c-8137bb3b9bd3.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581895-435fc5dd-2685-4c88-b68c-8137bb3b9bd3.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581895-435fc5dd-2685-4c88-b68c-8137bb3b9bd3.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581895-435fc5dd-2685-4c88-b68c-8137bb3b9bd3.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581895-435fc5dd-2685-4c88-b68c-8137bb3b9bd3.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581895-435fc5dd-2685-4c88-b68c-8137bb3b9bd3.png" />
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581709-4b3e7a7f-b40c-4f4f-9c80-fa020a92d2b3.png#align=left&amp;display=inline&amp;height=32&amp;margin=%5Bobject%20Object%5D&amp;originHeight=32&amp;originWidth=785&amp;size=0&amp;status=done&amp;style=none&amp;width=785"
+        data-srcset="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581709-4b3e7a7f-b40c-4f4f-9c80-fa020a92d2b3.png#align=left&amp;display=inline&amp;height=32&amp;margin=%5Bobject%20Object%5D&amp;originHeight=32&amp;originWidth=785&amp;size=0&amp;status=done&amp;style=none&amp;width=785, https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581709-4b3e7a7f-b40c-4f4f-9c80-fa020a92d2b3.png#align=left&amp;display=inline&amp;height=32&amp;margin=%5Bobject%20Object%5D&amp;originHeight=32&amp;originWidth=785&amp;size=0&amp;status=done&amp;style=none&amp;width=785 1.5x, https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581709-4b3e7a7f-b40c-4f4f-9c80-fa020a92d2b3.png#align=left&amp;display=inline&amp;height=32&amp;margin=%5Bobject%20Object%5D&amp;originHeight=32&amp;originWidth=785&amp;size=0&amp;status=done&amp;style=none&amp;width=785 2x"
+        data-sizes="auto"
+        alt="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581709-4b3e7a7f-b40c-4f4f-9c80-fa020a92d2b3.png#align=left&amp;display=inline&amp;height=32&amp;margin=%5Bobject%20Object%5D&amp;originHeight=32&amp;originWidth=785&amp;size=0&amp;status=done&amp;style=none&amp;width=785"
+        title="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581709-4b3e7a7f-b40c-4f4f-9c80-fa020a92d2b3.png#align=left&amp;display=inline&amp;height=32&amp;margin=%5Bobject%20Object%5D&amp;originHeight=32&amp;originWidth=785&amp;size=0&amp;status=done&amp;style=none&amp;width=785" />
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581687-b1ddac7f-619a-41bb-bb6e-75b02db5fc28.png#align=left&amp;display=inline&amp;height=135&amp;margin=%5Bobject%20Object%5D&amp;originHeight=135&amp;originWidth=744&amp;size=0&amp;status=done&amp;style=none&amp;width=744"
+        data-srcset="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581687-b1ddac7f-619a-41bb-bb6e-75b02db5fc28.png#align=left&amp;display=inline&amp;height=135&amp;margin=%5Bobject%20Object%5D&amp;originHeight=135&amp;originWidth=744&amp;size=0&amp;status=done&amp;style=none&amp;width=744, https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581687-b1ddac7f-619a-41bb-bb6e-75b02db5fc28.png#align=left&amp;display=inline&amp;height=135&amp;margin=%5Bobject%20Object%5D&amp;originHeight=135&amp;originWidth=744&amp;size=0&amp;status=done&amp;style=none&amp;width=744 1.5x, https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581687-b1ddac7f-619a-41bb-bb6e-75b02db5fc28.png#align=left&amp;display=inline&amp;height=135&amp;margin=%5Bobject%20Object%5D&amp;originHeight=135&amp;originWidth=744&amp;size=0&amp;status=done&amp;style=none&amp;width=744 2x"
+        data-sizes="auto"
+        alt="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581687-b1ddac7f-619a-41bb-bb6e-75b02db5fc28.png#align=left&amp;display=inline&amp;height=135&amp;margin=%5Bobject%20Object%5D&amp;originHeight=135&amp;originWidth=744&amp;size=0&amp;status=done&amp;style=none&amp;width=744"
+        title="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581687-b1ddac7f-619a-41bb-bb6e-75b02db5fc28.png#align=left&amp;display=inline&amp;height=135&amp;margin=%5Bobject%20Object%5D&amp;originHeight=135&amp;originWidth=744&amp;size=0&amp;status=done&amp;style=none&amp;width=744" />
+需要等到eureka启动以后才可以，接下来使用浏览器访问<code>apollo-config.zq.com</code>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581678-8c7e25fe-3979-4358-8307-8d0287710b7c.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581678-8c7e25fe-3979-4358-8307-8d0287710b7c.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581678-8c7e25fe-3979-4358-8307-8d0287710b7c.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581678-8c7e25fe-3979-4358-8307-8d0287710b7c.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581678-8c7e25fe-3979-4358-8307-8d0287710b7c.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581678-8c7e25fe-3979-4358-8307-8d0287710b7c.png" /></p>
+<h2 id="5-部署adminservice">5 部署adminservice</h2>
+<p><a href="https://github.com/ctripcorp/apollo/releases/download/v1.5.1/apollo-adminservice-1.5.1-github.zip" target="_blank" rel="noopener noreffer">官方地址</a></p>
+<h3 id="51-制作docker镜像">5.1 制作docker镜像</h3>
+<p>操作在<code>7.200</code>上完成</p>
+<h4 id="511-下载程序包">5.1.1 下载程序包</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget https://github.com/ctripcorp/apollo/releases/download/v1.5.1/apollo-adminservice-1.5.1-github.zip
+mkdir /data/dockerfile/apollo-adminservice
+unzip -o apollo-adminservice-1.5.1-github.zip -d /data/dockerfile/apollo-adminservice/
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="512-修改连接数据库配置">5.1.2 修改连接数据库配置：</h4>
+<p>由于使用了configmap资源将配置文件挂载出来了，所以不在修改配置文件，如需修改配置文件，请参考部署apollo-configservice时候的修改方法：</p>
+<h4 id="513-创建启动脚本">5.1.3 创建启动脚本：</h4>
+<p>程序中自带的<code>start.sh</code>启动脚本时不适用与K8S运行,因此需要专门下载他们提供的K8S内使用的脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 1.从官网下载启动脚本
+cd /data/dockerfile/apollo-adminservice/scripts/
+wget https://raw.githubusercontent.com/ctripcorp/apollo/1.5.1/scripts/apollo-on-kubernetes/apollo-admin-server/scripts/startup-kubernetes.sh
+# 2. 添加一行使用主机名的变量
+sed -i &#39;5i APOLLO_CONFIG_SERVICE_NAME=$(hostname -i)&#39; startup-kubernetes.sh
+# 3.修改端口为8080
+sed -i &#39;s#8090#8080#g&#39; startup-kubernetes.sh
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>官方配置文件端口改为8090的目的是虚拟机部署的时候端口不冲突
+但我们用K8S部署,会给他单独的clusterIP,所以不用担心端口重复</p>
+</blockquote>
+<h4 id="514-编写dockerfile">5.1.4 编写dockerfile</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd ..
+cat &gt;Dockerfile &lt;&lt;&#39;EOF&#39;
+FROM stanleyws/jre8:8u112
+ENV VERSION 1.5.1
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp;\
+    echo &#34;Asia/Shanghai&#34; &gt; /etc/timezone
+ADD apollo-adminservice-${VERSION}.jar /apollo-adminservice/apollo-adminservice.jar
+ADD config/ /apollo-adminservice/config
+ADD scripts/ /apollo-adminservice/scripts
+CMD [&#34;/bin/bash&#34;,&#34;/apollo-adminservice/scripts/startup-kubernetes.sh&#34;]
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>由于要使用cm配置资源,因此就不改config中的配置了</p>
+</blockquote>
+<h4 id="515-构建docker镜像">5.1.5 构建docker镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker build . -t harbor.zq.com/infra/apollo-adminservice:v1.5.1
+docker push       harbor.zq.com/infra/apollo-adminservice:v1.5.1
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="52-制作资源配置清单">5.2 制作资源配置清单：</h3>
+<p>adminservice向注册中心注册服务,不直接对外提供服务,因此不需要暴露端口,只需要cm资源和dp资源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/k8s-yaml/apollo-adminservice
+cd /data/k8s-yaml/apollo-adminservice
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="521-创建configmap资源清单">5.2.1 创建configmap资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;cm.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apollo-adminservice-cm
+  namespace: infra
+data:
+  application-github.properties: |
+    # DataSource
+    spring.datasource.url = jdbc:mysql://mysql.zq.com:3306/ApolloConfigDB?characterEncoding=utf8
+    spring.datasource.username = apollo
+    spring.datasource.password = 123456
+    eureka.service.url = http://apollo-config.zq.com/eureka
+  app.properties: |
+    appId=100003172
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>注意每个服务的appId都不会一样哦</p>
+</blockquote>
+<h4 id="522-创建deployment资源清单">5.2.2 创建Deployment资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;dp.yaml &lt;&lt;&#39;EOF&#39;
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: apollo-adminservice
+  namespace: infra
+  labels:
+    name: apollo-adminservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: apollo-adminservice
+  template:
+    metadata:
+      labels:
+        app: apollo-adminservice
+        name: apollo-adminservice
+    spec:
+      volumes:
+      - name: configmap-volume
+        configMap:
+          name: apollo-adminservice-cm
+      containers:
+      - name: apollo-adminservice
+        image: harbor.zq.com/infra/apollo-adminservice:v1.5.1
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: configmap-volume
+          mountPath: /apollo-adminservice/config
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+      - name: harbor
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsUser: 0
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  revisionHistoryLimit: 7
+  progressDeadlineSeconds: 600
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="53-应用资源配置清单">5.3 应用资源配置清单</h3>
+<h4 id="531-任意node执行">5.3.1 任意node执行</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create -f http://k8s-yaml.zq.com/apollo-adminservice/cm.yaml
+kubectl create -f http://k8s-yaml.zq.com/apollo-adminservice/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="532-检查启动情况">5.3.2 检查启动情况</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl -n infra get pod|grep apollo-admin
+apollo-adminservice-6cd4fcfdc8-2drnq    1/1     Running   0          9s
+# 检查命令
+kubectl -n infra logs apollo-configservice-6cd4fcfdc8-2drnq --tail=4
+</code></pre></td></tr></table>
+</div>
+</div><p>通过 apollo-config.zq.com 检查是否注册到了eureka：
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581647-740a84ca-3d5a-41cf-9fdc-26deb1335482.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581647-740a84ca-3d5a-41cf-9fdc-26deb1335482.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581647-740a84ca-3d5a-41cf-9fdc-26deb1335482.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581647-740a84ca-3d5a-41cf-9fdc-26deb1335482.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581647-740a84ca-3d5a-41cf-9fdc-26deb1335482.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581647-740a84ca-3d5a-41cf-9fdc-26deb1335482.png" />
+已经顺利的注册到了注册中心中。</p>
+<h2 id="6-部署portal">6 部署portal</h2>
+<h3 id="61-制作docker镜像">6.1 制作docker镜像</h3>
+<p><a href="https://github.com/ctripcorp/apollo/releases/download/v1.5.1/apollo-portal-1.5.1-github.zip" target="_blank" rel="noopener noreffer">portal官方地址</a></p>
+<h4 id="611-下载程序包">6.1.1 下载程序包</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget https://github.com/ctripcorp/apollo/releases/download/v1.5.1/apollo-portal-1.5.1-github.zip
+mkdir /data/dockerfile/apollo-portal
+unzip -o apollo-portal-1.5.1-github.zip -d /data/dockerfile/apollo-portal/
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="612-修改配置文件">6.1.2 修改配置文件</h4>
+<p>由于使用concigmap资源，故不在这里修改
+注意如果要修改的话,要分别修改两个文件</p>
+<ol>
+<li><code>apollo-env.properties</code>修改数据库配置</li>
+<li><code>apollo-env.properties</code>修改支持的环境列表</li>
+</ol>
+<h4 id="613-创建启动脚本">6.1.3 创建启动脚本</h4>
+<p><a href="https://raw.githubusercontent.com/ctripcorp/apollo/1.5.1/scripts/apollo-on-kubernetes/apollo-portal-server/scripts/startup-kubernetes.sh" target="_blank" rel="noopener noreffer">脚本官方地址</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 1.从官网下载启动脚本
+cd /data/dockerfile/apollo-portal/scripts/
+wget https://raw.githubusercontent.com/ctripcorp/apollo/1.5.1/scripts/apollo-on-kubernetes/apollo-portal-server/scripts/startup-kubernetes.sh
+# 2. 添加一行使用主机名的变量
+sed -i &#39;5i APOLLO_CONFIG_SERVICE_NAME=$(hostname -i)&#39; startup-kubernetes.sh
+# 3.修改端口为8080
+sed -i &#39;s#8070#8080#g&#39; startup-kubernetes.sh
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="614-制作dockerfile">6.1.4 制作dockerfile：</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/dockerfile/apollo-portal/
+cat &gt;Dockerfile &lt;&lt;&#39;EOF&#39;
+FROM stanleyws/jre8:8u112
+ENV VERSION 1.5.1
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp;\
+    echo &#34;Asia/Shanghai&#34; &gt; /etc/timezone
+ADD apollo-portal-${VERSION}.jar /apollo-portal/apollo-portal.jar
+ADD config/ /apollo-portal/config
+ADD scripts/ /apollo-portal/scripts
+CMD [&#34;/bin/bash&#34;,&#34;/apollo-portal/scripts/startup-kubernetes.sh&#34;]
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="615-构建docker镜像">6.1.5 构建docker镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker build . -t harbor.zq.com/infra/apollo-portal:v1.5.1
+docker push       harbor.zq.com/infra/apollo-portal:v1.5.1
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="62-编写资源配置清单">6.2 编写资源配置清单：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/k8s-yaml/apollo-portal
+cd /data/k8s-yaml/apollo-portal
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="621-创建configmap资源清单">6.2.1 创建configmap资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;cm.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apollo-portal-cm
+  namespace: infra
+data:
+  application-github.properties: |
+    # DataSource
+    spring.datasource.url = jdbc:mysql://mysql.zq.com:3306/ApolloPortalDB?characterEncoding=utf8
+    spring.datasource.username = apollo
+    spring.datasource.password = 123456
+  app.properties: |
+    appId=100003173
+  apollo-env.properties: |
+    dev.meta=http://apollo-config.zq.com
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>这里暂时只管理一个环境,等跑通了以后,再演示多环境问题</p>
+</blockquote>
+<h4 id="622-创建deployment资源清单">6.2.2 创建Deployment资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;dp.yaml &lt;&lt;&#39;EOF&#39;
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: apollo-portal
+  namespace: infra
+  labels:
+    name: apollo-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: apollo-portal
+  template:
+    metadata:
+      labels:
+        app: apollo-portal
+        name: apollo-portal
+    spec:
+      volumes:
+      - name: configmap-volume
+        configMap:
+          name: apollo-portal-cm
+      containers:
+      - name: apollo-portal
+        image: harbor.zq.com/infra/apollo-portal:v1.5.1
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: configmap-volume
+          mountPath: /apollo-portal/config
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+      - name: harbor
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsUser: 0
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  revisionHistoryLimit: 7
+  progressDeadlineSeconds: 600
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="623-创建service资源清单">6.2.3 创建service资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;svc.yaml &lt;&lt;&#39;EOF&#39;
+kind: Service
+apiVersion: v1
+metadata:
+  name: apollo-portal
+  namespace: infra
+spec:
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: apollo-portal
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="624-创建ingress资源清单">6.2.4 创建ingress资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;ingress.yaml &lt;&lt;&#39;EOF&#39;
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: apollo-portal
+  namespace: infra
+spec:
+  rules:
+  - host: apollo-portal.zq.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: apollo-portal
+          servicePort: 8080
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="63-应用资源配置清单">6.3 应用资源配置清单</h3>
+<h4 id="631-在任意node执行">6.3.1 在任意node执行</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create -f http://k8s-yaml.zq.com/apollo-portal/cm.yaml
+kubectl create -f http://k8s-yaml.zq.com/apollo-portal/dp.yaml
+kubectl create -f http://k8s-yaml.zq.com/apollo-portal/svc.yaml
+kubectl create -f http://k8s-yaml.zq.com/apollo-portal/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="632-检查启动情况">6.3.2 检查启动情况</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581934-efceea0e-1eaa-4193-96fc-c6f129d5b4ca.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581934-efceea0e-1eaa-4193-96fc-c6f129d5b4ca.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581934-efceea0e-1eaa-4193-96fc-c6f129d5b4ca.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581934-efceea0e-1eaa-4193-96fc-c6f129d5b4ca.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581934-efceea0e-1eaa-4193-96fc-c6f129d5b4ca.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581934-efceea0e-1eaa-4193-96fc-c6f129d5b4ca.png" /></p>
+<h4 id="633-网页验证">6.3.3 网页验证</h4>
+<p>由于前面已经一起添加了域名解析,因此portal创建好后不需要在添加域名解析,直接浏览器登录验证
+网页：apollo-portal.zq.com
+默认用户名：apollo
+默认密码：admin
+登录成功后,立马修改密码为<code>apollo123</code>
+到此，apollo的三个组件都已经交付到k8s里了。</p>
+<h2 id="7-配置服务使用apollo配置中心">7 配置服务使用apollo配置中心</h2>
+<p>使用配置中心，需要开发对代码进行调整，将一些配置，通过变量的形式配置到apollo中，服务通过配置中心来获取具体的配置</p>
+<h3 id="71-新建dubbo-service项目配置">7.1 新建dubbo-service项目配置</h3>
+<h4 id="711-在配置中心修改新增项目">7.1.1 在配置中心修改新增项目:</h4>
+<p><strong>项目属性：</strong>
+AppId：dubbo-demo-service
+应用名称：dubbo服务提供者
+部门：研发部
+<strong>为新项目添加配置如下：</strong></p>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dubbo.registry</td>
+<td>zookeeper://zk1.zq.com:2181</td>
+<td>注册中心地址</td>
+</tr>
+<tr>
+<td>dubbo.port</td>
+<td>20880</td>
+<td>dubbo服务监听端口</td>
+</tr>
+</tbody>
+</table>
+<p><strong>发布后效果图如下：</strong>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581669-4f254c8b-1382-4170-a5d8-6c6a0dbbe7f0.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581669-4f254c8b-1382-4170-a5d8-6c6a0dbbe7f0.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581669-4f254c8b-1382-4170-a5d8-6c6a0dbbe7f0.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581669-4f254c8b-1382-4170-a5d8-6c6a0dbbe7f0.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581669-4f254c8b-1382-4170-a5d8-6c6a0dbbe7f0.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581669-4f254c8b-1382-4170-a5d8-6c6a0dbbe7f0.png" /></p>
+<h4 id="712-重新打包service镜像">7.1.2 重新打包service镜像</h4>
+<p>还是使用之前的流水线，但是使用分支为apollo的代码进行打包，参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_name</td>
+<td>dubbo-demo-service</td>
+</tr>
+<tr>
+<td>image_name</td>
+<td>app/dubbo-demo-service</td>
+</tr>
+<tr>
+<td>git_repo</td>
+<td><a href="https://gitee.com/noah-luo/dubbo-demo-service.git" target="_blank" rel="noopener noreffer">https://gitee.com/noah-luo/dubbo-demo-service.git</a></td>
+</tr>
+<tr>
+<td>git_ver</td>
+<td>apollo</td>
+</tr>
+<tr>
+<td>add_tag</td>
+<td>200512_0746</td>
+</tr>
+<tr>
+<td>mvn_dir</td>
+<td>./</td>
+</tr>
+<tr>
+<td>target_dir</td>
+<td>./dubbo-server/target</td>
+</tr>
+<tr>
+<td>mvn_cmd</td>
+<td>mvn clean package -Dmaven.test.skip=true</td>
+</tr>
+<tr>
+<td>base_image</td>
+<td>base/jre8:8u112</td>
+</tr>
+<tr>
+<td>maven</td>
+<td>3.6.1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="713-重新应用资源配置清单">7.1.3 重新应用资源配置清单</h4>
+<p>修改dp.yaml资源配置清单</p>
+<ol>
+<li>将镜像改为刚刚打包的镜像名：</li>
+<li>添加环境变量<code>C_OPTS</code>,以便指定配置中心</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vim /data/k8s-yaml/dubbo-server/dp.yaml
+#----------原内容----------
+    spec:
+      containers:
+      - name: dubbo-demo-service
+        image: harbor.zq.com/app/dubbo-demo-service:master_200509_0800
+        ports:
+        - containerPort: 20880
+          protocol: TCP
+        env:
+        - name: JAR_BALL
+          value: dubbo-server.jar
+
+#----------新内容----------
+    spec:
+      containers:
+      - name: dubbo-demo-service
+        image: harbor.zq.com/app/dubbo-demo-service:apollo_200512_0746
+        ports:
+        - containerPort: 20880
+          protocol: TCP
+        env:
+        - name: JAR_BALL
+          value: dubbo-server.jar
+        - name: C_OPTS
+          value: -Denv=dev -Dapollo.meta=http://apollo-config.zq.com
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>应用资源配置清单：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/dubbo-server/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="72-新建dubbo-web项目配置">7.2 新建dubbo-web项目配置</h3>
+<h4 id="721-在配置中心修改新增项目">7.2.1 在配置中心修改新增项目:</h4>
+<p><strong>项目属性：</strong>
+AppId：dubbo-demo-web
+应用名称：dubbo服务消费者
+部门：运维部
+<strong>为新项目添加配置如下：</strong></p>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dubbo.registry</td>
+<td>zookeeper://zk1.zq.com:2181</td>
+<td>注册中心地址</td>
+</tr>
+</tbody>
+</table>
+<p><strong>发布后效果图如下：</strong>
+略</p>
+<h4 id="712-重新打包service镜像-1">7.1.2 重新打包service镜像</h4>
+<p>还是使用之前的流水线，但是使用分支为apollo的代码进行打包，参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_name</td>
+<td>dubbo-demo-consumer</td>
+</tr>
+<tr>
+<td>image_name</td>
+<td>app/dubbo-demo-consumer</td>
+</tr>
+<tr>
+<td>git_repo</td>
+<td><a href="mailto:git@gitee.com" rel="">git@gitee.com</a>:noah-luo/dubbo-demo-web.git</td>
+</tr>
+<tr>
+<td>git_ver</td>
+<td>apollo</td>
+</tr>
+<tr>
+<td>add_tag</td>
+<td>200512_0801</td>
+</tr>
+<tr>
+<td>mvn_dir</td>
+<td>./</td>
+</tr>
+<tr>
+<td>target_dir</td>
+<td>./dubbo-client/target</td>
+</tr>
+<tr>
+<td>mvn_cmd</td>
+<td>mvn clean package -Dmaven.test.skip=true</td>
+</tr>
+<tr>
+<td>base_image</td>
+<td>base/jre8:8u112</td>
+</tr>
+<tr>
+<td>maven</td>
+<td>3.6.1</td>
+</tr>
+</tbody>
+</table>
+<p>构建完成后，修改资源配置清单并应用：</p>
+<h4 id="713-重新应用资源配置清单-1">7.1.3 重新应用资源配置清单</h4>
+<p>修改dp.yaml资源配置清单</p>
+<ol>
+<li>将镜像改为刚刚打包的镜像名：</li>
+<li>添加环境变量<code>C_OPTS</code>,以便指定配置中心</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vim /data/k8s-yaml/dubbo-consumer/dp.yaml
+#----------原内容----------
+    spec:
+      containers:
+      - name: dubbo-demo-consumer
+        image: harbor.zq.com/app/dubbo-demo-consumer:master_200506_1430
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 20880
+          protocol: TCP
+        env:
+        - name: JAR_BALL
+          value: dubbo-client.jar
+
+#----------新内容----------
+    spec:
+      containers:
+      - name: dubbo-demo-consumer
+        image: harbor.zq.com/app/dubbo-demo-consumer:apollo_200512_0801
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 20880
+          protocol: TCP
+        env:
+        - name: JAR_BALL
+          value: dubbo-client.jar
+        - name: C_OPTS
+          value: -Denv=dev -Dapollo.meta=http://apollo-config.zq.com
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>应用资源配置清单：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/dubbo-consumer/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="73-验证结果">7.3 验证结果</h3>
+<h4 id="731-修改dubbo-monitor资源">7.3.1 修改dubbo-monitor资源</h4>
+<p>管理机上,修改dubbo-monitor的dp资源的使用的cm资源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">set -i &#39;s#dubbo-monitor-cm-pro#dubbo-monitor-cm#g&#39; /data/k8s-yaml/dubbo-monitor/dp-cm.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>任意node节点应用资源</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/dubbo-monitor/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>登录dubbo-monitor查看</strong>
+访问<a href="http://dubbo-monitor.zq.com/" target="_blank" rel="noopener noreffer">http://dubbo-monitor.zq.com/</a>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581671-216e68d4-f937-4d6e-b44c-89d13ae0a6a7.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581671-216e68d4-f937-4d6e-b44c-89d13ae0a6a7.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581671-216e68d4-f937-4d6e-b44c-89d13ae0a6a7.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581671-216e68d4-f937-4d6e-b44c-89d13ae0a6a7.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581671-216e68d4-f937-4d6e-b44c-89d13ae0a6a7.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581671-216e68d4-f937-4d6e-b44c-89d13ae0a6a7.png" />
+<strong>浏览器查看</strong>
+访问<a href="http://dubbo-demo.zq.com/hello?name=lg" target="_blank" rel="noopener noreffer">http://dubbo-demo.zq.com/hello?name=lg</a>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581884-7966d18a-c741-4661-aa50-09bd44f37437.png#align=left&amp;display=inline&amp;height=196&amp;margin=%5Bobject%20Object%5D&amp;originHeight=196&amp;originWidth=578&amp;size=0&amp;status=done&amp;style=none&amp;width=578"
+        data-srcset="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581884-7966d18a-c741-4661-aa50-09bd44f37437.png#align=left&amp;display=inline&amp;height=196&amp;margin=%5Bobject%20Object%5D&amp;originHeight=196&amp;originWidth=578&amp;size=0&amp;status=done&amp;style=none&amp;width=578, https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581884-7966d18a-c741-4661-aa50-09bd44f37437.png#align=left&amp;display=inline&amp;height=196&amp;margin=%5Bobject%20Object%5D&amp;originHeight=196&amp;originWidth=578&amp;size=0&amp;status=done&amp;style=none&amp;width=578 1.5x, https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581884-7966d18a-c741-4661-aa50-09bd44f37437.png#align=left&amp;display=inline&amp;height=196&amp;margin=%5Bobject%20Object%5D&amp;originHeight=196&amp;originWidth=578&amp;size=0&amp;status=done&amp;style=none&amp;width=578 2x"
+        data-sizes="auto"
+        alt="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581884-7966d18a-c741-4661-aa50-09bd44f37437.png#align=left&amp;display=inline&amp;height=196&amp;margin=%5Bobject%20Object%5D&amp;originHeight=196&amp;originWidth=578&amp;size=0&amp;status=done&amp;style=none&amp;width=578"
+        title="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601219581884-7966d18a-c741-4661-aa50-09bd44f37437.png#align=left&amp;display=inline&amp;height=196&amp;margin=%5Bobject%20Object%5D&amp;originHeight=196&amp;originWidth=578&amp;size=0&amp;status=done&amp;style=none&amp;width=578" />
+<strong>apollo中看实例列表</strong>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581897-d17ff60c-f74e-459a-be91-793e7cf20d2f.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581897-d17ff60c-f74e-459a-be91-793e7cf20d2f.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581897-d17ff60c-f74e-459a-be91-793e7cf20d2f.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581897-d17ff60c-f74e-459a-be91-793e7cf20d2f.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581897-d17ff60c-f74e-459a-be91-793e7cf20d2f.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219581897-d17ff60c-f74e-459a-be91-793e7cf20d2f.png" /></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" data-title="12_K8S_配置中心实战-交付apollo三组件" data-hashtags="K8S,转载"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" data-title="12_K8S_配置中心实战-交付apollo三组件" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" data-title="12_K8S_配置中心实战-交付apollo三组件"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" data-title="12_K8S_配置中心实战-交付apollo三组件"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" class="prev" rel="prev" title="13_K8S_配置中心实战-多环境交付apollo三组件"><i class="fas fa-angle-left fa-fw"></i>13_K8S_配置中心实战-多环境交付apollo三组件</a>
+            <a href="/11_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-configmap%E8%B5%84%E6%BA%90/" class="next" rel="next" title="11_K8S_配置中心实战-configmap资源">11_K8S_配置中心实战-configmap资源<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

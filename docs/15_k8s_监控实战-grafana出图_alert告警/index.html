@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>15_K8S_监控实战-grafana出图_alert告警 - 山脚下的脚下山</title><meta name="Description" content="转载，原为老男孩教育视频内容"><meta property="og:title" content="15_K8S_监控实战-grafana出图_alert告警" />
+<meta property="og:description" content="转载，原为老男孩教育视频内容" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/15_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-grafana%E5%87%BA%E5%9B%BE_alert%E5%91%8A%E8%AD%A6/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-01T15:58:21+08:00" />
+<meta property="article:modified_time" content="2020-10-01T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="15_K8S_监控实战-grafana出图_alert告警"/>
+<meta name="twitter:description" content="转载，原为老男孩教育视频内容"/>
+<meta name="application-name" content="山脚下の脚下山">
+<meta name="apple-mobile-web-app-title" content="山脚下の脚下山"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/15_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-grafana%E5%87%BA%E5%9B%BE_alert%E5%91%8A%E8%AD%A6/" /><link rel="prev" href="https://scemsjyd.com/16_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-elk%E6%94%B6%E9%9B%86k8s%E5%86%85%E5%BA%94%E7%94%A8%E6%97%A5%E5%BF%97/" /><link rel="next" href="https://scemsjyd.com/14_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-%E9%83%A8%E7%BD%B2prometheus/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "15_K8S_监控实战-grafana出图_alert告警",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/15_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-grafana%E5%87%BA%E5%9B%BE_alert%E5%91%8A%E8%AD%A6\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 转载","wordcount":  2953 ,
+        "url": "https:\/\/scemsjyd.com\/15_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-grafana%E5%87%BA%E5%9B%BE_alert%E5%91%8A%E8%AD%A6\/","datePublished": "2020-10-01T15:58:21+08:00","dateModified": "2020-10-01T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "老男孩"
+            },"description": "转载，原为老男孩教育视频内容"
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> 主页 </a><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/" title="">主页</a><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">15_K8S_监控实战-grafana出图_alert告警</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://space.bilibili.com/394449264" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>老男孩</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BD%AC%E8%BD%BD/"><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-01">2020-10-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2953 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;<span id="/15_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-grafana%E5%87%BA%E5%9B%BE_alert%E5%91%8A%E8%AD%A6/" class="leancloud_visitors" data-flag-title="15_K8S_监控实战-grafana出图_alert告警">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-使用炫酷的grafana出图">1 使用炫酷的grafana出图</a>
+      <ul>
+        <li><a href="#11-部署grafana">1.1 部署grafana</a>
+          <ul>
+            <li><a href="#111-准备镜像">1.1.1 准备镜像</a></li>
+            <li><a href="#112-准备rbac资源清单">1.1.2 准备rbac资源清单</a></li>
+            <li><a href="#113-准备dp资源清单">1.1.3 准备dp资源清单</a></li>
+            <li><a href="#114-准备svc资源清单">1.1.4 准备svc资源清单</a></li>
+            <li><a href="#115-准备ingress资源清单">1.1.5 准备ingress资源清单</a></li>
+            <li><a href="#116-域名解析">1.1.6 域名解析</a></li>
+            <li><a href="#117-应用资源配置清单">1.1.7 应用资源配置清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#12-使用grafana出图">1.2 使用grafana出图</a>
+          <ul>
+            <li><a href="#121-浏览器访问验证">1.2.1 浏览器访问验证</a></li>
+            <li><a href="#122-进入容器安装插件">1.2.2 进入容器安装插件</a></li>
+            <li><a href="#123-配置数据源">1.2.3 配置数据源</a></li>
+            <li><a href="#124-添加k8s集群信息">1.2.4 添加K8S集群信息</a></li>
+            <li><a href="#125-查看k8s集群数据和图表">1.2.5 查看k8s集群数据和图表</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#2-配置alert告警插件">2 配置alert告警插件</a>
+      <ul>
+        <li><a href="#21-部署alert插件">2.1 部署alert插件</a>
+          <ul>
+            <li><a href="#211-准备docker镜像">2.1.1 准备docker镜像</a></li>
+            <li><a href="#212-准备cm资源清单">2.1.2 准备cm资源清单</a></li>
+            <li><a href="#213-准备dp资源清单">2.1.3 准备dp资源清单</a></li>
+            <li><a href="#214-准备svc资源清单">2.1.4 准备svc资源清单</a></li>
+            <li><a href="#215-应用资源配置清单">2.1.5 应用资源配置清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#22-k8s使用alert报警">2.2 K8S使用alert报警</a>
+          <ul>
+            <li><a href="#221-k8s创建基础报警规则文件">2.2.1 k8s创建基础报警规则文件</a></li>
+            <li><a href="#222-k8s-更新配置">2.2.2 K8S 更新配置</a></li>
+            <li><a href="#223-测试告警">2.2.3 测试告警</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="15_k8s_监控实战-grafana出图_alert告警">15_K8S_监控实战-grafana出图_alert告警</h1>
+<h2 id="1-使用炫酷的grafana出图">1 使用炫酷的grafana出图</h2>
+<p>prometheus的dashboard虽然号称拥有多种多样的图表,但是实在太简陋了,一般都用专业的grafana工具来出图
+<a href="https://hub.docker.com/r/grafana/grafana" target="_blank" rel="noopener noreffer">grafana官方dockerhub地址</a>
+<a href="https://github.com/grafana/grafana" target="_blank" rel="noopener noreffer">grafana官方github地址</a>
+<a href="https://grafana.com/" target="_blank" rel="noopener noreffer">grafana官网</a></p>
+<h3 id="11-部署grafana">1.1 部署grafana</h3>
+<h4 id="111-准备镜像">1.1.1 准备镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker pull grafana/grafana:5.4.2
+docker tag  6f18ddf9e552 harbor.zq.com/infra/grafana:v5.4.2
+docker push harbor.zq.com/infra/grafana:v5.4.2
+</code></pre></td></tr></table>
+</div>
+</div><p>准备目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/k8s-yaml/grafana
+cd    /data/k8s-yaml/grafana
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="112-准备rbac资源清单">1.1.2 准备rbac资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;rbac.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    addonmanager.kubernetes.io/mode: Reconcile
+    kubernetes.io/cluster-service: &#34;true&#34;
+  name: grafana
+rules:
+- apiGroups:
+  - &#34;*&#34;
+  resources:
+  - namespaces
+  - deployments
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    addonmanager.kubernetes.io/mode: Reconcile
+    kubernetes.io/cluster-service: &#34;true&#34;
+  name: grafana
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: grafana
+subjects:
+- kind: User
+  name: k8s-node
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="113-准备dp资源清单">1.1.3 准备dp资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;dp.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: grafana
+    name: grafana
+  name: grafana
+  namespace: infra
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 7
+  selector:
+    matchLabels:
+      name: grafana
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: grafana
+        name: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: harbor.zq.com/infra/grafana:v5.4.2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/lib/grafana
+          name: data
+      imagePullSecrets:
+      - name: harbor
+      securityContext:
+        runAsUser: 0
+      volumes:
+      - nfs:
+          server: hdss7-200
+          path: /data/nfs-volume/grafana
+        name: data
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><p>创建frafana数据目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/nfs-volume/grafana
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="114-准备svc资源清单">1.1.4 准备svc资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;svc.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: infra
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: grafana
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="115-准备ingress资源清单">1.1.5 准备ingress资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;ingress.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: infra
+spec:
+  rules:
+  - host: grafana.zq.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: grafana
+          servicePort: 3000
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="116-域名解析">1.1.6 域名解析</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vi /var/named/zq.com.zone
+grafana            A    10.4.7.10
+systemctl restart named
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="117-应用资源配置清单">1.1.7 应用资源配置清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/grafana/rbac.yaml
+kubectl apply -f http://k8s-yaml.zq.com/grafana/dp.yaml
+kubectl apply -f http://k8s-yaml.zq.com/grafana/svc.yaml
+kubectl apply -f http://k8s-yaml.zq.com/grafana/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="12-使用grafana出图">1.2 使用grafana出图</h3>
+<h4 id="121-浏览器访问验证">1.2.1 浏览器访问验证</h4>
+<p>访问<a href="http://grafana.zq.com," target="_blank" rel="noopener noreffer">http://grafana.zq.com,</a>默认用户名密码admin/admin
+能成功访问表示安装成功
+进入后立即修改管理员密码为<code>admin123</code></p>
+<h4 id="122-进入容器安装插件">1.2.2 进入容器安装插件</h4>
+<p>grafana确认启动好以后,需要进入grafana容器内部,安装以下插件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl -n infra exec  -it grafana-d6588db94-xr4s6 /bin/bash
+# 以下命令在容器内执行
+grafana-cli plugins install grafana-kubernetes-app
+grafana-cli plugins install grafana-clock-panel
+grafana-cli plugins install grafana-piechart-panel
+grafana-cli plugins install briangann-gauge-panel
+grafana-cli plugins install natel-discrete-panel
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="123-配置数据源">1.2.3 配置数据源</h4>
+<p>添加数据源,依次点击：左侧锯齿图标&ndash;&gt;add data source&ndash;&gt;Prometheus
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040130-dbba1c40-a1e1-4a2e-a280-9c6536c1ce2d.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040130-dbba1c40-a1e1-4a2e-a280-9c6536c1ce2d.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040130-dbba1c40-a1e1-4a2e-a280-9c6536c1ce2d.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040130-dbba1c40-a1e1-4a2e-a280-9c6536c1ce2d.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040130-dbba1c40-a1e1-4a2e-a280-9c6536c1ce2d.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040130-dbba1c40-a1e1-4a2e-a280-9c6536c1ce2d.png" />
+添加完成后<strong>重启grafana</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl -n infra delete pod grafana-7dd95b4c8d-nj5cx
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="124-添加k8s集群信息">1.2.4 添加K8S集群信息</h4>
+<p>启用K8S插件,依次点击：左侧锯齿图标&ndash;&gt;Plugins&ndash;&gt;kubernetes&ndash;&gt;Enable
+新建cluster,依次点击：左侧K8S图标&ndash;&gt;New Cluster
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040150-63dcc2ec-4174-44da-a46f-5f02b08d05d8.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040150-63dcc2ec-4174-44da-a46f-5f02b08d05d8.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040150-63dcc2ec-4174-44da-a46f-5f02b08d05d8.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040150-63dcc2ec-4174-44da-a46f-5f02b08d05d8.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040150-63dcc2ec-4174-44da-a46f-5f02b08d05d8.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040150-63dcc2ec-4174-44da-a46f-5f02b08d05d8.png" /></p>
+<h4 id="125-查看k8s集群数据和图表">1.2.5 查看k8s集群数据和图表</h4>
+<p>添加完需要稍等几分钟，在没有取到数据之前，会报http forbidden，没关系，等一会就好。大概2-5分钟。
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040131-2617029a-46b1-44ac-a8c7-89fe3c9bcf95.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040131-2617029a-46b1-44ac-a8c7-89fe3c9bcf95.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040131-2617029a-46b1-44ac-a8c7-89fe3c9bcf95.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040131-2617029a-46b1-44ac-a8c7-89fe3c9bcf95.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040131-2617029a-46b1-44ac-a8c7-89fe3c9bcf95.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040131-2617029a-46b1-44ac-a8c7-89fe3c9bcf95.png" /><strong>点击Cluster Dashboard</strong>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040139-d5d9cfb6-3022-4436-af8e-27804f20fc18.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040139-d5d9cfb6-3022-4436-af8e-27804f20fc18.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040139-d5d9cfb6-3022-4436-af8e-27804f20fc18.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040139-d5d9cfb6-3022-4436-af8e-27804f20fc18.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040139-d5d9cfb6-3022-4436-af8e-27804f20fc18.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040139-d5d9cfb6-3022-4436-af8e-27804f20fc18.png" /></p>
+<h2 id="2-配置alert告警插件">2 配置alert告警插件</h2>
+<h3 id="21-部署alert插件">2.1 部署alert插件</h3>
+<h4 id="211-准备docker镜像">2.1.1 准备docker镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker pull docker.io/prom/alertmanager:v0.14.0
+docker tag  23744b2d645c harbor.zq.com/infra/alertmanager:v0.14.0
+docker push harbor.zq.com/infra/alertmanager:v0.14.0
+</code></pre></td></tr></table>
+</div>
+</div><p>准备目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/k8s-yaml/alertmanager
+cd /data/k8s-yaml/alertmanager
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="212-准备cm资源清单">2.1.2 准备cm资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;cm.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: infra
+data:
+  config.yml: |-
+    global:
+      # 在没有报警的情况下声明为已解决的时间
+      resolve_timeout: 5m
+      # 配置邮件发送信息
+      smtp_smarthost: &#39;smtp.163.com:25&#39;
+      smtp_from: &#39;xxx@163.com&#39;
+      smtp_auth_username: &#39;xxx@163.com&#39;
+      smtp_auth_password: &#39;xxxxxx&#39;
+      smtp_require_tls: false
+    templates:
+      - &#39;/etc/alertmanager/*.tmpl&#39;
+    # 所有报警信息进入后的根路由，用来设置报警的分发策略
+    route:
+      # 这里的标签列表是接收到报警信息后的重新分组标签，例如，接收到的报警信息里面有许多具有 cluster=A 和 alertname=LatncyHigh 这样的标签的报警信息将会批量被聚合到一个分组里面
+      group_by: [&#39;alertname&#39;, &#39;cluster&#39;]
+      # 当一个新的报警分组被创建后，需要等待至少group_wait时间来初始化通知，这种方式可以确保您能有足够的时间为同一分组来获取多个警报，然后一起触发这个报警信息。
+      group_wait: 30s
+      # 当第一个报警发送后，等待&#39;group_interval&#39;时间来发送新的一组报警信息。
+      group_interval: 5m
+      # 如果一个报警信息已经发送成功了，等待&#39;repeat_interval&#39;时间来重新发送他们
+      repeat_interval: 5m
+      # 默认的receiver：如果一个报警没有被一个route匹配，则发送给默认的接收器
+      receiver: default
+    receivers:
+    - name: &#39;default&#39;
+      email_configs:
+      - to: &#39;xxxx@qq.com&#39;
+        send_resolved: true
+        html: &#39;{{ template &#34;email.to.html&#34; . }}&#39;
+        headers: { Subject: &#34; {{ .CommonLabels.instance }} {{ .CommonAnnotations.summary }}&#34; }
+  email.tmpl: |
+    {{ define &#34;email.to.html&#34; }}
+    {{- if gt (len .Alerts.Firing) 0 -}}
+    {{ range .Alerts }}
+    告警程序: prometheus_alert &lt;br&gt;
+    告警级别: {{ .Labels.severity }} &lt;br&gt;
+    告警类型: {{ .Labels.alertname }} &lt;br&gt;
+    故障主机: {{ .Labels.instance }} &lt;br&gt;
+    告警主题: {{ .Annotations.summary }}  &lt;br&gt;
+    触发时间: {{ .StartsAt.Format &#34;2006-01-02 15:04:05&#34; }} &lt;br&gt;
+    {{ end }}{{ end -}}
+
+    {{- if gt (len .Alerts.Resolved) 0 -}}
+    {{ range .Alerts }}
+    告警程序: prometheus_alert &lt;br&gt;
+    告警级别: {{ .Labels.severity }} &lt;br&gt;
+    告警类型: {{ .Labels.alertname }} &lt;br&gt;
+    故障主机: {{ .Labels.instance }} &lt;br&gt;
+    告警主题: {{ .Annotations.summary }} &lt;br&gt;
+    触发时间: {{ .StartsAt.Format &#34;2006-01-02 15:04:05&#34; }} &lt;br&gt;
+    恢复时间: {{ .EndsAt.Format &#34;2006-01-02 15:04:05&#34; }} &lt;br&gt;
+    {{ end }}{{ end -}}
+
+    {{- end }}
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="213-准备dp资源清单">2.1.3 准备dp资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;dp.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: alertmanager
+  namespace: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+    spec:
+      containers:
+      - name: alertmanager
+        image: harbor.zq.com/infra/alertmanager:v0.14.0
+        args:
+          - &#34;--config.file=/etc/alertmanager/config.yml&#34;
+          - &#34;--storage.path=/alertmanager&#34;
+        ports:
+        - name: alertmanager
+          containerPort: 9093
+        volumeMounts:
+        - name: alertmanager-cm
+          mountPath: /etc/alertmanager
+      volumes:
+      - name: alertmanager-cm
+        configMap:
+          name: alertmanager-config
+      imagePullSecrets:
+      - name: harbor
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="214-准备svc资源清单">2.1.4 准备svc资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;svc.yaml &lt;&lt;&#39;EOF&#39;
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager
+  namespace: infra
+spec:
+  selector:
+    app: alertmanager
+  ports:
+    - port: 80
+      targetPort: 9093
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="215-应用资源配置清单">2.1.5 应用资源配置清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/alertmanager/cm.yaml
+kubectl apply -f http://k8s-yaml.zq.com/alertmanager/dp.yaml
+kubectl apply -f http://k8s-yaml.zq.com/alertmanager/svc.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="22-k8s使用alert报警">2.2 K8S使用alert报警</h3>
+<h4 id="221-k8s创建基础报警规则文件">2.2.1 k8s创建基础报警规则文件</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/data/nfs-volume/prometheus/etc/rules.yml &lt;&lt;&#39;EOF&#39;
+groups:
+- name: hostStatsAlert
+  rules:
+  - alert: hostCpuUsageAlert
+    expr: sum(avg without (cpu)(irate(node_cpu{mode!=&#39;idle&#39;}[5m]))) by (instance) &gt; 0.85
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;{{ $labels.instance }} CPU usage above 85% (current value: {{ $value }}%)&#34;
+  - alert: hostMemUsageAlert
+    expr: (node_memory_MemTotal - node_memory_MemAvailable)/node_memory_MemTotal &gt; 0.85
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;{{ $labels.instance }} MEM usage above 85% (current value: {{ $value }}%)&#34;
+  - alert: OutOfInodes
+    expr: node_filesystem_free{fstype=&#34;overlay&#34;,mountpoint =&#34;/&#34;} / node_filesystem_size{fstype=&#34;overlay&#34;,mountpoint =&#34;/&#34;} * 100 &lt; 10
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Out of inodes (instance {{ $labels.instance }})&#34;
+      description: &#34;Disk is almost running out of available inodes (&lt; 10% left) (current value: {{ $value }})&#34;
+  - alert: OutOfDiskSpace
+    expr: node_filesystem_free{fstype=&#34;overlay&#34;,mountpoint =&#34;/rootfs&#34;} / node_filesystem_size{fstype=&#34;overlay&#34;,mountpoint =&#34;/rootfs&#34;} * 100 &lt; 10
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Out of disk space (instance {{ $labels.instance }})&#34;
+      description: &#34;Disk is almost full (&lt; 10% left) (current value: {{ $value }})&#34;
+  - alert: UnusualNetworkThroughputIn
+    expr: sum by (instance) (irate(node_network_receive_bytes[2m])) / 1024 / 1024 &gt; 100
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Unusual network throughput in (instance {{ $labels.instance }})&#34;
+      description: &#34;Host network interfaces are probably receiving too much data (&gt; 100 MB/s) (current value: {{ $value }})&#34;
+  - alert: UnusualNetworkThroughputOut
+    expr: sum by (instance) (irate(node_network_transmit_bytes[2m])) / 1024 / 1024 &gt; 100
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Unusual network throughput out (instance {{ $labels.instance }})&#34;
+      description: &#34;Host network interfaces are probably sending too much data (&gt; 100 MB/s) (current value: {{ $value }})&#34;
+  - alert: UnusualDiskReadRate
+    expr: sum by (instance) (irate(node_disk_bytes_read[2m])) / 1024 / 1024 &gt; 50
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Unusual disk read rate (instance {{ $labels.instance }})&#34;
+      description: &#34;Disk is probably reading too much data (&gt; 50 MB/s) (current value: {{ $value }})&#34;
+  - alert: UnusualDiskWriteRate
+    expr: sum by (instance) (irate(node_disk_bytes_written[2m])) / 1024 / 1024 &gt; 50
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Unusual disk write rate (instance {{ $labels.instance }})&#34;
+      description: &#34;Disk is probably writing too much data (&gt; 50 MB/s) (current value: {{ $value }})&#34;
+  - alert: UnusualDiskReadLatency
+    expr: rate(node_disk_read_time_ms[1m]) / rate(node_disk_reads_completed[1m]) &gt; 100
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Unusual disk read latency (instance {{ $labels.instance }})&#34;
+      description: &#34;Disk latency is growing (read operations &gt; 100ms) (current value: {{ $value }})&#34;
+  - alert: UnusualDiskWriteLatency
+    expr: rate(node_disk_write_time_ms[1m]) / rate(node_disk_writes_completedl[1m]) &gt; 100
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Unusual disk write latency (instance {{ $labels.instance }})&#34;
+      description: &#34;Disk latency is growing (write operations &gt; 100ms) (current value: {{ $value }})&#34;
+- name: http_status
+  rules:
+  - alert: ProbeFailed
+    expr: probe_success == 0
+    for: 1m
+    labels:
+      severity: error
+    annotations:
+      summary: &#34;Probe failed (instance {{ $labels.instance }})&#34;
+      description: &#34;Probe failed (current value: {{ $value }})&#34;
+  - alert: StatusCode
+    expr: probe_http_status_code &lt;= 199 OR probe_http_status_code &gt;= 400
+    for: 1m
+    labels:
+      severity: error
+    annotations:
+      summary: &#34;Status Code (instance {{ $labels.instance }})&#34;
+      description: &#34;HTTP status code is not 200-399 (current value: {{ $value }})&#34;
+  - alert: SslCertificateWillExpireSoon
+    expr: probe_ssl_earliest_cert_expiry - time() &lt; 86400 * 30
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;SSL certificate will expire soon (instance {{ $labels.instance }})&#34;
+      description: &#34;SSL certificate expires in 30 days (current value: {{ $value }})&#34;
+  - alert: SslCertificateHasExpired
+    expr: probe_ssl_earliest_cert_expiry - time()  &lt;= 0
+    for: 5m
+    labels:
+      severity: error
+    annotations:
+      summary: &#34;SSL certificate has expired (instance {{ $labels.instance }})&#34;
+      description: &#34;SSL certificate has expired already (current value: {{ $value }})&#34;
+  - alert: BlackboxSlowPing
+    expr: probe_icmp_duration_seconds &gt; 2
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Blackbox slow ping (instance {{ $labels.instance }})&#34;
+      description: &#34;Blackbox ping took more than 2s (current value: {{ $value }})&#34;
+  - alert: BlackboxSlowRequests
+    expr: probe_http_duration_seconds &gt; 2
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Blackbox slow requests (instance {{ $labels.instance }})&#34;
+      description: &#34;Blackbox request took more than 2s (current value: {{ $value }})&#34;
+  - alert: PodCpuUsagePercent
+    expr: sum(sum(label_replace(irate(container_cpu_usage_seconds_total[1m]),&#34;pod&#34;,&#34;$1&#34;,&#34;container_label_io_kubernetes_pod_name&#34;, &#34;(.*)&#34;))by(pod) / on(pod) group_right kube_pod_container_resource_limits_cpu_cores *100 )by(container,namespace,node,pod,severity) &gt; 80
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &#34;Pod cpu usage percent has exceeded 80% (current value: {{ $value }}%)&#34;
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="222-k8s-更新配置">2.2.2 K8S 更新配置</h4>
+<p>在prometheus配置文件中追加配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;&gt;/data/nfs-volume/prometheus/etc/prometheus.yml &lt;&lt;&#39;EOF&#39;
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: [&#34;alertmanager&#34;]
+rule_files:
+ - &#34;/data/etc/rules.yml&#34;
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><p>重载配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">curl -X POST http://prometheus.zq.com/-/reload
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040140-587a9413-6814-4f80-b714-e0917197e30d.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040140-587a9413-6814-4f80-b714-e0917197e30d.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040140-587a9413-6814-4f80-b714-e0917197e30d.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040140-587a9413-6814-4f80-b714-e0917197e30d.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040140-587a9413-6814-4f80-b714-e0917197e30d.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040140-587a9413-6814-4f80-b714-e0917197e30d.png" />
+以上这些就是我们的告警规则</p>
+<h4 id="223-测试告警">2.2.3 测试告警</h4>
+<p>把test命名空间里的dubbo-demo-service给停掉
+blackbox里信息已报错,alert里面项目变黄了
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040147-1db28ba9-d589-4101-9bbf-040f22451803.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040147-1db28ba9-d589-4101-9bbf-040f22451803.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040147-1db28ba9-d589-4101-9bbf-040f22451803.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040147-1db28ba9-d589-4101-9bbf-040f22451803.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040147-1db28ba9-d589-4101-9bbf-040f22451803.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601220040147-1db28ba9-d589-4101-9bbf-040f22451803.png" />
+等到alert中项目变为红色的时候就开会发邮件告警
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601220040164-98b9dbe7-551d-43df-894b-5c3e0de2f9a1.png#align=left&amp;display=inline&amp;height=305&amp;margin=%5Bobject%20Object%5D&amp;originHeight=305&amp;originWidth=1041&amp;size=0&amp;status=done&amp;style=none&amp;width=1041"
+        data-srcset="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601220040164-98b9dbe7-551d-43df-894b-5c3e0de2f9a1.png#align=left&amp;display=inline&amp;height=305&amp;margin=%5Bobject%20Object%5D&amp;originHeight=305&amp;originWidth=1041&amp;size=0&amp;status=done&amp;style=none&amp;width=1041, https://cdn.nlark.com/yuque/0/2020/png/2511954/1601220040164-98b9dbe7-551d-43df-894b-5c3e0de2f9a1.png#align=left&amp;display=inline&amp;height=305&amp;margin=%5Bobject%20Object%5D&amp;originHeight=305&amp;originWidth=1041&amp;size=0&amp;status=done&amp;style=none&amp;width=1041 1.5x, https://cdn.nlark.com/yuque/0/2020/png/2511954/1601220040164-98b9dbe7-551d-43df-894b-5c3e0de2f9a1.png#align=left&amp;display=inline&amp;height=305&amp;margin=%5Bobject%20Object%5D&amp;originHeight=305&amp;originWidth=1041&amp;size=0&amp;status=done&amp;style=none&amp;width=1041 2x"
+        data-sizes="auto"
+        alt="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601220040164-98b9dbe7-551d-43df-894b-5c3e0de2f9a1.png#align=left&amp;display=inline&amp;height=305&amp;margin=%5Bobject%20Object%5D&amp;originHeight=305&amp;originWidth=1041&amp;size=0&amp;status=done&amp;style=none&amp;width=1041"
+        title="https://cdn.nlark.com/yuque/0/2020/png/2511954/1601220040164-98b9dbe7-551d-43df-894b-5c3e0de2f9a1.png#align=left&amp;display=inline&amp;height=305&amp;margin=%5Bobject%20Object%5D&amp;originHeight=305&amp;originWidth=1041&amp;size=0&amp;status=done&amp;style=none&amp;width=1041" />
+如果需要自己定制告警规则和告警内容，需要研究一下promql，自己修改配置文件。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/15_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-grafana%E5%87%BA%E5%9B%BE_alert%E5%91%8A%E8%AD%A6/" data-title="15_K8S_监控实战-grafana出图_alert告警" data-hashtags="K8S,转载"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/15_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-grafana%E5%87%BA%E5%9B%BE_alert%E5%91%8A%E8%AD%A6/" data-title="15_K8S_监控实战-grafana出图_alert告警" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/15_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-grafana%E5%87%BA%E5%9B%BE_alert%E5%91%8A%E8%AD%A6/" data-title="15_K8S_监控实战-grafana出图_alert告警"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/15_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-grafana%E5%87%BA%E5%9B%BE_alert%E5%91%8A%E8%AD%A6/" data-title="15_K8S_监控实战-grafana出图_alert告警"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/16_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-elk%E6%94%B6%E9%9B%86k8s%E5%86%85%E5%BA%94%E7%94%A8%E6%97%A5%E5%BF%97/" class="prev" rel="prev" title="16_K8S_监控实战-ELK收集K8S内应用日志"><i class="fas fa-angle-left fa-fw"></i>16_K8S_监控实战-ELK收集K8S内应用日志</a>
+            <a href="/14_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-%E9%83%A8%E7%BD%B2prometheus/" class="next" rel="next" title="14_K8S_监控实战-部署prometheus">14_K8S_监控实战-部署prometheus<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

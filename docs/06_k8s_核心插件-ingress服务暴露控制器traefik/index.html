@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>06_K8S_核心插件-ingress(服务暴露)控制器traefik - 山脚下的脚下山</title><meta name="Description" content="转载，原为老男孩教育视频内容"><meta property="og:title" content="06_K8S_核心插件-ingress(服务暴露)控制器traefik" />
+<meta property="og:description" content="转载，原为老男孩教育视频内容" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-01T15:58:21+08:00" />
+<meta property="article:modified_time" content="2020-10-01T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="06_K8S_核心插件-ingress(服务暴露)控制器traefik"/>
+<meta name="twitter:description" content="转载，原为老男孩教育视频内容"/>
+<meta name="application-name" content="山脚下の脚下山">
+<meta name="apple-mobile-web-app-title" content="山脚下の脚下山"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/" /><link rel="prev" href="https://scemsjyd.com/07_k8s_web%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8Fdashboard/" /><link rel="next" href="https://scemsjyd.com/05_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6coredns%E6%9C%8D%E5%8A%A1/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "06_K8S_核心插件-ingress(服务暴露)控制器traefik",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 转载","wordcount":  1449 ,
+        "url": "https:\/\/scemsjyd.com\/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik\/","datePublished": "2020-10-01T15:58:21+08:00","dateModified": "2020-10-01T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "老男孩"
+            },"description": "转载，原为老男孩教育视频内容"
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> 主页 </a><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/" title="">主页</a><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">06_K8S_核心插件-ingress(服务暴露)控制器traefik</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://space.bilibili.com/394449264" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>老男孩</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BD%AC%E8%BD%BD/"><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-01">2020-10-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1449 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;<span id="/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/" class="leancloud_visitors" data-flag-title="06_K8S_核心插件-ingress(服务暴露)控制器traefik">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="featured-image"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://github.com/traefik/traefik/raw/master/docs/content/assets/img/traefik-architecture.png"
+        data-srcset="https://github.com/traefik/traefik/raw/master/docs/content/assets/img/traefik-architecture.png, https://github.com/traefik/traefik/raw/master/docs/content/assets/img/traefik-architecture.png 1.5x, https://github.com/traefik/traefik/raw/master/docs/content/assets/img/traefik-architecture.png 2x"
+        data-sizes="auto"
+        alt="https://github.com/traefik/traefik/raw/master/docs/content/assets/img/traefik-architecture.png"
+        title="转载，原为老男孩教育视频内容" /></div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-k8s两种服务暴露方法">1 K8S两种服务暴露方法</a>
+      <ul>
+        <li><a href="#11-k8s常用的两种服务暴露方法">1.1 K8S常用的两种服务暴露方法</a></li>
+        <li><a href="#12-ingress控制器是什么">1.2 Ingress控制器是什么</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-部署traefik">2 部署traefik</a>
+      <ul>
+        <li><a href="#21-准备docker镜像">2.1 准备docker镜像</a></li>
+        <li><a href="#22-创建资源清单">2.2 创建资源清单</a>
+          <ul>
+            <li><a href="#221-rbac授权清单">2.2.1 rbac授权清单</a></li>
+            <li><a href="#222-delepoly资源清单">2.2.2 delepoly资源清单</a></li>
+            <li><a href="#223-service清单">2.2.3 service清单</a></li>
+            <li><a href="#224-ingress清单">2.2.4 ingress清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#23-创建资源">2.3 创建资源</a>
+          <ul>
+            <li><a href="#231-任意节点上创建资源">2.3.1 任意节点上创建资源</a></li>
+            <li><a href="#232-在前端nginx上做反向代理">2.3.2 在前端nginx上做反向代理</a></li>
+            <li><a href="#233-在bind9中添加域名解析">2.3.3 在bind9中添加域名解析</a></li>
+            <li><a href="#234-在集群外访问验证">2.3.4 在集群外访问验证</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="06_k8s_核心插件-ingress服务暴露控制器traefik">06_K8S_核心插件-ingress(服务暴露)控制器traefik</h1>
+<h2 id="1-k8s两种服务暴露方法">1 K8S两种服务暴露方法</h2>
+<p>前面通过coredns在k8s集群内部做了serviceNAME和serviceIP之间的自动映射,使得不需要记录service的IP地址,只需要通过serviceNAME就能访问POD
+但是在K8S集群外部,显然是不能通过serviceNAME或serviceIP来解析服务的
+要在K8S集群外部来访问集群内部的资源,需要用到服务暴露功能</p>
+<h3 id="11-k8s常用的两种服务暴露方法">1.1 K8S常用的两种服务暴露方法</h3>
+<ol>
+<li>使用NodePort型的Service
+nodeport型的service原理相当于端口映射，将容器内的端口映射到宿主机上的某个端口。
+K8S集群不能使用ipvs的方式调度,必须使用iptables,且只支持rr模式</li>
+<li>使用Ingress资源
+Ingress是K8S API标准资源之一,也是核心资源
+是一组基于域名和URL路径的规则,把用户的请求转发至指定的service资源
+可以将集群外部的请求流量,转发至集群内部,从而实现'<strong>服务暴露</strong>'</li>
+</ol>
+<h3 id="12-ingress控制器是什么">1.2 Ingress控制器是什么</h3>
+<p>可以理解为一个简化版本的nginx
+Ingress控制器是能够为Ingress资源健康某套接字,然后根据ingress规则匹配机制路由调度流量的一个组件
+只能工作在七层网络下，建议暴露http, https可以使用前端nginx来做证书方面的卸载
+我们使用的ingress控制器为**<code>Traefik</code>**
+traefik：<a href="https://github.com/containous/traefik" target="_blank" rel="noopener noreffer">GITHUB官方地址</a></p>
+<h2 id="2-部署traefik">2 部署traefik</h2>
+<p>同样的,现在<code>7.200</code>完成docker镜像拉取和配置清单创建,然后再到任意master节点执行配置清单</p>
+<h3 id="21-准备docker镜像">2.1 准备docker镜像</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker pull traefik:v1.7.2-alpine
+docker tag  traefik:v1.7.2-alpine harbor.zq.com/public/traefik:v1.7.2
+docker push harbor.zq.com/public/traefik:v1.7.2
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="22-创建资源清单">2.2 创建资源清单</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir -p /data/k8s-yaml/traefik
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="221-rbac授权清单">2.2.1 rbac授权清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/data/k8s-yaml/traefik/rbac.yaml &lt;&lt;EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik-ingress-controller
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: traefik-ingress-controller
+rules:
+  - apiGroups:
+      - &#34;&#34;
+    resources:
+      - services
+      - endpoints
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: traefik-ingress-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: traefik-ingress-controller
+subjects:
+- kind: ServiceAccount
+  name: traefik-ingress-controller
+  namespace: kube-system
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="222-delepoly资源清单">2.2.2 delepoly资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/data/k8s-yaml/traefik/ds.yaml &lt;&lt;EOF
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: traefik-ingress
+  namespace: kube-system
+  labels:
+    k8s-app: traefik-ingress
+spec:
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-ingress
+        name: traefik-ingress
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: harbor.zq.com/public/traefik:v1.7.2
+        name: traefik-ingress
+        ports:
+        - name: controller
+          containerPort: 80
+          hostPort: 81
+        - name: admin-web
+          containerPort: 8080
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+        args:
+        - --api
+        - --kubernetes
+        - --logLevel=INFO
+        - --insecureskipverify=true
+        - --kubernetes.endpoint=https://10.4.7.10:7443
+        - --accesslog
+        - --accesslog.filepath=/var/log/traefik_access.log
+        - --traefiklog
+        - --traefiklog.filepath=/var/log/traefik.log
+        - --metrics.prometheus
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="223-service清单">2.2.3 service清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/data/k8s-yaml/traefik/svc.yaml &lt;&lt;EOF
+kind: Service
+apiVersion: v1
+metadata:
+  name: traefik-ingress-service
+  namespace: kube-system
+spec:
+  selector:
+    k8s-app: traefik-ingress
+  ports:
+    - protocol: TCP
+      port: 80
+      name: controller
+    - protocol: TCP
+      port: 8080
+      name: admin-web
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="224-ingress清单">2.2.4 ingress清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/data/k8s-yaml/traefik/ingress.yaml &lt;&lt;EOF
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-web-ui
+  namespace: kube-system
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: traefik.zq.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: traefik-ingress-service
+          servicePort: 8080
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="23-创建资源">2.3 创建资源</h3>
+<h4 id="231-任意节点上创建资源">2.3.1 任意节点上创建资源</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create -f http://k8s-yaml.zq.com/traefik/rbac.yaml
+kubectl create -f http://k8s-yaml.zq.com/traefik/ds.yaml
+kubectl create -f http://k8s-yaml.zq.com/traefik/svc.yaml
+kubectl create -f http://k8s-yaml.zq.com/traefik/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="232-在前端nginx上做反向代理">2.3.2 在前端nginx上做反向代理</h4>
+<p>在<code>7.11</code>和<code>7.12</code>上,都做反向代理,将泛域名的解析都转发到<code>traefik</code>上去</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/etc/nginx/conf.d/zq.com.conf &lt;&lt;&#39;EOF&#39;
+upstream default_backend_traefik {
+    server 10.4.7.21:81    max_fails=3 fail_timeout=10s;
+    server 10.4.7.22:81    max_fails=3 fail_timeout=10s;
+}
+server {
+    server_name *.zq.com;
+
+    location / {
+        proxy_pass http://default_backend_traefik;
+        proxy_set_header Host       $http_host;
+        proxy_set_header x-forwarded-for $proxy_add_x_forwarded_for;
+    }
+}
+EOF
+# 重启nginx服务
+nginx -t
+nginx -s reload
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="233-在bind9中添加域名解析">2.3.3 在bind9中添加域名解析</h4>
+<p>需要将traefik 服务的解析记录添加的DNS解析中,注意是绑定到VIP上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vi /var/named/zq.com.zone
+........
+traefik            A    10.4.7.10
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>注意前滚serial编号</p>
+</blockquote>
+<p>重启named服务</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">systemctl restart named
+#dig验证解析结果
+[root@hdss7-11 ~]# dig -t A traefik.zq.com +short
+10.4.7.10
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="234-在集群外访问验证">2.3.4 在集群外访问验证</h4>
+<p>在集群外,访问<code>[http://traefik.zq.com](http://traefik.zq.com)</code>,如果能正常显示web页面.说明我们已经暴露服务成功</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/" data-title="06_K8S_核心插件-ingress(服务暴露)控制器traefik" data-hashtags="K8S,转载"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/" data-title="06_K8S_核心插件-ingress(服务暴露)控制器traefik" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/" data-title="06_K8S_核心插件-ingress(服务暴露)控制器traefik" data-image="https://github.com/traefik/traefik/raw/master/docs/content/assets/img/traefik-architecture.png"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/" data-title="06_K8S_核心插件-ingress(服务暴露)控制器traefik"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/07_k8s_web%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8Fdashboard/" class="prev" rel="prev" title="07_K8S_web管理方式dashboard"><i class="fas fa-angle-left fa-fw"></i>07_K8S_web管理方式dashboard</a>
+            <a href="/05_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6coredns%E6%9C%8D%E5%8A%A1/" class="next" rel="next" title="05_K8S_核心插件coredns服务">05_K8S_核心插件coredns服务<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

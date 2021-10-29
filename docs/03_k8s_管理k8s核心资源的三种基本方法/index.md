@@ -1,0 +1,371 @@
+# 03_K8S_管理k8s核心资源的三种基本方法
+
+# 03_K8S_管理k8s核心资源的三种基本方法
+
+## 1. 方法分类
+
+1. 陈述式--主要依赖命令行工具`kubectl`进行管理
+   - 优点
+     可以满足90%以上的使用场景
+     对资源的增、删、查操作比较容易
+   - 缺点
+     命令冗长，复杂，难以记忆
+     特定场景下，无法实现管理需求
+     对资源的修改麻烦，需要patch来使用json串更改。
+2. 声明式-主要依赖统一资源配置清单进行管理
+3. GUI式-主要依赖图形化操作界面进行管理
+
+## 2. kubectl命令行工具
+
+[kubectl中文命令说明](http://docs.kubernetes.org.cn/683.html)
+
+### 2.0 增加kubectl自动补全
+
+二进制安装的k8s,kubectl工具没有自动补全功能(其他方式安装的未验证),可以使用以下方式开启命令自动补全
+
+```
+source <(kubectl completion bash)
+```
+
+### 2.1 get 查
+
+#### 2.1.1 查看名称空间`namespace`
+
+```
+~]# kubectl get namespaces
+NAME              STATUS   AGE
+default           Active   4d11h
+kube-node-lease   Active   4d11h
+kube-public       Active   4d11h
+kube-system       Active   4d11h
+# namespaces可以简写为ns
+kubectl get ns
+# 但不是所有资源都可以简写,所以我还是习惯tab补全名
+```
+
+#### 2.1.2 查看namespace中的资源
+
+**`get all`查询所有资源**
+
+```
+kubectl get all
+# 默认是查询default名称空间的资源,查询其他名称空间,需要加 -n namespaces
+kubectl get all -n kube-public
+```
+
+![](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8-20211029172045383.png)
+
+> 一般要养成习惯,`get`任何资源的时候,都要加上-n参数指定名称空间
+
+**`get pods`查询所有pod**
+
+```
+podsecuritypolicies.extensions
+~]# kubectl get pods -n default
+NAME             READY   STATUS    RESTARTS   AGE
+nginx-ds-p66qh   1/1     Running   0          2d10h
+```
+
+**`get nodes`查询所有node节点**
+
+```
+~]# kubectl get nodes -n default
+NAME                STATUS     ROLES         AGE     VERSION
+hdss7-21.host.com   Ready      master,node   2d12h   v1.15.5
+hdss7-22.host.com   NotReady   <none>        2d12h   v1.15.5
+```
+
+#### 2.1.3 `-o yaml`查看资源配置清单详细信息
+
+`-o yaml` 可以查看yaml格式的资源配置清单详情
+
+```
+# 查看POD的清单
+~]# kubectl -n kube-public get pod nginx-dp-568f8dc55-jk6nb  -o yaml
+# 查看deploy的清单
+~]# kubectl -n kube-public get deploy nginx-dp -o yaml
+# 查看service的清单
+~]# kubectl -n kube-public get service -o yaml -n kube-public
+```
+
+### 2.2 创建删除名称空间
+
+**`create namespace`创建名称空间**
+
+```
+~]# kubectl create namespace app
+namespace/app created
+~]# kubectl get namespaces
+NAME              STATUS   AGE
+app               Active   16s
+default           Active   4d11h
+kube-node-lease   Active   4d11h
+kube-public       Active   4d11h
+kube-system       Active   4d11h
+```
+
+**`delete namespaces`删除名称空间**
+
+```
+~]# kubectl delete namespaces app
+namespace "app" deleted
+~]# kubectl get namespaces
+NAME              STATUS   AGE
+default           Active   4d11h
+kube-node-lease   Active   4d11h
+kube-public       Active   4d11h
+kube-system       Active   4d11h
+```
+
+### 2.3 管理POD控制器和POD
+
+以**deployment**类型的POD控制为例,关于POD控制器类型,请参考官网
+**创建POD控制器**
+
+```
+kubectl create deployment nginx-dp --image=harbor.zq.com/public/nginx:v1.17.9 -n kube-public
+~]# kubectl get deployments -n kube-public
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-dp   1/1     1            1           18s
+~]# kubectl get pod  -n kube-public
+NAME                       READY   STATUS    RESTARTS   AGE
+nginx-dp-568f8dc55-9qt4j   1/1     Running   0          7m50s
+```
+
+**`-o wide`查看扩展信息**
+
+```
+# 查看POD控制器信息,比基础信息多出了镜像来源,选择器等
+kubectl get deployments -o wide -n kube-public
+# 查看POD信息,比基础信息多出了POD的IP地址,节点位置等,
+kubectl get pod -o wide -n kube-public
+```
+
+![](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113374-ce95bc70-6c49-4945-ba03-57dd24fca151.png)
+**`describe`查看资源详细信息**
+
+```
+# 查看POD控制器详细信息
+kubectl describe deployments nginx-dp -n kube-public
+# 查看POD详细信息
+kubectl describe pod nginx-dp-568f8dc55-9qt4j -n kube-public
+```
+
+**`exec`进入某个POD**
+
+```
+kubectl -n kube-public exec -it  nginx-dp-568f8dc55-9qt4j bash
+```
+
+> 用法与docker exec类似
+
+**`scale` 扩容POD**
+
+```
+kubectl -n kube-public scale deployments nginx-dp --replicas=2
+```
+
+**`delete`删除POD和POD控制器**
+
+```
+~]# kubectl -n kube-public delete pods nginx-dp-568f8dc55-9qt4j
+pod "nginx-dp-568f8dc55-9qt4j" deleted
+~]# kubectl -n kube-public get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+nginx-dp-568f8dc55-hnrxr   1/1     Running   0          13s
+~]# kubectl -n kube-public delete deployments nginx-dp
+deployment.extensions "nginx-dp" deleted
+~]# kubectl -n kube-public get pods
+No resources found.
+```
+
+> 在POD控制器存在的情况下,删除了POD,会由POD控制器再创建出新的POD
+> 删除POD控制器后,对应的POD也会一并删除
+
+### 2.4 service资源管理
+
+从上面的POD删除重建的过程可知,虽然POD会被POD控制器拉起,但是存放的NODE或POD的IP都是不确定的,那怎么对外稳定的提供服务呢
+这就需要引入**service**的功能了,它相当于一个反向代理,不管后端POD怎么变化,server提供的服务都不会变化,可以为pod资源提供稳定的接入点
+
+#### 2.4.1 创建service资源
+
+```
+~]# kubectl -n kube-public create deployment nginx-dp --image=harbor.zq.com/public/nginx:v1.17.9
+deployment.apps/nginx-dp created
+~]# kubectl -n kube-public expose deployment nginx-dp --port=80
+service/nginx-dp exposed
+~]# kubectl -n kube-public get service
+NAME       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+nginx-dp   ClusterIP   192.168.94.73   <none>        80/TCP    45s
+```
+
+可以看到创建了一个VIP`192.168.94.73`,查看LVS信息,可以看到转发条目
+
+```
+[root@hdss7-21 ~]# ipvsadm -Ln
+IP Virtual Server version 1.2.1 (size=4096)
+......
+TCP  192.168.94.73:80 nq
+  -> 172.7.21.3:80                Masq    1      0          0
+```
+
+#### 2.4.2 扩容POD看service怎么调度
+
+```
+~]# kubectl -n kube-public scale deployment nginx-dp --replicas=2
+deployment.extensions/nginx-dp scaled
+~]# ipvsadm -Ln
+......
+TCP  192.168.94.73:80 nq
+  -> 172.7.21.3:80                Masq    1      0          0
+  -> 172.7.22.4:80                Masq    1      0          0
+```
+
+### 2.5 explain查看属性的定义和用法
+
+查看service资源下metadata的定义及用法
+
+```
+kubectl explain service.metadata
+```
+
+![](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8.png)
+
+## 3 统一资源配置清单
+
+统一资源配置清单,就是一个yaml格式的文件,文件中按指定格式定义了所需内容,然后通过命令行工具`kubectl`应用即可
+
+### 3.1 语法格式
+
+```
+kubectl create/apply/delete -f /path_to/xxx.yaml
+```
+
+#### 3.1.1 学习方法
+
+1. 忌一来就无中生有自己写,容易把自己憋死
+1. 先看官方或别人写的,能读懂即可
+1. 别人的读懂了能改改内容即可
+1. 遇到不懂的用`kubectl explain`查帮助
+
+### 3.2 初略用法
+
+#### 3.2.1 查看已有资源的资源配置清单
+
+```
+kubuctl get svc nginx-dp -o yaml -n kube-pubic
+```
+
+![](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113379-1967bb9e-6796-4e01-82a5-c07e5d7b15fd.png)
+
+> 必须存在的四个部分为:
+> apiVersion
+> kind
+> metadata
+> spec
+
+资源配置清单中有许多项目,如果想查看资源配置清单中某一项的意义或该项下面可以配置的内容,可以使用`explain`来获取
+
+```
+kubectl explain service.kind
+```
+
+#### 3.2.2 创建并应用资源配置清单
+
+**创建yaml配置文件**
+
+```
+cat >nginx-ds-svc.yaml <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx-ds
+  name: nginx-ds
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx-ds
+  type: ClusterIP
+EOF
+```
+
+**应用配置创建资源**
+
+```
+kubectl create -f nginx-ds-svc.yaml
+# 或
+kubectl apply -f nginx-ds-svc.yaml
+# 查看结果
+[root@hdss7-21 ~]# kubectl  get -f nginx-ds-svc.yaml
+NAME       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+nginx-ds   ClusterIP   192.168.48.225   <none>        80/TCP    24s
+```
+
+**create和apply的区别**
+create命令和apply命令都会根据配置文件创建资源,但是:
+
+1. create命令只会新建,如果资源文件已使用过,则会提示错误
+1. 如果资源不存在,apply命令会新建,如果已存在,则会根据配置修改
+1. 如果是create命令新建的资源,使用apply修改时会提示
+
+```
+[root@hdss7-21 ~]# kubectl apply -f nginx-ds-svc.yaml
+Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+```
+
+1. 意思是如果要用apply修改,就应该用apply命令创建,或者create创建时加`--save-config`参数
+1. 所以养成使用apply命令的习惯即可
+
+#### 3.2.3 修改资源配置清单
+
+**在线修改**
+使用edit命令,会打开一个在线的yaml格式文档,直接修改该文档后,修改立即生效
+
+```
+kubectl edit svc nginx-ds -n default
+# 查看结果
+[root@hdss7-21 ~]# kubectl get service nginx-ds
+NAME       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+nginx-ds   ClusterIP   192.168.48.225   <none>        8080/TCP   2m37s
+```
+
+**离线修改**
+离线修改就是修改原来的`yaml`文件,然后使用`apply`命令重新应用配置即可
+
+```
+#将对外暴露的端口改为881
+sed -i 's#port: 80#port: 881#g' nginx-ds-svc.yaml
+# edit修改过资源,再用apply修改,会报错
+[root@hdss7-21 ~]# kubectl apply -f nginx-ds-svc.yaml
+The Service "nginx-ds" is invalid:
+* spec.ports[0].name: Required value
+* spec.ports[1].name: Required value
+# 加上--force强制修改选项
+[root@hdss7-21 ~]# kubectl apply -f nginx-ds-svc.yaml --force
+service/nginx-ds configured
+# 查看结果
+[root@hdss7-21 ~]# kubectl get service nginx-ds
+NAME       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+nginx-ds   ClusterIP   192.168.142.98   <none>        881/TCP   8s
+```
+
+#### 3.2.4 删除资源配置清单
+
+**陈述式删除**
+即:直接删除创建好的资源
+
+```
+kubectl delete svc nginx-ds -n default
+```
+
+**声明式删除**
+即:通过制定配置文件的方式,删除用该配置文件创建出的资源
+
+```
+kubectl delete -f nginx-ds-svc.yaml
+```

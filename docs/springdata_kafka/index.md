@@ -1,30 +1,5 @@
----
-weight: 1000
-title: "10_springdata_kafka"
-subtitle: ""
-date: 2019-10-27T15:58:21+08:00
-lastmod: 2019-10-27T15:58:21+08:00
-draft: false
-author: "山脚下的脚下山"
-authorLink: ""
-description: ""
+# SpringData_kafka
 
-tags: ["kafka"]
-categories: ["spring"]
-
-hiddenFromHomePage: false
-hiddenFromSearch: false
-
-featuredImage: ""
-featuredImagePreview: ""
-
-toc:
-  enable: true
-math:
-  enable: false
-lightgallery: false
-license: ""
----
 # Spring kafka 要点
 
 > 以下内容记录了一些工作中遇到的kafka的要点（个人认为）

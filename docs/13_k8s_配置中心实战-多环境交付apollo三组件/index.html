@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>13_K8S_配置中心实战-多环境交付apollo三组件 - 山脚下的脚下山</title><meta name="Description" content="转载，原为老男孩教育视频内容"><meta property="og:title" content="13_K8S_配置中心实战-多环境交付apollo三组件" />
+<meta property="og:description" content="转载，原为老男孩教育视频内容" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-01T15:58:21+08:00" />
+<meta property="article:modified_time" content="2020-10-01T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="13_K8S_配置中心实战-多环境交付apollo三组件"/>
+<meta name="twitter:description" content="转载，原为老男孩教育视频内容"/>
+<meta name="application-name" content="山脚下の脚下山">
+<meta name="apple-mobile-web-app-title" content="山脚下の脚下山"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" /><link rel="prev" href="https://scemsjyd.com/14_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-%E9%83%A8%E7%BD%B2prometheus/" /><link rel="next" href="https://scemsjyd.com/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "13_K8S_配置中心实战-多环境交付apollo三组件",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 转载","wordcount":  3778 ,
+        "url": "https:\/\/scemsjyd.com\/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6\/","datePublished": "2020-10-01T15:58:21+08:00","dateModified": "2020-10-01T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "老男孩"
+            },"description": "转载，原为老男孩教育视频内容"
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> 主页 </a><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/" title="">主页</a><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">13_K8S_配置中心实战-多环境交付apollo三组件</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://space.bilibili.com/394449264" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>老男孩</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BD%AC%E8%BD%BD/"><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-01">2020-10-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3778 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 8 分钟&nbsp;<span id="/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" class="leancloud_visitors" data-flag-title="13_K8S_配置中心实战-多环境交付apollo三组件">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1环境准备工作">1.环境准备工作</a>
+      <ul>
+        <li><a href="#11-zk环境拆分">1.1 zk环境拆分</a></li>
+        <li><a href="#12-namespace分环境">1.2 namespace分环境</a></li>
+        <li><a href="#13-数据库拆分">1.3 数据库拆分</a>
+          <ul>
+            <li><a href="#131-修改初始化脚本并导入">1.3.1 修改初始化脚本并导入</a></li>
+            <li><a href="#132-修改数据库中eureka地址">1.3.2 修改数据库中eureka地址</a></li>
+          </ul>
+        </li>
+        <li><a href="#14-变动原有资源配置启动">1.4 变动原有资源配置启动</a>
+          <ul>
+            <li><a href="#141-修改portal的cm资源配置清单">1.4.1 修改portal的cm资源配置清单</a></li>
+            <li><a href="#142-任意节点应用修改">1.4.2 任意节点应用修改</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#2-部署新环境的apollo服务">2 部署新环境的APOLLO服务</a>
+      <ul>
+        <li><a href="#21-先创建出所需目录和文件">2.1 先创建出所需目录和文件</a></li>
+        <li><a href="#22-部署test环境的configservice">2.2 部署test环境的configservice</a>
+          <ul>
+            <li><a href="#221-修改configmap资源清单">2.2.1 修改configmap资源清单</a></li>
+            <li><a href="#222-修改dpnsinress资源清单">2.2.2 修改dp,ns,inress资源清单</a></li>
+            <li><a href="#223-应用资源配置">2.2.3 应用资源配置</a></li>
+          </ul>
+        </li>
+        <li><a href="#23-部署test环境的adminservice">2.3 部署test环境的adminservice</a>
+          <ul>
+            <li><a href="#231-修改configmap资源清单">2.3.1 修改configmap资源清单</a></li>
+            <li><a href="#232-修改dp资源清单">2.3.2 修改dp资源清单</a></li>
+            <li><a href="#233-应用资源配置清单">2.3.3 应用资源配置清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#24-部署prod环境的configservice">2.4 部署prod环境的configservice</a>
+          <ul>
+            <li><a href="#241-修改configmap资源清单">2.4.1 修改configmap资源清单</a></li>
+            <li><a href="#242-修改dpnsinress资源清单">2.4.2 修改dp,ns,inress资源清单</a></li>
+            <li><a href="#243-应用资源配置">2.4.3 应用资源配置</a></li>
+          </ul>
+        </li>
+        <li><a href="#25-部署prod环境的adminservice">2.5 部署prod环境的adminservice</a>
+          <ul>
+            <li><a href="#251-修改configmap资源清单">2.5.1 修改configmap资源清单</a></li>
+            <li><a href="#252-修改dp资源清单">2.5.2 修改dp资源清单</a></li>
+            <li><a href="#253-应用资源配置清单">2.5.3 应用资源配置清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#26-启动portal服务">2.6 启动portal服务</a>
+          <ul>
+            <li><a href="#261-清理数据库">2.6.1 清理数据库</a></li>
+            <li><a href="#262-启动portal">2.6.2 启动portal</a></li>
+            <li><a href="#263-验证部署结果">2.6.3 验证部署结果</a></li>
+            <li><a href="#264-添加test环境的配置">2.6.4 添加test环境的配置</a></li>
+            <li><a href="#265-添加prod环境的配置">2.6.5 添加prod环境的配置</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-分环境交付dubbo服务">3 分环境交付dubbo服务</a>
+      <ul>
+        <li><a href="#31-交付test环境dubbo服务">3.1 交付test环境dubbo服务</a>
+          <ul>
+            <li><a href="#311-修改server资源配置清单">3.1.1 修改server资源配置清单</a></li>
+            <li><a href="#312-修改consumer资源配置清单">3.1.2 修改consumer资源配置清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#32-交付prod环境dubbo服务">3.2 交付prod环境dubbo服务</a>
+          <ul>
+            <li><a href="#321-修改server资源配置清单">3.2.1 修改server资源配置清单</a></li>
+            <li><a href="#322-修改consumer资源配置清单">3.2.2 修改consumer资源配置清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#33-关于dp中的apollo域名">3.3 关于dp中的apollo域名</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-验证并模拟发布">4 验证并模拟发布</a>
+      <ul>
+        <li><a href="#41-验证访问两个环境">4.1 验证访问两个环境</a></li>
+        <li><a href="#42-模拟发版">4.2 模拟发版：</a>
+          <ul>
+            <li><a href="#421-用jenkins构建新镜像">4.2.1 用jenkins构建新镜像</a></li>
+            <li><a href="#422-发布test环境">4.2.2 发布test环境</a></li>
+            <li><a href="#423-发布prod环境">4.2.3 发布prod环境</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="13_k8s_配置中心实战-多环境交付apollo三组件">13_K8S_配置中心实战-多环境交付apollo三组件</h1>
+<h2 id="1环境准备工作">1.环境准备工作</h2>
+<p>先删除infra名称空间中部署的apollo服务</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl delete -f http://k8s-yaml.zq.com/apollo-configservice/dp.yaml
+kubectl delete -f http://k8s-yaml.zq.com/apollo-adminservice/dp.yaml
+kubectl delete -f http://k8s-yaml.zq.com/apollo-portal/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>要进行分环境，需要将现有实验环境进行拆分</p>
+<ol>
+<li>portal服务，可以各个环境共用，只部署一套</li>
+<li>adminservice和configservice必须要分开每个环境一套</li>
+<li>zk和namespace也要区分环境</li>
+</ol>
+<h3 id="11-zk环境拆分">1.1 zk环境拆分</h3>
+<p>zk拆分最简单,只需要在dns那里修改解析规则即可：
+同时添加好apollo、dubbo两个环境的域名解析</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vi /var/named/zq.com.zone
+zk-test				A    10.4.7.11
+zk-prod				A    10.4.7.12
+apollo-testconfig	A    10.4.7.10
+apollo-prodconfig	A    10.4.7.10
+dubbo-testdemo		A    10.4.7.10
+dubbo-proddemo		A    10.4.7.10
+# 重启服务
+systemctl restart named.service
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="12-namespace分环境">1.2 namespace分环境</h3>
+<p><strong>分别创建test 和prod两个名称空间</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create ns test
+kubectl create ns prod
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>给新名称空间创建secret授权</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create secret docker-registry harbor \
+    --docker-server=harbor.zq.com \
+    --docker-username=harbor \
+    --docker-password=Harbor12345 \
+    -n test
+kubectl create secret docker-registry harbor \
+    --docker-server=harbor.zq.com \
+    --docker-username=harbor \
+    --docker-password=Harbor12345 \
+    -n prod
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="13-数据库拆分">1.3 数据库拆分</h3>
+<p>因实验资源有限，故使用分库的形式模拟分环境</p>
+<h4 id="131-修改初始化脚本并导入">1.3.1 修改初始化脚本并导入</h4>
+<p>数据库再<code>7.11</code>上哦
+分别创建ApolloConfigTestDB和ApolloConfigProdDB</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 复制为新sql
+cp apolloconfig.sql apolloconfigTest.sql
+cp apolloconfig.sql apolloconfigProd.sql
+# 替换关键字
+sed -i &#39;s#ApolloConfigDB#ApolloConfigTestDB#g&#39; apolloconfigTest.sql
+sed -i &#39;s#ApolloConfigDB#ApolloConfigProdDB#g&#39; apolloconfigProd.sql
+# 导入数据库
+mysql -uroot -p123456 &lt; apolloconfigTest.sql
+mysql -uroot -p123456 &lt; apolloconfigProd.sql
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="132-修改数据库中eureka地址">1.3.2 修改数据库中eureka地址</h4>
+<p>这里用到了两个新的域名，域名解析已经在添加zk域名那里一起加了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mysql -uroot -p123456
+# 1.修改eureka注册中心配置
+&gt; update ApolloConfigProdDB.ServerConfig set ServerConfig.Value=&#34;http://apollo-prodconfig.zq.com/eureka&#34; where ServerConfig.Key=&#34;eureka.service.url&#34;;
+&gt; update ApolloConfigTestDB.ServerConfig set ServerConfig.Value=&#34;http://apollo-testconfig.zq.com/eureka&#34; where ServerConfig.Key=&#34;eureka.service.url&#34;;
+# 2.在portl库中增加支持fat环境和pro环境
+&gt; update ApolloPortalDB.ServerConfig set Value=&#39;fat,pro&#39; where Id=1;
+# 3.授权数据库访问用户
+&gt; grant INSERT,DELETE,UPDATE,SELECT on ApolloConfigProdDB.* to &#34;apollo&#34;@&#34;10.4.7.%&#34;;
+&gt; grant INSERT,DELETE,UPDATE,SELECT on ApolloConfigTestDB.* to &#34;apollo&#34;@&#34;10.4.7.%&#34;;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="14-变动原有资源配置启动">1.4 变动原有资源配置启动</h3>
+<h4 id="141-修改portal的cm资源配置清单">1.4.1 修改portal的cm资源配置清单</h4>
+<p><code>7.200</code>运维机操作,增加两个新环境的支持</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/apollo-portal/
+sed -i &#39;$a\    fat.meta=http://apollo-testconfig.zq.com&#39; cm.yaml
+sed -i &#39;$a\    pro.meta=http://apollo-prodconfig.zq.com&#39; cm.yaml
+# 查看结果
+apollo-portal]# tail -4 cm.yaml
+  apollo-env.properties: |
+    dev.meta=http://apollo-config.zq.com
+    fat.meta=http://apollo-testconfig.zq.com
+    pro.meta=http://apollo-prodconfig.zq.com
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="142-任意节点应用修改">1.4.2 任意节点应用修改</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/apollo-portal/cm.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="2-部署新环境的apollo服务">2 部署新环境的APOLLO服务</h2>
+<p><code>7.200</code>运维机操作,</p>
+<h3 id="21-先创建出所需目录和文件">2.1 先创建出所需目录和文件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml
+mkdir -p test/{apollo-adminservice,apollo-configservice,dubbo-demo-server,dubbo-demo-consumer}
+mkdir -p prod/{apollo-adminservice,apollo-configservice,dubbo-demo-server,dubbo-demo-consumer}
+# 查看结果
+k8s-yaml]# ll {test,prod}
+prod:
+total 0
+drwxr-xr-x 2 root root 6 May 13 22:50 apollo-adminservice
+drwxr-xr-x 2 root root 6 May 13 22:50 apollo-configservice
+drwxr-xr-x 2 root root 6 May 13 22:50 dubbo-demo-consumer
+drwxr-xr-x 2 root root 6 May 13 22:50 dubbo-demo-server
+test:
+total 0
+drwxr-xr-x 2 root root 6 May 13 22:50 apollo-adminservice
+drwxr-xr-x 2 root root 6 May 13 22:50 apollo-configservice
+drwxr-xr-x 2 root root 6 May 13 22:50 dubbo-demo-consumer
+drwxr-xr-x 2 root root 6 May 13 22:50 dubbo-demo-server
+</code></pre></td></tr></table>
+</div>
+</div><p>将之前的资源配置清单cp到对应环境的目录中，便于修改：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cp /data/k8s-yaml/apollo-configservice/* ./test/apollo-configservice/
+cp /data/k8s-yaml/apollo-configservice/* ./prod/apollo-configservice/
+cp /data/k8s-yaml/apollo-adminservice/* ./test/apollo-adminservice/
+cp /data/k8s-yaml/apollo-adminservice/* ./prod/apollo-adminservice/
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="22-部署test环境的configservice">2.2 部署test环境的configservice</h3>
+<h4 id="221-修改configmap资源清单">2.2.1 修改configmap资源清单</h4>
+<p>要修改ns，数据库库名，eureka地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/test/apollo-configservice/
+sed -ri &#39;s#(namespace:) infra#\1 test#g&#39; cm.yaml
+sed -i &#39;s#ApolloConfigDB#ApolloConfigTestDB#g&#39; cm.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-testconfig.zq.com#g&#39; cm.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="222-修改dpnsinress资源清单">2.2.2 修改dp,ns,inress资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 1.dp只需要修改namesapce空间
+sed -ri &#39;s#(namespace:) infra#\1 test#g&#39; dp.yaml
+# 2.svc同样只需要修改namespace
+sed -ri &#39;s#(namespace:) infra#\1 test#g&#39; svc.yaml
+# 3.ingress需要修改namespace和域名
+sed -ri &#39;s#(namespace:) infra#\1 test#g&#39; ingress.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-testconfig.zq.com#g&#39; ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="223-应用资源配置">2.2.3 应用资源配置</h4>
+<p>任意节点应用配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/test/apollo-configservice/cm.yaml
+kubectl apply -f http://k8s-yaml.zq.com/test/apollo-configservice/dp.yaml
+kubectl apply -f http://k8s-yaml.zq.com/test/apollo-configservice/svc.yaml
+kubectl apply -f http://k8s-yaml.zq.com/test/apollo-configservice/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>浏览器检查
+浏览器输入<a href="http://apollo-testconfig.zq.com," target="_blank" rel="noopener noreffer">http://apollo-testconfig.zq.com,</a>查看测试环境的apollo注册中心是否已有服务注册<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-0b118a7a-ef5b-4ced-914e-3237314335df.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-0b118a7a-ef5b-4ced-914e-3237314335df.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-0b118a7a-ef5b-4ced-914e-3237314335df.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-0b118a7a-ef5b-4ced-914e-3237314335df.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-0b118a7a-ef5b-4ced-914e-3237314335df.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-0b118a7a-ef5b-4ced-914e-3237314335df.png" />
+服务已经注册进来了</p>
+<h3 id="23-部署test环境的adminservice">2.3 部署test环境的adminservice</h3>
+<h4 id="231-修改configmap资源清单">2.3.1 修改configmap资源清单</h4>
+<p>要修改ns，数据库库名，eureka地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/test/apollo-adminservice/
+sed -ri &#39;s#(namespace:) infra#\1 test#g&#39; cm.yaml
+sed -i &#39;s#ApolloConfigDB#ApolloConfigTestDB#g&#39; cm.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-testconfig.zq.com#g&#39; cm.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="232-修改dp资源清单">2.3.2 修改dp资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 1.dp只需要修改namesapce空间
+sed -ri &#39;s#(namespace:) infra#\1 test#g&#39; dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="233-应用资源配置清单">2.3.3 应用资源配置清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/test/apollo-adminservice/cm.yaml
+kubectl apply -f http://k8s-yaml.zq.com/test/apollo-adminservice/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>浏览器检查:</strong>
+浏览器输入<a href="http://apollo-testconfig.zq.com," target="_blank" rel="noopener noreffer">http://apollo-testconfig.zq.com,</a>查看测试环境的apollo注册中心是否已有adminservice服务注册</p>
+<h3 id="24-部署prod环境的configservice">2.4 部署prod环境的configservice</h3>
+<p>套路基本上都是一样使用的</p>
+<h4 id="241-修改configmap资源清单">2.4.1 修改configmap资源清单</h4>
+<p>要修改ns，数据库库名，eureka地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/prod/apollo-configservice/
+sed -ri &#39;s#(namespace:) infra#\1 prod#g&#39; cm.yaml
+sed -i &#39;s#ApolloConfigDB#ApolloConfigProdDB#g&#39; cm.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-prodconfig.zq.com#g&#39; cm.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="242-修改dpnsinress资源清单">2.4.2 修改dp,ns,inress资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 1.dp只需要修改namesapce空间
+sed -ri &#39;s#(namespace:) infra#\1 prod#g&#39; dp.yaml
+# 2.svc同样只需要修改namespace
+sed -ri &#39;s#(namespace:) infra#\1 prod#g&#39; svc.yaml
+# 3.ingress需要修改namespace和域名
+sed -ri &#39;s#(namespace:) infra#\1 prod#g&#39; ingress.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-prodconfig.zq.com#g&#39; ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="243-应用资源配置">2.4.3 应用资源配置</h4>
+<p>任意节点应用配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/prod/apollo-configservice/cm.yaml
+kubectl apply -f http://k8s-yaml.zq.com/prod/apollo-configservice/dp.yaml
+kubectl apply -f http://k8s-yaml.zq.com/prod/apollo-configservice/svc.yaml
+kubectl apply -f http://k8s-yaml.zq.com/prod/apollo-configservice/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>浏览器检查
+浏览器输入<a href="http://apollo-prodconfig.zq.com," target="_blank" rel="noopener noreffer">http://apollo-prodconfig.zq.com,</a>查看测试环境的apollo注册中心是否已有服务注册<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-5fe92a5d-c490-427f-801b-c3729589869a.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-5fe92a5d-c490-427f-801b-c3729589869a.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-5fe92a5d-c490-427f-801b-c3729589869a.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-5fe92a5d-c490-427f-801b-c3729589869a.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-5fe92a5d-c490-427f-801b-c3729589869a.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746078-5fe92a5d-c490-427f-801b-c3729589869a.png" />
+服务已经注册进来了</p>
+<h3 id="25-部署prod环境的adminservice">2.5 部署prod环境的adminservice</h3>
+<h4 id="251-修改configmap资源清单">2.5.1 修改configmap资源清单</h4>
+<p>要修改ns，数据库库名，eureka地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/prod/apollo-adminservice/
+sed -ri &#39;s#(namespace:) infra#\1 prod#g&#39; cm.yaml
+sed -i &#39;s#ApolloConfigDB#ApolloConfigProdDB#g&#39; cm.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-prodconfig.zq.com#g&#39; cm.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="252-修改dp资源清单">2.5.2 修改dp资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 1.dp只需要修改namesapce空间
+sed -ri &#39;s#(namespace:) infra#\1 prod#g&#39; dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="253-应用资源配置清单">2.5.3 应用资源配置清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/prod/apollo-adminservice/cm.yaml
+kubectl apply -f http://k8s-yaml.zq.com/prod/apollo-adminservice/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>浏览器检查:</strong>
+浏览器输入<a href="http://apollo-prodconfig.zq.com," target="_blank" rel="noopener noreffer">http://apollo-prodconfig.zq.com,</a>查看测试环境的apollo注册中心是否已有adminservice服务注册</p>
+<h3 id="26-启动portal服务">2.6 启动portal服务</h3>
+<p>两个服务都已经注册进来了后，删除portal数据库中存储的关于之前项目的配置，再来启动portal项目</p>
+<h4 id="261-清理数据库">2.6.1 清理数据库</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mysql -uroot -p123456
+&gt; use ApolloPortalDB;
+&gt; truncate table App;
+&gt; truncate table AppNamespace;
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746288-1e756c40-c524-415a-abe2-51ca82250027.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746288-1e756c40-c524-415a-abe2-51ca82250027.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746288-1e756c40-c524-415a-abe2-51ca82250027.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746288-1e756c40-c524-415a-abe2-51ca82250027.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746288-1e756c40-c524-415a-abe2-51ca82250027.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746288-1e756c40-c524-415a-abe2-51ca82250027.png" /></p>
+<h4 id="262-启动portal">2.6.2 启动portal</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/apollo-portal/cm.yaml
+kubectl apply -f http://k8s-yaml.zq.com/apollo-portal/dp.yaml
+kubectl apply -f http://k8s-yaml.zq.com/apollo-portal/svc.yaml
+kubectl apply -f http://k8s-yaml.zq.com/apollo-portal/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="263-验证部署结果">2.6.3 验证部署结果</h4>
+<p>打开<a href="http://apollo-portal.zq.com," target="_blank" rel="noopener noreffer">http://apollo-portal.zq.com,</a>创建两个项目如下:</p>
+<table>
+<thead>
+<tr>
+<th>AppId</th>
+<th>应用名称</th>
+<th>部门</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dubbo-demo-service</td>
+<td>dubbo服务提供者</td>
+<td>研发部</td>
+</tr>
+<tr>
+<td>dubbo-demo-web</td>
+<td>dubbo服务消费者</td>
+<td>运维部</td>
+</tr>
+</tbody>
+</table>
+<p>项目创建成功后,能看到左侧环境列表中有<code>FAT</code>和<code>PRO</code>,表示正确</p>
+<h4 id="264-添加test环境的配置">2.6.4 添加test环境的配置</h4>
+<p><strong>dubbo-demo-service</strong></p>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dubbo.registry</td>
+<td>zookeeper://zk-test.zq.com:2181</td>
+<td>注册中心地址</td>
+</tr>
+<tr>
+<td>dubbo.port</td>
+<td>20880</td>
+<td>dubbo服务监听端口</td>
+</tr>
+</tbody>
+</table>
+<p><strong>dubbo-demo-web</strong></p>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dubbo.registry</td>
+<td>zookeeper://zk-test.zq.com:2181</td>
+<td>注册中心地址</td>
+</tr>
+</tbody>
+</table>
+<h4 id="265-添加prod环境的配置">2.6.5 添加prod环境的配置</h4>
+<p><strong>dubbo-demo-service</strong></p>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dubbo.registry</td>
+<td>zookeeper://zk-prod.zq.com:2181</td>
+<td>注册中心地址</td>
+</tr>
+<tr>
+<td>dubbo.port</td>
+<td>20880</td>
+<td>dubbo服务监听端口</td>
+</tr>
+</tbody>
+</table>
+<p><strong>dubbo-demo-web</strong></p>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dubbo.registry</td>
+<td>zookeeper://zk-prod.zq.com:2181</td>
+<td>注册中心地址</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-分环境交付dubbo服务">3 分环境交付dubbo服务</h2>
+<h3 id="31-交付test环境dubbo服务">3.1 交付test环境dubbo服务</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/
+cp ./dubbo-server/*   ./test/dubbo-demo-server/
+cp ./dubbo-consumer/* ./test/dubbo-demo-consumer/
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="311-修改server资源配置清单">3.1.1 修改server资源配置清单</h4>
+<p>只修改dp的ns配置和apollo配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/test/dubbo-demo-server
+sed -ri &#39;s#(namespace:) app#\1 test#g&#39; dp.yaml
+sed -i &#39;s#Denv=dev#Denv=fat#g&#39; dp.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-testconfig.zq.com#g&#39; dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>任意node应用资源清单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/test/dubbo-demo-server/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="312-修改consumer资源配置清单">3.1.2 修改consumer资源配置清单</h4>
+<p>修改资源清单</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/test/dubbo-demo-consumer
+# 1.修改dp中的ns配置和apollo配置
+sed -ri &#39;s#(namespace:) app#\1 test#g&#39; dp.yaml
+sed -i &#39;s#Denv=dev#Denv=fat#g&#39; dp.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-testconfig.zq.com#g&#39; dp.yaml
+# 2.修改svc中的ns配置
+sed -ri &#39;s#(namespace:) app#\1 test#g&#39; svc.yaml
+# 3.修改ingress中的ns配置和域名
+sed -ri &#39;s#(namespace:) app#\1 test#g&#39; ingress.yaml
+sed -i &#39;s#dubbo-demo.zq.com#dubbo-testdemo.zq.com#g&#39; ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>添加域名解析</p>
+<blockquote>
+<p>由于最开始已经统一做了域名解析,这里就不单独添加了
+如果没有添加域名解析的话,需要去添加<code>dubbo-testdemo.zq.com</code>的解析</p>
+</blockquote>
+<p>任意node应用资源清单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/test/dubbo-demo-consumer/dp.yaml
+kubectl apply -f http://k8s-yaml.zq.com/test/dubbo-demo-consumer/svc.yaml
+kubectl apply -f http://k8s-yaml.zq.com/test/dubbo-demo-consumer/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="32-交付prod环境dubbo服务">3.2 交付prod环境dubbo服务</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/
+cp ./dubbo-server/*   ./prod/dubbo-demo-server/
+cp ./dubbo-consumer/* ./prod/dubbo-demo-consumer/
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="321-修改server资源配置清单">3.2.1 修改server资源配置清单</h4>
+<p>只修改dp的ns配置和apollo配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/prod/dubbo-demo-server
+sed -ri &#39;s#(namespace:) app#\1 prod#g&#39; dp.yaml
+sed -i &#39;s#Denv=dev#Denv=pro#g&#39; dp.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-prodconfig.zq.com#g&#39; dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>任意node应用资源清单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/prod/dubbo-demo-server/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="322-修改consumer资源配置清单">3.2.2 修改consumer资源配置清单</h4>
+<p>修改资源清单</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/prod/dubbo-demo-consumer
+# 1.修改dp中的ns配置和apollo配置
+sed -ri &#39;s#(namespace:) app#\1 prod#g&#39; dp.yaml
+sed -i &#39;s#Denv=dev#Denv=pro#g&#39; dp.yaml
+sed -i &#39;s#apollo-config.zq.com#apollo-prodconfig.zq.com#g&#39; dp.yaml
+# 2.修改svc中的ns配置
+sed -ri &#39;s#(namespace:) app#\1 prod#g&#39; svc.yaml
+# 3.修改ingress中的ns配置和域名
+sed -ri &#39;s#(namespace:) app#\1 prod#g&#39; ingress.yaml
+sed -i &#39;s#dubbo-demo.zq.com#dubbo-proddemo.zq.com#g&#39; ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>添加域名解析</p>
+<blockquote>
+<p>由于最开始已经统一做了域名解析,这里就不单独添加了
+如果没有添加域名解析的话,需要去添加<code>dubbo-proddemo.zq.com</code>的解析</p>
+</blockquote>
+<p>任意node应用资源清单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/prod/dubbo-demo-consumer/dp.yaml
+kubectl apply -f http://k8s-yaml.zq.com/prod/dubbo-demo-consumer/svc.yaml
+kubectl apply -f http://k8s-yaml.zq.com/prod/dubbo-demo-consumer/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="33-关于dp中的apollo域名">3.3 关于dp中的apollo域名</h3>
+<ol>
+<li>dp.yaml中配置的<code>-Dapollo.meta=http://apollo-testconfig.zq.com</code></li>
+<li>其实可以直接使用<code>-Dapollo.meta=http://apollo-configservice:8080</code></li>
+<li>也直接使用svc资源名称调用,这样还可以少走一次外网解析,相当于走内网</li>
+<li>因为不同环境的apollo名称空间都不一样,而svc只在当前namespace中生效</li>
+</ol>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746017-446de116-e33c-48a6-8c10-785b2e3dc6ab.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746017-446de116-e33c-48a6-8c10-785b2e3dc6ab.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746017-446de116-e33c-48a6-8c10-785b2e3dc6ab.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746017-446de116-e33c-48a6-8c10-785b2e3dc6ab.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746017-446de116-e33c-48a6-8c10-785b2e3dc6ab.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601219746017-446de116-e33c-48a6-8c10-785b2e3dc6ab.png" />**</p>
+<h2 id="4-验证并模拟发布">4 验证并模拟发布</h2>
+<h3 id="41-验证访问两个环境">4.1 验证访问两个环境</h3>
+<p>分别访问以下域名,看是否可以出来网页内容
+test：<a href="http://dubbo-testdemo.zq.com/hello?name=noah" target="_blank" rel="noopener noreffer">http://dubbo-testdemo.zq.com/hello?name=noah</a>
+prod：<a href="http://dubbo-proddemo.zq.com/hello?name=noah" target="_blank" rel="noopener noreffer">http://dubbo-proddemo.zq.com/hello?name=noah</a></p>
+<h3 id="42-模拟发版">4.2 模拟发版：</h3>
+<p>任意修改码云上的dubbo-demo-web项目的say方法返回内容
+路径<code>dubbo-client/src/main/java/com/od/dubbotest/action/HelloAction.java</code></p>
+<h4 id="421-用jenkins构建新镜像">4.2.1 用jenkins构建新镜像</h4>
+<p>参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_name</td>
+<td>dubbo-demo-consumer</td>
+</tr>
+<tr>
+<td>image_name</td>
+<td>app/dubbo-demo-consumer</td>
+</tr>
+<tr>
+<td>git_repo</td>
+<td><a href="mailto:git@gitee.com" rel="">git@gitee.com</a>:noah-luo/dubbo-demo-web.git</td>
+</tr>
+<tr>
+<td>git_ver</td>
+<td>apollo</td>
+</tr>
+<tr>
+<td>add_tag</td>
+<td>200513_1808</td>
+</tr>
+<tr>
+<td>mvn_dir</td>
+<td>./</td>
+</tr>
+<tr>
+<td>target_dir</td>
+<td>./dubbo-client/target</td>
+</tr>
+<tr>
+<td>mvn_cmd</td>
+<td>mvn clean package -Dmaven.test.skip=true</td>
+</tr>
+<tr>
+<td>base_image</td>
+<td>base/jre8:8u112</td>
+</tr>
+<tr>
+<td>maven</td>
+<td>3.6.1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="422-发布test环境">4.2.2 发布test环境</h4>
+<p>构建成功，然后我们在测试环境发布此版本镜像
+修改测试环境的dp.yaml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/test/dubbo-demo-consumer
+sed -ri &#39;s#(dubbo-demo-consumer:apollo).*#\1_200513_1808#g&#39; dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>应用修改后的资源配置清单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/test/dubbo-demo-consumer/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>访问<a href="http://dubbo-testdemo.zq.com/hello?name=noah" target="_blank" rel="noopener noreffer">http://dubbo-testdemo.zq.com/hello?name=noah</a>看是否有我们更改的内容</p>
+<h4 id="423-发布prod环境">4.2.3 发布prod环境</h4>
+<p>镜像在测试环境测试没有问题后,直接使用该镜像发布生产环境,不在重新打包,避免发生错误
+同样修改prod环境的dp.yaml,并且应用该资源配置清单</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /data/k8s-yaml/prod/dubbo-demo-server
+sed -ri &#39;s#(dubbo-demo-consumer:apollo).*#\1_200513_1808#g&#39; dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>应用修改后的资源配置清单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/test/dubbo-demo-consumer/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>已经上线到生产环境，这样一套完整的分环境使用apollo配置中心发布流程已经可以使用了，并且真正做到了一次构建，多平台使用</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" data-title="13_K8S_配置中心实战-多环境交付apollo三组件" data-hashtags="K8S,转载"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" data-title="13_K8S_配置中心实战-多环境交付apollo三组件" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" data-title="13_K8S_配置中心实战-多环境交付apollo三组件"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/13_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" data-title="13_K8S_配置中心实战-多环境交付apollo三组件"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/14_k8s_%E7%9B%91%E6%8E%A7%E5%AE%9E%E6%88%98-%E9%83%A8%E7%BD%B2prometheus/" class="prev" rel="prev" title="14_K8S_监控实战-部署prometheus"><i class="fas fa-angle-left fa-fw"></i>14_K8S_监控实战-部署prometheus</a>
+            <a href="/12_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98apollo%E4%B8%89%E7%BB%84%E4%BB%B6/" class="next" rel="next" title="12_K8S_配置中心实战-交付apollo三组件">12_K8S_配置中心实战-交付apollo三组件<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

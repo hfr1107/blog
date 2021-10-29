@@ -23,60 +23,68 @@
                 <img src="https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/k8s/k8s.png" referrerpolicy="no-referrer">
             </div>02_K8S二进制部署实践-1.15.5 1. 部署架构 1.1 架构图 架构说明: etcd至少3台组成一个高可用集群 两台proxy组成高可用代理对外提供V]]></description>
 </item><item>
-    <title>01_springmvc_flow</title>
-    <link>https://scemsjyd.com/01_springmvc_flow/</link>
-    <pubDate>Thu, 27 Oct 2016 15:58:21 &#43;0800</pubDate>
+    <title>03_K8S_管理k8s核心资源的三种基本方法</title>
+    <link>https://scemsjyd.com/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95/</link>
+    <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://scemsjyd.com/01_springmvc_flow/</guid>
-    <description><![CDATA[SpringMVC SpringMVC流程图 SpringMVC 九大组件 翻看SpringMVC源码会发现 DispatcherServlet 用于处理上传请求。处理方法是将普通的request包装成Multipa]]></description>
+    <guid>https://scemsjyd.com/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95/</guid>
+    <description><![CDATA[03_K8S_管理k8s核心资源的三种基本方法 1. 方法分类 陈述式&ndash;主要依赖命令行工具kubectl进行管理 优点 可以满足90%以上的]]></description>
 </item><item>
-    <title>02_springmvc_init</title>
-    <link>https://scemsjyd.com/02_springmvc_init/</link>
-    <pubDate>Fri, 28 Oct 2016 15:58:34 &#43;0800</pubDate>
+    <title>04_K8S_核心网络插件Flannel</title>
+    <link>https://scemsjyd.com/04_k8s_flannel/</link>
+    <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://scemsjyd.com/02_springmvc_init/</guid>
-    <description><![CDATA[DispatcherServlet Init dispatcherServlet是springmvc的核心 servlet的生命周期 ==servlet==的三个重要方法init service destroy 1.]]></description>
+    <guid>https://scemsjyd.com/04_k8s_flannel/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-horizontal-color.png" referrerpolicy="no-referrer">
+            </div>04_K8S_核心网络插件Flannel k8s虽然设计了网络模型,然后将实现方式交给了CNI网络插件,而CNI网络插件的主要目的,就是实现P]]></description>
 </item><item>
-    <title>03_springmvc_handlermapping</title>
-    <link>https://scemsjyd.com/03_springmvc_handlermapping/</link>
-    <pubDate>Sat, 29 Oct 2016 15:58:58 &#43;0800</pubDate>
+    <title>05_K8S_核心插件coredns服务</title>
+    <link>https://scemsjyd.com/05_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6coredns%E6%9C%8D%E5%8A%A1/</link>
+    <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://scemsjyd.com/03_springmvc_handlermapping/</guid>
-    <description><![CDATA[HandlerMapping HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在Ha]]></description>
+    <guid>https://scemsjyd.com/05_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6coredns%E6%9C%8D%E5%8A%A1/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/2018-11-07-coredns-logo.png" referrerpolicy="no-referrer">
+            </div>05_K8S_核心插件CoreDNS服务 1 coredns用途 coredns github地址 coredns都做了什么：Kubernetes内部域名解析原理]]></description>
 </item><item>
-    <title>04_springmvc_handleradapter</title>
-    <link>https://scemsjyd.com/04_springmvc_handleradapter/</link>
-    <pubDate>Sun, 30 Oct 2016 15:59:23 &#43;0800</pubDate>
+    <title>06_K8S_核心插件-ingress(服务暴露)控制器traefik</title>
+    <link>https://scemsjyd.com/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/</link>
+    <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://scemsjyd.com/04_springmvc_handleradapter/</guid>
-    <description><![CDATA[HandlerAdapter HandlerAdapter是处理器适配器，Spring MVC通过HandlerAdapter来实际调用处理函数。它是SpringMvc处]]></description>
+    <guid>https://scemsjyd.com/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="https://github.com/traefik/traefik/raw/master/docs/content/assets/img/traefik-architecture.png" referrerpolicy="no-referrer">
+            </div>06_K8S_核心插件-ingress(服务暴露)控制器traefik 1 K8S两种服务暴露方法 前面通过coredns在k8s集群内部做了se]]></description>
 </item><item>
-    <title>05_springmvc_handlerExceptionResolver</title>
-    <link>https://scemsjyd.com/05_springmvc_handlerexceptionresolver/</link>
-    <pubDate>Tue, 01 Nov 2016 10:59:42 &#43;0800</pubDate>
+    <title>07_K8S_web管理方式dashboard</title>
+    <link>https://scemsjyd.com/07_k8s_web%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8Fdashboard/</link>
+    <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://scemsjyd.com/05_springmvc_handlerexceptionresolver/</guid>
-    <description><![CDATA[HandlerExceptionResolver Spring的处理器异常解析器HandlerExceptionResolver接口的实现负责处理各类控制器执行过程中出现的异常 1 2 3 4 5 public]]></description>
+    <guid>https://scemsjyd.com/07_k8s_web%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8Fdashboard/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="https://d33wubrfki0l68.cloudfront.net/349824f68836152722dab89465835e604719caea/6e0b7/images/docs/ui-dashboard.png" referrerpolicy="no-referrer">
+            </div>07_K8S_web管理方式dashboard dashboard是k8s的可视化管理平台，是三种管理k8s集群方法之一 1 部署dashboar]]></description>
 </item><item>
-    <title>06_springmvc_validator</title>
-    <link>https://scemsjyd.com/06_springmvc_validator/</link>
-    <pubDate>Tue, 01 Nov 2016 15:59:42 &#43;0800</pubDate>
+    <title>08_K8S_交付实战-架构说明并准备zk集群</title>
+    <link>https://scemsjyd.com/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/</link>
+    <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://scemsjyd.com/06_springmvc_validator/</guid>
-    <description><![CDATA[参数校验器 Spring MVC中的参数校验器并没有自己大量从新开发，而是使用了Hibernate-Validator，而Hibernate-Valida]]></description>
+    <guid>https://scemsjyd.com/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/</guid>
+    <description><![CDATA[08_K8S_交付实战-架构说明并准备zk集群 1 交付的服务架构图： 1.1 架构图解 最上面一排为K8S集群外服务 1.1 代码仓库使用基于git的gitee]]></description>
 </item><item>
-    <title>01_finalshell密码破解</title>
-    <link>https://scemsjyd.com/finalshell%E8%A7%A3%E5%AF%86/</link>
-    <pubDate>Thu, 27 Oct 2016 15:58:21 &#43;0800</pubDate>
+    <title>09_K8S_交付实战-交付jenkins到k8s集群</title>
+    <link>https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/</link>
+    <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://scemsjyd.com/finalshell%E8%A7%A3%E5%AF%86/</guid>
-    <description><![CDATA[java解密代码如下： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59]]></description>
+    <guid>https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/</guid>
+    <description><![CDATA[09_K8S_交付实战-交付jenkins到k8s集群 1 准备jenkins镜像 准备镜像的操作在7.200运维机上完成 1.1 下载官方镜像 1 2 3 docker pull]]></description>
 </item><item>
-    <title>02_navicat密码破解</title>
-    <link>https://scemsjyd.com/navicat%E8%A7%A3%E5%AF%86/</link>
-    <pubDate>Thu, 27 Dec 2018 15:58:21 &#43;0800</pubDate>
+    <title>10_K8S_交付实战-流水线构建dubbo服务</title>
+    <link>https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/</link>
+    <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://scemsjyd.com/navicat%E8%A7%A3%E5%AF%86/</guid>
-    <description><![CDATA[navicat 解密 步骤如下 打开链接：https://tool.lu/coderunner/ 粘贴以下代码，修改倒数第二行 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17]]></description>
+    <guid>https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/</guid>
+    <description><![CDATA[10_K8S_交付实战-流水线构建dubbo服务 1 jenkins流水线准备工作 1.1 参数构建要点 jenkins流水线配置的java项目的十个常用]]></description>
 </item></channel>
 </rss>

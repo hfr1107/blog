@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>10_K8S_交付实战-流水线构建dubbo服务 - 山脚下的脚下山</title><meta name="Description" content="转载，原为老男孩教育视频内容"><meta property="og:title" content="10_K8S_交付实战-流水线构建dubbo服务" />
+<meta property="og:description" content="转载，原为老男孩教育视频内容" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-01T15:58:21+08:00" />
+<meta property="article:modified_time" content="2020-10-01T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="10_K8S_交付实战-流水线构建dubbo服务"/>
+<meta name="twitter:description" content="转载，原为老男孩教育视频内容"/>
+<meta name="application-name" content="山脚下の脚下山">
+<meta name="apple-mobile-web-app-title" content="山脚下の脚下山"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/" /><link rel="prev" href="https://scemsjyd.com/11_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-configmap%E8%B5%84%E6%BA%90/" /><link rel="next" href="https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "10_K8S_交付实战-流水线构建dubbo服务",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 转载","wordcount":  3907 ,
+        "url": "https:\/\/scemsjyd.com\/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1\/","datePublished": "2020-10-01T15:58:21+08:00","dateModified": "2020-10-01T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "老男孩"
+            },"description": "转载，原为老男孩教育视频内容"
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> 主页 </a><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/" title="">主页</a><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">10_K8S_交付实战-流水线构建dubbo服务</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://space.bilibili.com/394449264" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>老男孩</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BD%AC%E8%BD%BD/"><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-01">2020-10-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3907 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 8 分钟&nbsp;<span id="/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/" class="leancloud_visitors" data-flag-title="10_K8S_交付实战-流水线构建dubbo服务">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-jenkins流水线准备工作">1 jenkins流水线准备工作</a>
+      <ul>
+        <li><a href="#11-参数构建要点">1.1 参数构建要点</a></li>
+        <li><a href="#12-创建流水线">1.2 创建流水线</a>
+          <ul>
+            <li><a href="#121-创建流水线">1.2.1 创建流水线</a></li>
+            <li><a href="#122-添加10个构建参数">1.2.2 添加10个构建参数</a></li>
+            <li><a href="#123-添加完成效果如下">1.2.3 添加完成效果如下:</a></li>
+            <li><a href="#124-添加pipiline代码">1.2.4 添加pipiline代码</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-用流水线完成dubbo-service的构建">1.3 用流水线完成dubbo-service的构建</a>
+          <ul>
+            <li><a href="#131-选择参数化构建">1.3.1 选择参数化构建</a></li>
+            <li><a href="#132-填写完成效果如下">1.3.2 填写完成效果如下</a></li>
+            <li><a href="#133-执行构建并检查">1.3.3 执行构建并检查</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#2-交付dubbo-service到k8s">2 交付dubbo-service到k8s</a>
+      <ul>
+        <li><a href="#21-准备资源清单">2.1 准备资源清单</a>
+          <ul>
+            <li><a href="#211-创建depeloy清单">2.1.1 创建depeloy清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#22-创建k8s资源">2.2 创建k8s资源</a>
+          <ul>
+            <li><a href="#221-创建app名称空间">2.2.1 创建app名称空间</a></li>
+            <li><a href="#222-创建secret资源">2.2.2 创建secret资源</a></li>
+            <li><a href="#223-应用资源清单">2.2.3 应用资源清单</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-交付dubbo-monitor监控服务到k8s">3 交付dubbo-monitor监控服务到k8s</a>
+      <ul>
+        <li><a href="#31-制作dobbo-monitor镜像">3.1 制作dobbo-monitor镜像</a>
+          <ul>
+            <li><a href="#311-下载源码">3.1.1 下载源码</a></li>
+            <li><a href="#312-修改配置文件">3.1.2 修改配置文件：</a></li>
+            <li><a href="#313-优化dockerfile启动脚本">3.1.3 优化Dockerfile启动脚本</a></li>
+            <li><a href="#314-构建并上传">3.1.4 构建并上传</a></li>
+          </ul>
+        </li>
+        <li><a href="#32-创建资源配置清单">3.2 创建资源配置清单</a>
+          <ul>
+            <li><a href="#321-准备目录">3.2.1 准备目录</a></li>
+            <li><a href="#322-创建deploy资源文件">3.2.2 创建deploy资源文件</a></li>
+            <li><a href="#323-创建service资源文件">3.2.3 创建service资源文件</a></li>
+            <li><a href="#324-创建ingress资源文件">3.2.4 创建ingress资源文件</a></li>
+          </ul>
+        </li>
+        <li><a href="#33-创建dobbo-miniotr服务">3.3 创建dobbo-miniotr服务</a>
+          <ul>
+            <li><a href="#331-应用资源配置清单">3.3.1 应用资源配置清单</a></li>
+            <li><a href="#332-添加dns解析">3.3.2 添加dns解析</a></li>
+            <li><a href="#333-访问monitor的web页面">3.3.3 访问monitor的web页面</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#4-构建dubbo-consumer服务">4 构建dubbo-consumer服务</a>
+      <ul>
+        <li><a href="#41-构建docker镜像">4.1 构建docker镜像</a>
+          <ul>
+            <li><a href="#411-获取私有仓库代码">4.1.1 获取私有仓库代码</a></li>
+            <li><a href="#412-配置流水线">4.1.2 配置流水线</a></li>
+            <li><a href="#413-查看构建结果">4.1.3 查看构建结果</a></li>
+          </ul>
+        </li>
+        <li><a href="#42-准备资源配置清单">4.2 准备资源配置清单：</a>
+          <ul>
+            <li><a href="#421-创建deploy资源清单">4.2.1 创建deploy资源清单</a></li>
+            <li><a href="#422-创建service资源清单">4.2.2 创建service资源清单</a></li>
+            <li><a href="#423-创建ingress资源清单">4.2.3 创建ingress资源清单</a></li>
+          </ul>
+        </li>
+        <li><a href="#43-创建k8s资源">4.3 创建K8S资源</a>
+          <ul>
+            <li><a href="#431-应用资源配置清单">4.3.1 应用资源配置清单：</a></li>
+            <li><a href="#432-验证启动结果">4.3.2 验证启动结果</a></li>
+            <li><a href="#433-添加dns解析">4.3.3 添加dns解析</a></li>
+          </ul>
+        </li>
+        <li><a href="#44-模拟版本升级">4.4 模拟版本升级</a>
+          <ul>
+            <li><a href="#441-修改dpyaml资源配置清单">4.4.1 修改dp.yaml资源配置清单</a></li>
+            <li><a href="#442-应用修改后的资源配置清单">4.4.2 应用修改后的资源配置清单</a></li>
+            <li><a href="#443-使用浏览器验证">4.4.3 使用浏览器验证</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="10_k8s_交付实战-流水线构建dubbo服务">10_K8S_交付实战-流水线构建dubbo服务</h1>
+<h2 id="1-jenkins流水线准备工作">1 jenkins流水线准备工作</h2>
+<h3 id="11-参数构建要点">1.1 参数构建要点</h3>
+<p><strong>jenkins流水线配置的java项目的十个常用参数:</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>作用</th>
+<th>举例或说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_name</td>
+<td>项目名</td>
+<td>dubbo_demo_service</td>
+</tr>
+<tr>
+<td>image_name</td>
+<td>docker镜像名</td>
+<td>app/dubbo-demo-service</td>
+</tr>
+<tr>
+<td>git_repo</td>
+<td>项目的git地址</td>
+<td><a href="https://x.com/x/x.git" target="_blank" rel="noopener noreffer">https://x.com/x/x.git</a></td>
+</tr>
+<tr>
+<td>git_ver</td>
+<td>项目的git分支或版本号</td>
+<td>master</td>
+</tr>
+<tr>
+<td>add_tag</td>
+<td>镜像标签,常用时间戳</td>
+<td>191203_1830</td>
+</tr>
+<tr>
+<td>mvn_dir</td>
+<td>执行mvn编译的目录</td>
+<td>./</td>
+</tr>
+<tr>
+<td>target_dir</td>
+<td>编译产生包的目录</td>
+<td>./target</td>
+</tr>
+<tr>
+<td>mvn_cmd</td>
+<td>编译maven项目的命令</td>
+<td>mvc clean package -Dmaven.</td>
+</tr>
+<tr>
+<td>base_image</td>
+<td>项目的docker底包</td>
+<td>不同的项目底包不一样,下拉选择</td>
+</tr>
+<tr>
+<td>maven</td>
+<td>maven软件版本</td>
+<td>不同的项目可能maven环境不一样</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>除了base_image和maven是choice parameter，其他都是string parameter</p>
+</blockquote>
+<h3 id="12-创建流水线">1.2 创建流水线</h3>
+<h4 id="121-创建流水线">1.2.1 创建流水线</h4>
+<p>创建名为<code>dubbo-demo</code>的流水线(pipeline),并设置<code>Discard old builds</code> 为如下</p>
+<table>
+<thead>
+<tr>
+<th>Discard old builds选项</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Days to keep builds</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Max # of builds to keep</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<h4 id="122-添加10个构建参数">1.2.2 添加10个构建参数</h4>
+<p><code>This project is parameterized</code>点击<code>Add Parameter</code>,分别添加如下10个参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span><span class="nx">第1个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">String</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">app_name</span>
+<span class="nx">Description</span> <span class="p">:</span> <span class="nx">项目名</span> <span class="nx">eg</span><span class="p">:</span><span class="nx">dubbo</span><span class="o">-</span><span class="nx">demo</span><span class="o">-</span><span class="nx">service</span>
+<span class="err">#</span><span class="nx">第2个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">String</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">image_name</span>
+<span class="nx">Description</span> <span class="p">:</span> <span class="nx">docker镜像名</span> <span class="nx">eg</span><span class="p">:</span> <span class="nx">app</span><span class="o">/</span><span class="nx">dubbo</span><span class="o">-</span><span class="nx">demo</span><span class="o">-</span><span class="nx">service</span>
+<span class="err">#</span><span class="nx">第3个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">String</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">git_repo</span>
+<span class="nx">Description</span> <span class="p">:</span> <span class="nx">仓库地址</span> <span class="nx">eg</span><span class="p">:</span> <span class="nx">https</span><span class="p">:</span><span class="c1">//gitee.com/xxx/xxx.git
+</span><span class="c1"></span><span class="err">#</span><span class="nx">第4个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">String</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">git_ver</span>
+<span class="nx">Description</span> <span class="p">:</span> <span class="nx">项目的git分支或版本号</span>
+<span class="err">#</span><span class="nx">第5个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">String</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">add_tag</span>
+<span class="nx">Description</span> <span class="p">:</span>
+<span class="nx">给docker镜像添加标签组合的一部分</span><span class="p">,</span><span class="nx">如</span>
+<span class="err">$</span><span class="nx">git_ver_</span><span class="err">$</span><span class="nx">add_tag</span><span class="p">=</span><span class="nx">master_191203_1830</span>
+<span class="err">#</span><span class="nx">第6个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">String</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">mvn_dir</span>
+<span class="nx">Default</span> <span class="nx">Value</span> <span class="p">:</span> <span class="p">.</span><span class="o">/</span>
+<span class="nx">Description</span> <span class="p">:</span> <span class="nx">执行mvn编译的目录</span><span class="p">,</span><span class="nx">默认是项目根目录</span><span class="p">,</span> <span class="nx">eg</span><span class="p">:</span> <span class="p">.</span><span class="o">/</span>
+<span class="err">#</span><span class="nx">第7个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">String</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">target_dir</span>
+<span class="nx">Default</span> <span class="nx">Value</span> <span class="p">:</span> <span class="p">.</span><span class="o">/</span><span class="nx">target</span>
+<span class="nx">Description</span> <span class="p">:</span> <span class="nx">编译产生的war</span><span class="o">/</span><span class="nx">jar包目录</span> <span class="nx">eg</span><span class="p">:</span> <span class="p">.</span><span class="o">/</span><span class="nx">dubbo</span><span class="o">-</span><span class="nx">server</span><span class="o">/</span><span class="nx">target</span>
+<span class="err">#</span><span class="nx">第8个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">String</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">mvn_cmd</span>
+<span class="nx">Default</span> <span class="nx">Value</span> <span class="p">:</span> <span class="nx">mvn</span> <span class="nx">clean</span> <span class="kn">package</span> <span class="o">-</span><span class="nx">Dmaven</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">skip</span><span class="p">=</span><span class="kc">true</span>
+<span class="nx">Description</span> <span class="p">:</span> <span class="nx">编译命令</span><span class="p">,</span><span class="nx">常加上</span><span class="o">-</span><span class="nx">e</span> <span class="o">-</span><span class="nx">q参数只输出错误</span>
+<span class="err">#</span><span class="nx">第9个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">Choice</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">base_image</span>
+<span class="nx">Choices</span> <span class="p">:</span>
+<span class="nx">base</span><span class="o">/</span><span class="nx">jre7</span><span class="p">:</span><span class="mi">7</span><span class="nx">u80</span>
+<span class="nx">base</span><span class="o">/</span><span class="nx">jre8</span><span class="p">:</span><span class="mi">8</span><span class="nx">u112</span>
+<span class="nx">Description</span> <span class="p">:</span> <span class="nx">项目的docker底包</span>
+<span class="err">#</span><span class="nx">第10个参数</span>
+<span class="nx">参数类型</span> <span class="p">:</span> <span class="nx">Choice</span> <span class="nx">Parameter</span>
+<span class="nx">Name</span> <span class="p">:</span> <span class="nx">maven</span>
+<span class="nx">Choices</span> <span class="p">:</span>
+<span class="mf">3.6.1</span>
+<span class="mf">3.2.5</span>
+<span class="mf">2.2.1</span>
+<span class="nx">Description</span> <span class="p">:</span> <span class="nx">执行编译使用maven软件版本</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="123-添加完成效果如下">1.2.3 添加完成效果如下:</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368010-4c98901a-7615-4fb4-ae0a-aa199b0118a0.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368010-4c98901a-7615-4fb4-ae0a-aa199b0118a0.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368010-4c98901a-7615-4fb4-ae0a-aa199b0118a0.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368010-4c98901a-7615-4fb4-ae0a-aa199b0118a0.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368010-4c98901a-7615-4fb4-ae0a-aa199b0118a0.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368010-4c98901a-7615-4fb4-ae0a-aa199b0118a0.png" /></p>
+<h4 id="124-添加pipiline代码">1.2.4 添加pipiline代码</h4>
+<p>流水线构建所用的pipiline代码语法比较有专门的生成工具
+以下语句的作用大致是分为四步:拉代码-&gt;构建包-&gt;移动包-打docker镜像并推送</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">pipeline {
+  agent any
+    stages {
+      stage(&#39;pull&#39;) { //get project code from repo
+        steps {
+          sh &#34;git clone ${params.git_repo} ${params.app_name}/${env.BUILD_NUMBER} &amp;&amp; cd ${params.app_name}/${env.BUILD_NUMBER} &amp;&amp; git checkout ${params.git_ver}&#34;
+        }
+      }
+      stage(&#39;build&#39;) { //exec mvn cmd
+        steps {
+          sh &#34;cd ${params.app_name}/${env.BUILD_NUMBER}  &amp;&amp; /var/jenkins_home/maven-${params.maven}/bin/${params.mvn_cmd}&#34;
+        }
+      }
+      stage(&#39;package&#39;) { //move jar file into project_dir
+        steps {
+          sh &#34;cd ${params.app_name}/${env.BUILD_NUMBER} &amp;&amp; cd ${params.target_dir} &amp;&amp; mkdir project_dir &amp;&amp; mv *.jar ./project_dir&#34;
+        }
+      }
+      stage(&#39;image&#39;) { //build image and push to registry
+        steps {
+          writeFile file: &#34;${params.app_name}/${env.BUILD_NUMBER}/Dockerfile&#34;, text: &#34;&#34;&#34;FROM harbor.zq.com/${params.base_image}
+ADD ${params.target_dir}/project_dir /opt/project_dir&#34;&#34;&#34;
+          sh &#34;cd  ${params.app_name}/${env.BUILD_NUMBER} &amp;&amp; docker build -t harbor.zq.com/${params.image_name}:${params.git_ver}_${params.add_tag} . &amp;&amp; docker push harbor.zq.com/${params.image_name}:${params.git_ver}_${params.add_tag}&#34;
+        }
+      }
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368104-5ca33656-62ba-46fd-96ec-9fad247bc1e6.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368104-5ca33656-62ba-46fd-96ec-9fad247bc1e6.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368104-5ca33656-62ba-46fd-96ec-9fad247bc1e6.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368104-5ca33656-62ba-46fd-96ec-9fad247bc1e6.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368104-5ca33656-62ba-46fd-96ec-9fad247bc1e6.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368104-5ca33656-62ba-46fd-96ec-9fad247bc1e6.png" /></p>
+<h3 id="13-用流水线完成dubbo-service的构建">1.3 用流水线完成dubbo-service的构建</h3>
+<p>记得先在harbor中创建私有仓库<code>app</code></p>
+<h4 id="131-选择参数化构建">1.3.1 选择参数化构建</h4>
+<p>进入<code>dubbo-demo</code>后,选择的参数化构建<code>build with parameters</code> ,填写10个构建的参数</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_name</td>
+<td>dubbo-demo-service</td>
+</tr>
+<tr>
+<td>image_name</td>
+<td>app/dubbo-demo-service</td>
+</tr>
+<tr>
+<td>git_repo</td>
+<td><a href="https://gitee.com/noah-luo/dubbo-demo-service.git" target="_blank" rel="noopener noreffer">https://gitee.com/noah-luo/dubbo-demo-service.git</a></td>
+</tr>
+<tr>
+<td>git_ver</td>
+<td>master</td>
+</tr>
+<tr>
+<td>add_tag</td>
+<td>200509_0800</td>
+</tr>
+<tr>
+<td>mvn_dir</td>
+<td>./</td>
+</tr>
+<tr>
+<td>target_dir</td>
+<td>./dubbo-server/target</td>
+</tr>
+<tr>
+<td>mvn_cmd</td>
+<td>mvn clean package -Dmaven.test.skip=true</td>
+</tr>
+<tr>
+<td>base_image</td>
+<td>base/jre8:8u112</td>
+</tr>
+<tr>
+<td>maven</td>
+<td>3.6.1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="132-填写完成效果如下">1.3.2 填写完成效果如下</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368021-24e1272c-d6ea-40f7-bc12-92de8bf30d68.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368021-24e1272c-d6ea-40f7-bc12-92de8bf30d68.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368021-24e1272c-d6ea-40f7-bc12-92de8bf30d68.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368021-24e1272c-d6ea-40f7-bc12-92de8bf30d68.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368021-24e1272c-d6ea-40f7-bc12-92de8bf30d68.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368021-24e1272c-d6ea-40f7-bc12-92de8bf30d68.png" /></p>
+<h4 id="133-执行构建并检查">1.3.3 执行构建并检查</h4>
+<p>填写完以后执行<strong>bulid</strong>
+第一次构建需要下载很多依赖包，时间很长，抽根烟，喝杯茶
+经过漫长的等待后，已经构建完成了
+<strong>点击<code>打开 Blue Ocean</code>查看构建历史及过程：</strong>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368085-320e5621-5975-4ee9-8040-aa5b9bcf01c0.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368085-320e5621-5975-4ee9-8040-aa5b9bcf01c0.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368085-320e5621-5975-4ee9-8040-aa5b9bcf01c0.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368085-320e5621-5975-4ee9-8040-aa5b9bcf01c0.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368085-320e5621-5975-4ee9-8040-aa5b9bcf01c0.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368085-320e5621-5975-4ee9-8040-aa5b9bcf01c0.png" />
+<strong>检查harbor是否已经有这版镜像：</strong>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368034-28b6c518-cc96-470c-b615-f2b192a4fffa.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368034-28b6c518-cc96-470c-b615-f2b192a4fffa.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368034-28b6c518-cc96-470c-b615-f2b192a4fffa.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368034-28b6c518-cc96-470c-b615-f2b192a4fffa.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368034-28b6c518-cc96-470c-b615-f2b192a4fffa.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368034-28b6c518-cc96-470c-b615-f2b192a4fffa.png" /></p>
+<h2 id="2-交付dubbo-service到k8s">2 交付dubbo-service到k8s</h2>
+<h3 id="21-准备资源清单">2.1 准备资源清单</h3>
+<p>创建清单操作都在<code>7.200</code>上操作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/k8s-yaml/dubbo-server/
+cd /data/k8s-yaml/dubbo-server
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="211-创建depeloy清单">2.1.1 创建depeloy清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="l">cat &gt;dp.yaml &lt;&lt;EOF</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">extensions/v1beta1</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dubbo-demo-service</span><span class="w">
+</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">app</span><span class="w">
+</span><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dubbo-demo-service</span><span class="w">
+</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dubbo-demo-service</span><span class="w">
+</span><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">dubbo-demo-service</span><span class="w">
+</span><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dubbo-demo-service</span><span class="w">
+</span><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dubbo-demo-service</span><span class="w">
+</span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">harbor.zq.com/app/dubbo-demo-service:master_200509_0800</span><span class="w">
+</span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">20880</span><span class="w">
+</span><span class="w">          </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span><span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">JAR_BALL</span><span class="w">
+</span><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">dubbo-server.jar</span><span class="w">
+</span><span class="w">        </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span><span class="w">      </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">harbor</span><span class="w">
+</span><span class="w">      </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Always</span><span class="w">
+</span><span class="w">      </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">30</span><span class="w">
+</span><span class="w">      </span><span class="nt">securityContext</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="w">      </span><span class="nt">schedulerName</span><span class="p">:</span><span class="w"> </span><span class="l">default-scheduler</span><span class="w">
+</span><span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">RollingUpdate</span><span class="w">
+</span><span class="w">    </span><span class="nt">rollingUpdate</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">      </span><span class="nt">maxSurge</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">  </span><span class="nt">revisionHistoryLimit</span><span class="p">:</span><span class="w"> </span><span class="m">7</span><span class="w">
+</span><span class="w">  </span><span class="nt">progressDeadlineSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">600</span><span class="w">
+</span><span class="w"></span><span class="l">EOF</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>需要根据自己构建镜像的tag来修改image
+dubbo的server服务,只向zk注册并通过zk与dobbo的web交互,不需要对外提供服务
+因此不需要service资源和ingress资源</p>
+</blockquote>
+<h3 id="22-创建k8s资源">2.2 创建k8s资源</h3>
+<p>创建K8S资源的操作,在任意node节点上操作即可</p>
+<h4 id="221-创建app名称空间">2.2.1 创建app名称空间</h4>
+<p>业务资源和运维资源等应该通过名称空间来隔离,因此创建专有名称空间app</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create namespace app
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="222-创建secret资源">2.2.2 创建secret资源</h4>
+<p>我们的业务镜像是harbor中的私有项目，所以需要创建<code>docker-registry</code>的secret资源：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl -n app \
+    create secret docker-registry harbor \
+    --docker-server=harbor.zq.com \
+    --docker-username=admin \
+    --docker-password=Harbor12345
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="223-应用资源清单">2.2.3 应用资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/dubbo-server/dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>3分钟后检查启动情况</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 检查pod是否创建：
+~]# kubectl -n app get pod
+NAME                                  READY   STATUS    RESTARTS   AGE
+dubbo-demo-service-79574b6879-cxkls   1/1     Running   0          24s
+# 检查是否启动成功：
+~]# kubectl -n app logs dubbo-demo-service-79574b6879-cxkls --tail=2
+Dubbo server started
+Dubbo 服务端已经启动
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>到zk服务器检查是否有服务注册</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sh /opt/zookeeper/bin/zkCli.sh
+[zk: localhost:2181(CONNECTED) 0] ls /
+[dubbo, zookeeper]
+[zk: localhost:2181(CONNECTED) 1] ls /dubbo
+[com.od.dubbotest.api.HelloService]
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="3-交付dubbo-monitor监控服务到k8s">3 交付dubbo-monitor监控服务到k8s</h2>
+<p>dobbo-monitor源码地址: <a href="https://github.com/Jeromefromcn/dubbo-monitor.git" target="_blank" rel="noopener noreffer">https://github.com/Jeromefromcn/dubbo-monitor.git</a>
+dubbo-monitor是监控zookeeper状态的一个服务，另外还有dubbo-admin，效果一样</p>
+<h3 id="31-制作dobbo-monitor镜像">3.1 制作dobbo-monitor镜像</h3>
+<p>制作镜像在管理机<code>7.200</code>上操作</p>
+<h4 id="311-下载源码">3.1.1 下载源码</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd /opt/src
+wget https://github.com/Jeromefromcn/dubbo-monitor/archive/master.zip
+yum -y install unzip
+unzip master.zip
+mv dubbo-monitor-mster /data/dockerfile/dubbo-monitor
+cd  /data/dockerfile/dubbo-monitor
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="312-修改配置文件">3.1.2 修改配置文件：</h4>
+<p>直接覆盖它原始的配置
+其实它原本就没什么内容,只是修改了addr,端口,目录等</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;dubbo-monitor-simple/conf/dubbo_origin.properties &lt;&lt;&#39;EOF&#39;
+dubbo.container=log4j,spring,registry,jetty
+dubbo.application.name=simple-monitor
+dubbo.application.owner=
+dubbo.registry.address=zookeeper://zk1.zq.com:2181?backup=zk2.zq.com:2181,zk3.zq.com:2181
+dubbo.protocol.port=20880
+dubbo.jetty.port=8080
+dubbo.jetty.directory=/dubbo-monitor-simple/monitor
+dubbo.statistics.directory=/dubbo-monitor-simple/statistics
+dubbo.charts.directory=/dubbo-monitor-simple/charts
+dubbo.log4j.file=logs/dubbo-monitor.log
+dubbo.log4j.level=WARN
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="313-优化dockerfile启动脚本">3.1.3 优化Dockerfile启动脚本</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 修改jvm资源限制(非必须)
+sed -i &#39;/Xmx2g/ s#128m#16m#g&#39; ./dubbo-monitor-simple/bin/start.sh
+sed -i &#39;/Xmx2g/ s#256m#32m#g&#39; ./dubbo-monitor-simple/bin/start.sh
+sed -i &#39;/Xmx2g/ s#2g#128m#g&#39;  ./dubbo-monitor-simple/bin/start.sh
+# 修改nohup为exec不能改去掉改行最后的&amp;符号
+sed -ri &#39;s#^nohup(.*) &amp;#exec\1#g&#39; ./dubbo-monitor-simple/bin/start.sh
+# 删除exec命令行后面所有行
+sed -i &#39;66,$d&#39;  ./dubbo-monitor-simple/bin/start.sh
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="314-构建并上传">3.1.4 构建并上传</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker build . -t harbor.zq.com/infra/dubbo-monitor:latest
+docker push       harbor.zq.com/infra/dubbo-monitor:latest
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="32-创建资源配置清单">3.2 创建资源配置清单</h3>
+<h4 id="321-准备目录">3.2.1 准备目录</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/k8s-yaml/dubbo-monitor
+cd /data/k8s-yaml/dubbo-monitor
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="322-创建deploy资源文件">3.2.2 创建deploy资源文件</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;dp.yaml &lt;&lt;EOF
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: dubbo-monitor
+  namespace: infra
+  labels:
+    name: dubbo-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: dubbo-monitor
+  template:
+    metadata:
+      labels:
+        app: dubbo-monitor
+        name: dubbo-monitor
+    spec:
+      containers:
+      - name: dubbo-monitor
+        image: harbor.zq.com/infra/dubbo-monitor:latest
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 20880
+          protocol: TCP
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+      - name: harbor
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsUser: 0
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  revisionHistoryLimit: 7
+  progressDeadlineSeconds: 600
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="323-创建service资源文件">3.2.3 创建service资源文件</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;svc.yaml &lt;&lt;EOF
+kind: Service
+apiVersion: v1
+metadata:
+  name: dubbo-monitor
+  namespace: infra
+spec:
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: dubbo-monitor
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="324-创建ingress资源文件">3.2.4 创建ingress资源文件</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;ingress.yaml &lt;&lt;EOF
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: dubbo-monitor
+  namespace: infra
+spec:
+  rules:
+  - host: dubbo-monitor.zq.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: dubbo-monitor
+          servicePort: 8080
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="33-创建dobbo-miniotr服务">3.3 创建dobbo-miniotr服务</h3>
+<h4 id="331-应用资源配置清单">3.3.1 应用资源配置清单</h4>
+<p>在任意node节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/dubbo-monitor/dp.yaml
+kubectl apply -f http://k8s-yaml.zq.com/dubbo-monitor/svc.yaml
+kubectl apply -f http://k8s-yaml.zq.com/dubbo-monitor/ingress.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>验证：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl -n infra get pod
+NAME                            READY   STATUS    RESTARTS   AGE
+dubbo-monitor-d9675688c-sctsx   1/1     Running   0          29s
+jenkins-7cd8b95d79-6vrbn        1/1     Running   0          3d2h
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="332-添加dns解析">3.3.2 添加dns解析</h4>
+<p>这个服务是有web页面的，创建了ingress和service资源的,所以需要添加dns解析</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vi /var/named/zq.com.zone
+dobbo-monitor		A    10.4.7.10
+</code></pre></td></tr></table>
+</div>
+</div><p>重启并验证</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">systemctl restart named
+dig -t A dubbo-monitor.zq.com @10.4.7.11 +short
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="333-访问monitor的web页面">3.3.3 访问monitor的web页面</h4>
+<p>访问<code>dubbo-monitor.zq.com</code>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368042-4d67eb3e-e800-4ed9-abc3-11908482adb2.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368042-4d67eb3e-e800-4ed9-abc3-11908482adb2.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368042-4d67eb3e-e800-4ed9-abc3-11908482adb2.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368042-4d67eb3e-e800-4ed9-abc3-11908482adb2.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368042-4d67eb3e-e800-4ed9-abc3-11908482adb2.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368042-4d67eb3e-e800-4ed9-abc3-11908482adb2.png" />
+这里已经可以看到我们之前部署的dubbo-demo-service服务了，启动了两个进程来提供服务。
+至此，dubbo-monitor监控服务已经部署完成。</p>
+<h2 id="4-构建dubbo-consumer服务">4 构建dubbo-consumer服务</h2>
+<h3 id="41-构建docker镜像">4.1 构建docker镜像</h3>
+<h4 id="411-获取私有仓库代码">4.1.1 获取私有仓库代码</h4>
+<p>之前创建的dubbo-service是微服务的提供者,现在创建一个微服务的消费者
+使用<code>git@gitee.com:noah-luo/dubbo-demo-web.git</code>这个私有仓库中的代码构建消费者
+先从<code>[https://gitee.com/sunx66/dubbo-demo-service](https://gitee.com/sunx66/dubbo-demo-service)</code>这里fork到自己仓库,在设为私有
+并修改zk的配置</p>
+<h4 id="412-配置流水线">4.1.2 配置流水线</h4>
+<p>之前已经在jenkins配置好了流水线，只需要填写参数就行了。</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_name</td>
+<td>dubbo-demo-consumer</td>
+</tr>
+<tr>
+<td>image_name</td>
+<td>app/dubbo-demo-consumer</td>
+</tr>
+<tr>
+<td>git_repo</td>
+<td><a href="mailto:git@gitee.com" rel="">git@gitee.com</a>:noah-luo/dubbo-demo-web.git</td>
+</tr>
+<tr>
+<td>git_ver</td>
+<td>master</td>
+</tr>
+<tr>
+<td>add_tag</td>
+<td>200506_1430</td>
+</tr>
+<tr>
+<td>mvn_dir</td>
+<td>./</td>
+</tr>
+<tr>
+<td>target_dir</td>
+<td>./dubbo-client/target</td>
+</tr>
+<tr>
+<td>mvn_cmd</td>
+<td>mvn clean package -Dmaven.test.skip=true</td>
+</tr>
+<tr>
+<td>base_image</td>
+<td>base/jre8:8u112</td>
+</tr>
+<tr>
+<td>maven</td>
+<td>3.6.1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="413-查看构建结果">4.1.3 查看构建结果</h4>
+<p>如果构建不报错,则应该已经推送到harbor仓库中了,这时我们直接再给镜像一个新tag,以便后续模拟更新</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker tag \
+    harbor.zq.com/app/dubbo-demo-consumer:master_200506_1430 \
+    harbor.zq.com/app/dubbo-demo-consumer:master_200510_1430
+docker push harbor.zq.com/app/dubbo-demo-consumer:master_200510_1430
+</code></pre></td></tr></table>
+</div>
+</div><p>查看harbor仓库
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368028-4ba20ef3-8d31-4b15-b40a-7234e8bdd6fe.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368028-4ba20ef3-8d31-4b15-b40a-7234e8bdd6fe.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368028-4ba20ef3-8d31-4b15-b40a-7234e8bdd6fe.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368028-4ba20ef3-8d31-4b15-b40a-7234e8bdd6fe.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368028-4ba20ef3-8d31-4b15-b40a-7234e8bdd6fe.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368028-4ba20ef3-8d31-4b15-b40a-7234e8bdd6fe.png" /></p>
+<h3 id="42-准备资源配置清单">4.2 准备资源配置清单：</h3>
+<p>先准备目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /data/k8s-yaml/dubbo-consumer
+cd /data/k8s-yaml/dubbo-consumer
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="421-创建deploy资源清单">4.2.1 创建deploy资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;dp.yaml &lt;&lt;EOF
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: dubbo-demo-consumer
+  namespace: app
+  labels:
+    name: dubbo-demo-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: dubbo-demo-consumer
+  template:
+    metadata:
+      labels:
+        app: dubbo-demo-consumer
+        name: dubbo-demo-consumer
+    spec:
+      containers:
+      - name: dubbo-demo-consumer
+        image: harbor.zq.com/app/dubbo-demo-consumer:master_200506_1430
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 20880
+          protocol: TCP
+        env:
+        - name: JAR_BALL
+          value: dubbo-client.jar
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+      - name: harbor
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsUser: 0
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  revisionHistoryLimit: 7
+  progressDeadlineSeconds: 600
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>注意修改镜像的tag</p>
+</blockquote>
+<h4 id="422-创建service资源清单">4.2.2 创建service资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;svc.yaml &lt;&lt;EOF
+kind: Service
+apiVersion: v1
+metadata:
+  name: dubbo-demo-consumer
+  namespace: app
+spec:
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: dubbo-demo-consumer
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="423-创建ingress资源清单">4.2.3 创建ingress资源清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;ingress.yaml &lt;&lt;EOF
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: dubbo-demo-consumer
+  namespace: app
+spec:
+  rules:
+  - host: dubbo-demo.zq.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: dubbo-demo-consumer
+          servicePort: 8080
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="43-创建k8s资源">4.3 创建K8S资源</h3>
+<h4 id="431-应用资源配置清单">4.3.1 应用资源配置清单：</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/dubbo-consumer/dp.yaml
+kubectl apply -f http://k8s-yaml.zq.com/dubbo-consumer/svc.yaml
+kubectl apply -f http://k8s-yaml.zq.com/dubbo-consumer/ingress.yaml
+# 查看容器启动成功没
+~]# kubectl get pod -n app
+NAME                                  READY   STATUS    RESTARTS   AGE
+dubbo-demo-consumer-b8d86bd5b-wbqhs   1/1     Running   0          6s
+dubbo-demo-service-79574b6879-cxkls   1/1     Running   0          4h39m
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="432-验证启动结果">4.3.2 验证启动结果</h4>
+<p>查看log，是否启动成功：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl -n app  logs --tail=2 dubbo-demo-consumer-b8d86bd5b-wbqhs
+Dubbo client started
+Dubbo 消费者端启动
+</code></pre></td></tr></table>
+</div>
+</div><p>检查dubbo-monitor是否已经注册成功：
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368242-db7a8ac0-8c7f-4b71-b656-49969137fc83.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368242-db7a8ac0-8c7f-4b71-b656-49969137fc83.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368242-db7a8ac0-8c7f-4b71-b656-49969137fc83.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368242-db7a8ac0-8c7f-4b71-b656-49969137fc83.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368242-db7a8ac0-8c7f-4b71-b656-49969137fc83.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368242-db7a8ac0-8c7f-4b71-b656-49969137fc83.png" /></p>
+<h4 id="433-添加dns解析">4.3.3 添加dns解析</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vi /var/named/zq.com.zone
+dubbo-demo		A    10.4.7.10
+# 重启服务
+systemctl restart named
+# 验证
+~]# dig -t A dubbo-demo.zq.com @10.4.7.11 +short
+10.4.7.10
+</code></pre></td></tr></table>
+</div>
+</div><p>浏览器访问<code>[http://dubbo-demo.zq.com/hello?name=lg](http://dubbo-demo.zq.com/hello?name=lg)</code>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368060-46fb580a-0c41-4633-b2b1-6b6f843860bb.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368060-46fb580a-0c41-4633-b2b1-6b6f843860bb.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368060-46fb580a-0c41-4633-b2b1-6b6f843860bb.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368060-46fb580a-0c41-4633-b2b1-6b6f843860bb.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368060-46fb580a-0c41-4633-b2b1-6b6f843860bb.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368060-46fb580a-0c41-4633-b2b1-6b6f843860bb.png" /></p>
+<h3 id="44-模拟版本升级">4.4 模拟版本升级</h3>
+<p>接下来我们模拟升级发版，之前已经用同一个镜像打了不同的tag并推送到从库
+当然正常发版的顺序是:</p>
+<ol>
+<li>提交修改过的代码的代码块</li>
+<li>使用jenkins构建新镜像</li>
+<li>上传到私有harbor仓库中</li>
+<li>更新de文件并apply</li>
+</ol>
+<h4 id="441-修改dpyaml资源配置清单">4.4.1 修改dp.yaml资源配置清单</h4>
+<p>修改harbor镜像仓库中对应的tag版本：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sed -i &#39;s#master_200506_1430#master_200510_1430#g&#39; dp.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="442-应用修改后的资源配置清单">4.4.2 应用修改后的资源配置清单</h4>
+<p>当然也可以在dashboard中进行在线修改：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f http://k8s-yaml.zq.com/dubbo-consumer/dp.yaml
+~]# kubectl -n app  get pod
+NAME                                   READY   STATUS    RESTARTS   AGE
+dubbo-demo-consumer-84f75b679c-kdwd7   1/1     Running   0          54s
+dubbo-demo-service-79574b6879-cxkls    1/1     Running   0          4h58m
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368205-01dd6858-d8ad-4ab9-8a98-0ed740a29399.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368205-01dd6858-d8ad-4ab9-8a98-0ed740a29399.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368205-01dd6858-d8ad-4ab9-8a98-0ed740a29399.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368205-01dd6858-d8ad-4ab9-8a98-0ed740a29399.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368205-01dd6858-d8ad-4ab9-8a98-0ed740a29399.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204368205-01dd6858-d8ad-4ab9-8a98-0ed740a29399.png" /></p>
+<h4 id="443-使用浏览器验证">4.4.3 使用浏览器验证</h4>
+<p>使用浏览器验证：<a href="http://dubbo-demo.zq.com/hello?name=lg" target="_blank" rel="noopener noreffer">http://dubbo-demo.zq.com/hello?name=lg</a>
+在短暂的超时后,即可正常访问
+至此，我们一套完成的dubbo服务就已经交付到k8s集群当中了，并且也演示了如何发版。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/" data-title="10_K8S_交付实战-流水线构建dubbo服务" data-hashtags="K8S,转载"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/" data-title="10_K8S_交付实战-流水线构建dubbo服务" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/" data-title="10_K8S_交付实战-流水线构建dubbo服务"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/" data-title="10_K8S_交付实战-流水线构建dubbo服务"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/11_k8s_%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%AE%9E%E6%88%98-configmap%E8%B5%84%E6%BA%90/" class="prev" rel="prev" title="11_K8S_配置中心实战-configmap资源"><i class="fas fa-angle-left fa-fw"></i>11_K8S_配置中心实战-configmap资源</a>
+            <a href="/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" class="next" rel="next" title="09_K8S_交付实战-交付jenkins到k8s集群">09_K8S_交付实战-交付jenkins到k8s集群<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

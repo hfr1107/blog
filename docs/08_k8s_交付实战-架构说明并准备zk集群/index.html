@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>08_K8S_交付实战-架构说明并准备zk集群 - 山脚下的脚下山</title><meta name="Description" content="转载，原为老男孩教育视频内容"><meta property="og:title" content="08_K8S_交付实战-架构说明并准备zk集群" />
+<meta property="og:description" content="转载，原为老男孩教育视频内容" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-01T15:58:21+08:00" />
+<meta property="article:modified_time" content="2020-10-01T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="08_K8S_交付实战-架构说明并准备zk集群"/>
+<meta name="twitter:description" content="转载，原为老男孩教育视频内容"/>
+<meta name="application-name" content="山脚下の脚下山">
+<meta name="apple-mobile-web-app-title" content="山脚下の脚下山"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/" /><link rel="prev" href="https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" /><link rel="next" href="https://scemsjyd.com/07_k8s_web%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8Fdashboard/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "08_K8S_交付实战-架构说明并准备zk集群",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 转载","wordcount":  1295 ,
+        "url": "https:\/\/scemsjyd.com\/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4\/","datePublished": "2020-10-01T15:58:21+08:00","dateModified": "2020-10-01T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "老男孩"
+            },"description": "转载，原为老男孩教育视频内容"
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> 主页 </a><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/" title="">主页</a><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">08_K8S_交付实战-架构说明并准备zk集群</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://space.bilibili.com/394449264" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>老男孩</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BD%AC%E8%BD%BD/"><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-01">2020-10-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1295 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;<span id="/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/" class="leancloud_visitors" data-flag-title="08_K8S_交付实战-架构说明并准备zk集群">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-交付的服务架构图">1 交付的服务架构图：</a>
+      <ul>
+        <li><a href="#11-架构图解">1.1 架构图解</a></li>
+        <li><a href="#12-交付说明">1.2 交付说明:</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-部署zk集群">2 部署ZK集群</a>
+      <ul>
+        <li><a href="#21-二进制安装jdk">2.1 二进制安装JDK</a>
+          <ul>
+            <li><a href="#211-解压jdk">2.1.1 解压jdk</a></li>
+            <li><a href="#212-写入环境变量">2.1.2 写入环境变量</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#22-二进制安装zk">2.2 二进制安装zk</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#221-下载zookeeper">2.2.1 下载zookeeper</a></li>
+            <li><a href="#222-创建zk配置文件">2.2.2 创建zk配置文件：</a></li>
+            <li><a href="#223-创建集群配置">2.2.3 创建集群配置</a></li>
+            <li><a href="#224-修改dns解析">2.2.4 修改dns解析</a></li>
+          </ul>
+        </li>
+        <li><a href="#23-启动zk集群">2.3 启动zk集群</a></li>
+        <li><a href="#231-启动zookeeper">2.3.1 启动zookeeper</a>
+          <ul>
+            <li><a href="#232-检查zk启动情况">2.3.2 检查zk启动情况</a></li>
+            <li><a href="#233-检查zk集群情况">2.3.3 检查zk集群情况</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-准备java运行底包">3 准备java运行底包</a>
+      <ul>
+        <li><a href="#31-拉取原始底包">3.1 拉取原始底包</a></li>
+        <li><a href="#32-制作新底包">3.2 制作新底包</a>
+          <ul>
+            <li><a href="#321-制作dockerfile">3.2.1 制作dockerfile</a></li>
+            <li><a href="#322准备dockerfile需要的文件">3.2.2准备dockerfile需要的文件</a></li>
+            <li><a href="#323-构建底包并上传">3.2.3 构建底包并上传</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="08_k8s_交付实战-架构说明并准备zk集群">08_K8S_交付实战-架构说明并准备zk集群</h1>
+<h2 id="1-交付的服务架构图">1 交付的服务架构图：</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204138577-068b05f7-606f-40ee-b174-a18a1b7138f5.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204138577-068b05f7-606f-40ee-b174-a18a1b7138f5.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204138577-068b05f7-606f-40ee-b174-a18a1b7138f5.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204138577-068b05f7-606f-40ee-b174-a18a1b7138f5.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204138577-068b05f7-606f-40ee-b174-a18a1b7138f5.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601204138577-068b05f7-606f-40ee-b174-a18a1b7138f5.png" /></p>
+<h3 id="11-架构图解">1.1 架构图解</h3>
+<ol>
+<li>最上面一排为K8S集群外服务
+1.1 代码仓库使用基于git的gitee
+1.2 注册中心使用3台zk组成集群
+1.3 用户通过ingress暴露出去的服务进行访问</li>
+<li>中间层是K8S集群内服务
+2.1 jenkins以容器方式运行,数据目录通过共享磁盘做持久化
+2.2 整套dubbo微服务都以POD方式交付,通过zk集群通信
+2.3 需要提供的外部访问的服务通过ingress方式暴露</li>
+<li>最下层是运维主机层
+3.1 harbor是docker私有仓库,存放docker镜像
+3.2 POD相关yaml文件创建在运维主机特定目录
+3.3 在K8S集群内通过nginx提供的下载连接应用yaml配置</li>
+</ol>
+<h3 id="12-交付说明">1.2 交付说明:</h3>
+<p>docker虽然可以部署有状态服务,但如果不是有特别需要,还是建议不要部署有状态服务
+K8S同理,也不建议部署有状态服务，如mysql，zk等。
+因此手动将zookeeper创建集群提供给dubbo使用</p>
+<h2 id="2-部署zk集群">2 部署ZK集群</h2>
+<p>集群分布：7-11，7-12，7-21
+zk是java服务，需要依赖jdk</p>
+<h3 id="21-二进制安装jdk">2.1 二进制安装JDK</h3>
+<p>jdk请自行下载,只要是1.8版本的就可以,rpm安装或二进制安装均可：</p>
+<h4 id="211-解压jdk">2.1.1 解压jdk</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir /opt/src
+mkdir /usr/java
+cd /opt/src
+tar -xf jdk-8u221-linux-x64.tar.gz -C /usr/java/
+ln -s /usr/java/jdk1.8.0_221/ /usr/java/jdk
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="212-写入环境变量">2.1.2 写入环境变量</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;&gt;/etc/profile &lt;&lt;&#39;EOF&#39;
+#JAVA HOME
+export JAVA_HOME=/usr/java/jdk
+export PATH=$JAVA_HOME/bin:$JAVA_HOME/bin:$PATH
+export CLASSPATH=$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
+EOF
+# 使环境变量生效
+source /etc/profile
+</code></pre></td></tr></table>
+</div>
+</div><p>验证结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">[root@hdss7-11 ~]# java -version
+java version &#34;1.8.0_221&#34;
+Java(TM) SE Runtime Environment (build 1.8.0_221-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.221-b11, mixed mode)
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="22-二进制安装zk">2.2 二进制安装zk</h2>
+<h4 id="221-下载zookeeper">2.2.1 下载zookeeper</h4>
+<p><a href="https://archive.apache.org/dist/zookeeper/" target="_blank" rel="noopener noreffer">下载地址</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget https://archive.apache.org/dist/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
+tar -zxf zookeeper-3.4.14.tar.gz -C /opt/
+ln -s /opt/zookeeper-3.4.14/ /opt/zookeeper
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="222-创建zk配置文件">2.2.2 创建zk配置文件：</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;/opt/zookeeper/conf/zoo.cfg &lt;&lt;&#39;EOF&#39;
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/data/zookeeper/data
+dataLogDir=/data/zookeeper/logs
+clientPort=2181
+server.1=zk1.zq.com:2888:3888
+server.2=zk2.zq.com:2888:3888
+server.3=zk3.zq.com:2888:3888
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><p>创建相关目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir -p /data/zookeeper/data
+mkdir -p /data/zookeeper/logs
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="223-创建集群配置">2.2.3 创建集群配置</h4>
+<p>给每个zk不同的myid,以便区分主从</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#7-11上
+echo 1 &gt; /data/zookeeper/data/myid
+#7-12上
+echo 2 &gt; /data/zookeeper/data/myid
+#7-21上
+echo 3 &gt; /data/zookeeper/data/myid
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="224-修改dns解析">2.2.4 修改dns解析</h4>
+<p>到<code>7.11</code>上增加dns解析记录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">vi /var/named/zq.com.zone
+...
+zk1        A    10.4.7.11
+zk2        A    10.4.7.12
+zk3        A    10.4.7.21
+#验证结果
+~]# dig -t A zk1.zq.com  +short
+10.4.7.11
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="23-启动zk集群">2.3 启动zk集群</h3>
+<h3 id="231-启动zookeeper">2.3.1 启动zookeeper</h3>
+<p>在每台zk机器上都执行此操作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">/opt/zookeeper/bin/zkServer.sh start
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="232-检查zk启动情况">2.3.2 检查zk启动情况</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# ss -ln|grep 2181
+tcp    LISTEN     0      50       :::2181                 :::*
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="233-检查zk集群情况">2.3.3 检查zk集群情况</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">[root@hdss7-11 ~]# /opt/zookeeper/bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+Mode: follower
+[root@hdss7-12 ~]# /opt/zookeeper/bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+Mode: leader
+[root@hdss7-21 ~]# /opt/zookeeper/bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+Mode: follower
+</code></pre></td></tr></table>
+</div>
+</div><p>到此，zookeeper集群就搭建好了。</p>
+<h2 id="3-准备java运行底包">3 准备java运行底包</h2>
+<p>运维主机上操作</p>
+<h3 id="31-拉取原始底包">3.1 拉取原始底包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker pull stanleyws/jre8:8u112
+docker tag fa3a085d6ef1 harbor.zq.com/public/jre:8u112
+docker push harbor.zq.com/public/jre:8u112
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="32-制作新底包">3.2 制作新底包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir -p /data/dockerfile/jre8/
+cd /data/dockerfile/jre8/
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="321-制作dockerfile">3.2.1 制作dockerfile</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;Dockerfile &lt;&lt;&#39;EOF&#39;
+FROM harbor.zq.com/public/jre:8u112
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp;\
+    echo &#39;Asia/Shanghai&#39; &gt;/etc/timezone
+ADD config.yml /opt/prom/config.yml
+ADD jmx_javaagent-0.3.1.jar /opt/prom/
+WORKDIR /opt/project_dir
+ADD entrypoint.sh /entrypoint.sh
+CMD [&#34;sh&#34;,&#34;/entrypoint.sh&#34;]
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="322准备dockerfile需要的文件">3.2.2准备dockerfile需要的文件</h4>
+<p><strong>添加config.yml</strong>
+此文件是为后面用普罗米修斯监控做准备的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;config.yml &lt;&lt;&#39;EOF&#39;
+---
+rules:
+ - pattern: &#39;.*&#39;
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>下载jmx_javaagent,监控jvm信息：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.3.1/jmx_prometheus_javaagent-0.3.1.jar -O jmx_javaagent-0.3.1.jar
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>创建entrypoint.sh启动脚本：</strong>
+使用exec 来运行java的jar包，能够使脚本将自己的pid 为‘1’ 传递给java进程，避免docker容器因没有前台进程而退出。并且不要加&amp;符。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">cat &gt;entrypoint.sh <span class="s">&lt;&lt;&#39;EOF&#39;
+</span><span class="s">#!/bin/sh
+</span><span class="s">M_OPTS=&#34;-Duser.timezone=Asia/Shanghai -javaagent:/opt/prom/jmx_javaagent-0.3.1.jar=$(hostname -i):${M_PORT:-&#34;12346&#34;}:/opt/prom/config.yml&#34;
+</span><span class="s">C_OPTS=${C_OPTS}
+</span><span class="s">JAR_BALL=${JAR_BALL}
+</span><span class="s">exec java -jar ${M_OPTS} ${C_OPTS} ${JAR_BALL}
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="323-构建底包并上传">3.2.3 构建底包并上传</h4>
+<p>在harbor中创建名为<code>base</code>的公开仓库,用来存放自己自定义的底包</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker build . -t harbor.zq.com/base/jre8:8u112
+docker push  harbor.zq.com/base/jre8:8u112
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/" data-title="08_K8S_交付实战-架构说明并准备zk集群" data-hashtags="K8S,转载"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/" data-title="08_K8S_交付实战-架构说明并准备zk集群" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/" data-title="08_K8S_交付实战-架构说明并准备zk集群"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/08_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E%E5%B9%B6%E5%87%86%E5%A4%87zk%E9%9B%86%E7%BE%A4/" data-title="08_K8S_交付实战-架构说明并准备zk集群"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/" class="prev" rel="prev" title="09_K8S_交付实战-交付jenkins到k8s集群"><i class="fas fa-angle-left fa-fw"></i>09_K8S_交付实战-交付jenkins到k8s集群</a>
+            <a href="/07_k8s_web%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8Fdashboard/" class="next" rel="next" title="07_K8S_web管理方式dashboard">07_K8S_web管理方式dashboard<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

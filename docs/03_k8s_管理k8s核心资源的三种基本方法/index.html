@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>03_K8S_管理k8s核心资源的三种基本方法 - 山脚下的脚下山</title><meta name="Description" content="山脚下の脚下山"><meta property="og:title" content="03_K8S_管理k8s核心资源的三种基本方法" />
+<meta property="og:description" content="03_K8S_管理k8s核心资源的三种基本方法 1. 方法分类 陈述式&ndash;主要依赖命令行工具kubectl进行管理 优点 可以满足90%以上的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-01T15:58:21+08:00" />
+<meta property="article:modified_time" content="2020-10-01T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="03_K8S_管理k8s核心资源的三种基本方法"/>
+<meta name="twitter:description" content="03_K8S_管理k8s核心资源的三种基本方法 1. 方法分类 陈述式&ndash;主要依赖命令行工具kubectl进行管理 优点 可以满足90%以上的"/>
+<meta name="application-name" content="山脚下の脚下山">
+<meta name="apple-mobile-web-app-title" content="山脚下の脚下山"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95/" /><link rel="prev" href="https://scemsjyd.com/04_k8s_flannel/" /><link rel="next" href="https://scemsjyd.com/02_k8s%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "03_K8S_管理k8s核心资源的三种基本方法",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 转载","wordcount":  2531 ,
+        "url": "https:\/\/scemsjyd.com\/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95\/","datePublished": "2020-10-01T15:58:21+08:00","dateModified": "2020-10-01T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "老男孩"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> 主页 </a><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下の脚下山</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/" title="">主页</a><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">03_K8S_管理k8s核心资源的三种基本方法</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>老男孩</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a>&nbsp;<a href="/categories/%E8%BD%AC%E8%BD%BD/"><i class="far fa-folder fa-fw"></i>转载</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-01">2020-10-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2531 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;<span id="/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95/" class="leancloud_visitors" data-flag-title="03_K8S_管理k8s核心资源的三种基本方法">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-方法分类">1. 方法分类</a></li>
+    <li><a href="#2-kubectl命令行工具">2. kubectl命令行工具</a>
+      <ul>
+        <li><a href="#20-增加kubectl自动补全">2.0 增加kubectl自动补全</a></li>
+        <li><a href="#21-get-查">2.1 get 查</a>
+          <ul>
+            <li><a href="#211-查看名称空间namespace">2.1.1 查看名称空间<code>namespace</code></a></li>
+            <li><a href="#212-查看namespace中的资源">2.1.2 查看namespace中的资源</a></li>
+            <li><a href="#213--o-yaml查看资源配置清单详细信息">2.1.3 <code>-o yaml</code>查看资源配置清单详细信息</a></li>
+          </ul>
+        </li>
+        <li><a href="#22-创建删除名称空间">2.2 创建删除名称空间</a></li>
+        <li><a href="#23-管理pod控制器和pod">2.3 管理POD控制器和POD</a></li>
+        <li><a href="#24-service资源管理">2.4 service资源管理</a>
+          <ul>
+            <li><a href="#241-创建service资源">2.4.1 创建service资源</a></li>
+            <li><a href="#242-扩容pod看service怎么调度">2.4.2 扩容POD看service怎么调度</a></li>
+          </ul>
+        </li>
+        <li><a href="#25-explain查看属性的定义和用法">2.5 explain查看属性的定义和用法</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-统一资源配置清单">3 统一资源配置清单</a>
+      <ul>
+        <li><a href="#31-语法格式">3.1 语法格式</a>
+          <ul>
+            <li><a href="#311-学习方法">3.1.1 学习方法</a></li>
+          </ul>
+        </li>
+        <li><a href="#32-初略用法">3.2 初略用法</a>
+          <ul>
+            <li><a href="#321-查看已有资源的资源配置清单">3.2.1 查看已有资源的资源配置清单</a></li>
+            <li><a href="#322-创建并应用资源配置清单">3.2.2 创建并应用资源配置清单</a></li>
+            <li><a href="#323-修改资源配置清单">3.2.3 修改资源配置清单</a></li>
+            <li><a href="#324-删除资源配置清单">3.2.4 删除资源配置清单</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="03_k8s_管理k8s核心资源的三种基本方法">03_K8S_管理k8s核心资源的三种基本方法</h1>
+<h2 id="1-方法分类">1. 方法分类</h2>
+<ol>
+<li>陈述式&ndash;主要依赖命令行工具<code>kubectl</code>进行管理
+<ul>
+<li>优点
+可以满足90%以上的使用场景
+对资源的增、删、查操作比较容易</li>
+<li>缺点
+命令冗长，复杂，难以记忆
+特定场景下，无法实现管理需求
+对资源的修改麻烦，需要patch来使用json串更改。</li>
+</ul>
+</li>
+<li>声明式-主要依赖统一资源配置清单进行管理</li>
+<li>GUI式-主要依赖图形化操作界面进行管理</li>
+</ol>
+<h2 id="2-kubectl命令行工具">2. kubectl命令行工具</h2>
+<p><a href="http://docs.kubernetes.org.cn/683.html" target="_blank" rel="noopener noreffer">kubectl中文命令说明</a></p>
+<h3 id="20-增加kubectl自动补全">2.0 增加kubectl自动补全</h3>
+<p>二进制安装的k8s,kubectl工具没有自动补全功能(其他方式安装的未验证),可以使用以下方式开启命令自动补全</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">source &lt;(kubectl completion bash)
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="21-get-查">2.1 get 查</h3>
+<h4 id="211-查看名称空间namespace">2.1.1 查看名称空间<code>namespace</code></h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl get namespaces
+NAME              STATUS   AGE
+default           Active   4d11h
+kube-node-lease   Active   4d11h
+kube-public       Active   4d11h
+kube-system       Active   4d11h
+# namespaces可以简写为ns
+kubectl get ns
+# 但不是所有资源都可以简写,所以我还是习惯tab补全名
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="212-查看namespace中的资源">2.1.2 查看namespace中的资源</h4>
+<p><strong><code>get all</code>查询所有资源</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl get all
+# 默认是查询default名称空间的资源,查询其他名称空间,需要加 -n namespaces
+kubectl get all -n kube-public
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8-20211029172045383.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8-20211029172045383.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8-20211029172045383.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8-20211029172045383.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8-20211029172045383.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8-20211029172045383.png" /></p>
+<blockquote>
+<p>一般要养成习惯,<code>get</code>任何资源的时候,都要加上-n参数指定名称空间</p>
+</blockquote>
+<p><strong><code>get pods</code>查询所有pod</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">podsecuritypolicies.extensions
+~]# kubectl get pods -n default
+NAME             READY   STATUS    RESTARTS   AGE
+nginx-ds-p66qh   1/1     Running   0          2d10h
+</code></pre></td></tr></table>
+</div>
+</div><p><strong><code>get nodes</code>查询所有node节点</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl get nodes -n default
+NAME                STATUS     ROLES         AGE     VERSION
+hdss7-21.host.com   Ready      master,node   2d12h   v1.15.5
+hdss7-22.host.com   NotReady   &lt;none&gt;        2d12h   v1.15.5
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="213--o-yaml查看资源配置清单详细信息">2.1.3 <code>-o yaml</code>查看资源配置清单详细信息</h4>
+<p><code>-o yaml</code> 可以查看yaml格式的资源配置清单详情</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 查看POD的清单
+~]# kubectl -n kube-public get pod nginx-dp-568f8dc55-jk6nb  -o yaml
+# 查看deploy的清单
+~]# kubectl -n kube-public get deploy nginx-dp -o yaml
+# 查看service的清单
+~]# kubectl -n kube-public get service -o yaml -n kube-public
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="22-创建删除名称空间">2.2 创建删除名称空间</h3>
+<p><strong><code>create namespace</code>创建名称空间</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl create namespace app
+namespace/app created
+~]# kubectl get namespaces
+NAME              STATUS   AGE
+app               Active   16s
+default           Active   4d11h
+kube-node-lease   Active   4d11h
+kube-public       Active   4d11h
+kube-system       Active   4d11h
+</code></pre></td></tr></table>
+</div>
+</div><p><strong><code>delete namespaces</code>删除名称空间</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl delete namespaces app
+namespace &#34;app&#34; deleted
+~]# kubectl get namespaces
+NAME              STATUS   AGE
+default           Active   4d11h
+kube-node-lease   Active   4d11h
+kube-public       Active   4d11h
+kube-system       Active   4d11h
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="23-管理pod控制器和pod">2.3 管理POD控制器和POD</h3>
+<p>以<strong>deployment</strong>类型的POD控制为例,关于POD控制器类型,请参考官网
+<strong>创建POD控制器</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create deployment nginx-dp --image=harbor.zq.com/public/nginx:v1.17.9 -n kube-public
+~]# kubectl get deployments -n kube-public
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-dp   1/1     1            1           18s
+~]# kubectl get pod  -n kube-public
+NAME                       READY   STATUS    RESTARTS   AGE
+nginx-dp-568f8dc55-9qt4j   1/1     Running   0          7m50s
+</code></pre></td></tr></table>
+</div>
+</div><p><strong><code>-o wide</code>查看扩展信息</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 查看POD控制器信息,比基础信息多出了镜像来源,选择器等
+kubectl get deployments -o wide -n kube-public
+# 查看POD信息,比基础信息多出了POD的IP地址,节点位置等,
+kubectl get pod -o wide -n kube-public
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113374-ce95bc70-6c49-4945-ba03-57dd24fca151.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113374-ce95bc70-6c49-4945-ba03-57dd24fca151.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113374-ce95bc70-6c49-4945-ba03-57dd24fca151.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113374-ce95bc70-6c49-4945-ba03-57dd24fca151.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113374-ce95bc70-6c49-4945-ba03-57dd24fca151.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113374-ce95bc70-6c49-4945-ba03-57dd24fca151.png" />
+<strong><code>describe</code>查看资源详细信息</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 查看POD控制器详细信息
+kubectl describe deployments nginx-dp -n kube-public
+# 查看POD详细信息
+kubectl describe pod nginx-dp-568f8dc55-9qt4j -n kube-public
+</code></pre></td></tr></table>
+</div>
+</div><p><strong><code>exec</code>进入某个POD</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl -n kube-public exec -it  nginx-dp-568f8dc55-9qt4j bash
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>用法与docker exec类似</p>
+</blockquote>
+<p><strong><code>scale</code> 扩容POD</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl -n kube-public scale deployments nginx-dp --replicas=2
+</code></pre></td></tr></table>
+</div>
+</div><p><strong><code>delete</code>删除POD和POD控制器</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl -n kube-public delete pods nginx-dp-568f8dc55-9qt4j
+pod &#34;nginx-dp-568f8dc55-9qt4j&#34; deleted
+~]# kubectl -n kube-public get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+nginx-dp-568f8dc55-hnrxr   1/1     Running   0          13s
+~]# kubectl -n kube-public delete deployments nginx-dp
+deployment.extensions &#34;nginx-dp&#34; deleted
+~]# kubectl -n kube-public get pods
+No resources found.
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>在POD控制器存在的情况下,删除了POD,会由POD控制器再创建出新的POD
+删除POD控制器后,对应的POD也会一并删除</p>
+</blockquote>
+<h3 id="24-service资源管理">2.4 service资源管理</h3>
+<p>从上面的POD删除重建的过程可知,虽然POD会被POD控制器拉起,但是存放的NODE或POD的IP都是不确定的,那怎么对外稳定的提供服务呢
+这就需要引入<strong>service</strong>的功能了,它相当于一个反向代理,不管后端POD怎么变化,server提供的服务都不会变化,可以为pod资源提供稳定的接入点</p>
+<h4 id="241-创建service资源">2.4.1 创建service资源</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl -n kube-public create deployment nginx-dp --image=harbor.zq.com/public/nginx:v1.17.9
+deployment.apps/nginx-dp created
+~]# kubectl -n kube-public expose deployment nginx-dp --port=80
+service/nginx-dp exposed
+~]# kubectl -n kube-public get service
+NAME       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+nginx-dp   ClusterIP   192.168.94.73   &lt;none&gt;        80/TCP    45s
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到创建了一个VIP<code>192.168.94.73</code>,查看LVS信息,可以看到转发条目</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">[root@hdss7-21 ~]# ipvsadm -Ln
+IP Virtual Server version 1.2.1 (size=4096)
+......
+TCP  192.168.94.73:80 nq
+  -&gt; 172.7.21.3:80                Masq    1      0          0
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="242-扩容pod看service怎么调度">2.4.2 扩容POD看service怎么调度</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">~]# kubectl -n kube-public scale deployment nginx-dp --replicas=2
+deployment.extensions/nginx-dp scaled
+~]# ipvsadm -Ln
+......
+TCP  192.168.94.73:80 nq
+  -&gt; 172.7.21.3:80                Masq    1      0          0
+  -&gt; 172.7.22.4:80                Masq    1      0          0
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="25-explain查看属性的定义和用法">2.5 explain查看属性的定义和用法</h3>
+<p>查看service资源下metadata的定义及用法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl explain service.metadata
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113372-2a84b595-b904-4ae8-84c5-8e22cc7d68d8.png" /></p>
+<h2 id="3-统一资源配置清单">3 统一资源配置清单</h2>
+<p>统一资源配置清单,就是一个yaml格式的文件,文件中按指定格式定义了所需内容,然后通过命令行工具<code>kubectl</code>应用即可</p>
+<h3 id="31-语法格式">3.1 语法格式</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create/apply/delete -f /path_to/xxx.yaml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="311-学习方法">3.1.1 学习方法</h4>
+<ol>
+<li>忌一来就无中生有自己写,容易把自己憋死</li>
+<li>先看官方或别人写的,能读懂即可</li>
+<li>别人的读懂了能改改内容即可</li>
+<li>遇到不懂的用<code>kubectl explain</code>查帮助</li>
+</ol>
+<h3 id="32-初略用法">3.2 初略用法</h3>
+<h4 id="321-查看已有资源的资源配置清单">3.2.1 查看已有资源的资源配置清单</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubuctl get svc nginx-dp -o yaml -n kube-pubic
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113379-1967bb9e-6796-4e01-82a5-c07e5d7b15fd.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113379-1967bb9e-6796-4e01-82a5-c07e5d7b15fd.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113379-1967bb9e-6796-4e01-82a5-c07e5d7b15fd.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113379-1967bb9e-6796-4e01-82a5-c07e5d7b15fd.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113379-1967bb9e-6796-4e01-82a5-c07e5d7b15fd.png"
+        title="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601203113379-1967bb9e-6796-4e01-82a5-c07e5d7b15fd.png" /></p>
+<blockquote>
+<p>必须存在的四个部分为:
+apiVersion
+kind
+metadata
+spec</p>
+</blockquote>
+<p>资源配置清单中有许多项目,如果想查看资源配置清单中某一项的意义或该项下面可以配置的内容,可以使用<code>explain</code>来获取</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl explain service.kind
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="322-创建并应用资源配置清单">3.2.2 创建并应用资源配置清单</h4>
+<p><strong>创建yaml配置文件</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt;nginx-ds-svc.yaml &lt;&lt;EOF
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx-ds
+  name: nginx-ds
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx-ds
+  type: ClusterIP
+EOF
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>应用配置创建资源</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create -f nginx-ds-svc.yaml
+# 或
+kubectl apply -f nginx-ds-svc.yaml
+# 查看结果
+[root@hdss7-21 ~]# kubectl  get -f nginx-ds-svc.yaml
+NAME       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+nginx-ds   ClusterIP   192.168.48.225   &lt;none&gt;        80/TCP    24s
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>create和apply的区别</strong>
+create命令和apply命令都会根据配置文件创建资源,但是:</p>
+<ol>
+<li>create命令只会新建,如果资源文件已使用过,则会提示错误</li>
+<li>如果资源不存在,apply命令会新建,如果已存在,则会根据配置修改</li>
+<li>如果是create命令新建的资源,使用apply修改时会提示</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">[root@hdss7-21 ~]# kubectl apply -f nginx-ds-svc.yaml
+Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+</code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>意思是如果要用apply修改,就应该用apply命令创建,或者create创建时加<code>--save-config</code>参数</li>
+<li>所以养成使用apply命令的习惯即可</li>
+</ol>
+<h4 id="323-修改资源配置清单">3.2.3 修改资源配置清单</h4>
+<p><strong>在线修改</strong>
+使用edit命令,会打开一个在线的yaml格式文档,直接修改该文档后,修改立即生效</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl edit svc nginx-ds -n default
+# 查看结果
+[root@hdss7-21 ~]# kubectl get service nginx-ds
+NAME       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+nginx-ds   ClusterIP   192.168.48.225   &lt;none&gt;        8080/TCP   2m37s
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>离线修改</strong>
+离线修改就是修改原来的<code>yaml</code>文件,然后使用<code>apply</code>命令重新应用配置即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#将对外暴露的端口改为881
+sed -i &#39;s#port: 80#port: 881#g&#39; nginx-ds-svc.yaml
+# edit修改过资源,再用apply修改,会报错
+[root@hdss7-21 ~]# kubectl apply -f nginx-ds-svc.yaml
+The Service &#34;nginx-ds&#34; is invalid:
+* spec.ports[0].name: Required value
+* spec.ports[1].name: Required value
+# 加上--force强制修改选项
+[root@hdss7-21 ~]# kubectl apply -f nginx-ds-svc.yaml --force
+service/nginx-ds configured
+# 查看结果
+[root@hdss7-21 ~]# kubectl get service nginx-ds
+NAME       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+nginx-ds   ClusterIP   192.168.142.98   &lt;none&gt;        881/TCP   8s
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="324-删除资源配置清单">3.2.4 删除资源配置清单</h4>
+<p><strong>陈述式删除</strong>
+即:直接删除创建好的资源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl delete svc nginx-ds -n default
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>声明式删除</strong>
+即:通过制定配置文件的方式,删除用该配置文件创建出的资源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl delete -f nginx-ds-svc.yaml
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95/" data-title="03_K8S_管理k8s核心资源的三种基本方法" data-hashtags="K8S,转载"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95/" data-title="03_K8S_管理k8s核心资源的三种基本方法" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95/" data-title="03_K8S_管理k8s核心资源的三种基本方法"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/03_k8s_%E7%AE%A1%E7%90%86k8s%E6%A0%B8%E5%BF%83%E8%B5%84%E6%BA%90%E7%9A%84%E4%B8%89%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95/" data-title="03_K8S_管理k8s核心资源的三种基本方法"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/04_k8s_flannel/" class="prev" rel="prev" title="04_K8S_核心网络插件Flannel"><i class="fas fa-angle-left fa-fw"></i>04_K8S_核心网络插件Flannel</a>
+            <a href="/02_k8s%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2/" class="next" rel="next" title="02_K8S_二进制部署实践">02_K8S_二进制部署实践<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

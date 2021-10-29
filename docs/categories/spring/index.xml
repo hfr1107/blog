@@ -47,11 +47,11 @@
     <guid>https://scemsjyd.com/06_springmvc_validator/</guid>
     <description><![CDATA[参数校验器 Spring MVC中的参数校验器并没有自己大量从新开发，而是使用了Hibernate-Validator，而Hibernate-Valida]]></description>
 </item><item>
-    <title>10_springdata_kafka</title>
-    <link>https://scemsjyd.com/10_springdata_kafka/</link>
+    <title>SpringData_kafka</title>
+    <link>https://scemsjyd.com/springdata_kafka/</link>
     <pubDate>Sun, 27 Oct 2019 15:58:21 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://scemsjyd.com/10_springdata_kafka/</guid>
+    <guid>https://scemsjyd.com/springdata_kafka/</guid>
     <description><![CDATA[<h1 id="spring-kafka-要点">Spring kafka 要点</h1>
 <blockquote>
 <p>以下内容记录了一些工作中遇到的kafka的要点（个人认为）</p>
