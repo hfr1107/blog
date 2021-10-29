@@ -1,5 +1,6 @@
 ---
-title: "gatling"
+weight: 1000
+title: "gatling测试工具用法介绍"
 subtitle: ""
 date: 2019-10-27T15:58:21+08:00
 lastmod: 2018-10-27T15:58:21+08:00
@@ -31,7 +32,7 @@ license: ""
 ## 1、使用方式一
 - 下载
 [Download - Gatling Load and Performance testing](https://gatling.io/download/)
-- 目录结构 
+- 目录结构
   + bin  //命令
   + conf //配置文件
   + lib  //类库
@@ -40,7 +41,7 @@ license: ""
   + user-files //脚本目录
     - resource  脚本数据资源文件
     - simulations 脚本文件，脚本下文件目录以package方式
-  
+
 - 下载完成之后`simulations`下有样例文件`user-files/simulations/computerdatabase/BasicSimulation.scala`
 
 - 执行样例

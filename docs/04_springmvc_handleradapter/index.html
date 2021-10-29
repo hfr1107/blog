@@ -20,7 +20,7 @@
 <meta name="application-name" content="山脚下的脚下山の博客">
 <meta name="apple-mobile-web-app-title" content="山脚下的脚下山の博客"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/04_springmvc_handleradapter/" /><link rel="prev" href="https://scemsjyd.com/03_springmvc_handlermapping/" /><link rel="next" href="https://scemsjyd.com/05_springmvc_handlerexceptionresolver/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/04_springmvc_handleradapter/" /><link rel="prev" href="https://scemsjyd.com/05_springmvc_handlerexceptionresolver/" /><link rel="next" href="https://scemsjyd.com/03_springmvc_handlermapping/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -412,7 +412,7 @@ SimpleControllerHandlerAdapter
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
-</span><span class="cm">* 请求示例： GET http://localhost:8080/mv1/123;q=123/456;q=456 
+</span><span class="cm">* 请求示例： GET http://localhost:8080/mv1/123;q=123/456;q=456
 </span><span class="cm">* 正常响应
 </span><span class="cm">*/</span>
 <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/mv1/{x}/{y}&#34;</span><span class="o">)</span>
@@ -442,7 +442,7 @@ SimpleControllerHandlerAdapter
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
-</span><span class="cm"> * 请求示例： GET http://localhost:8080/mv2/q=123/q=456 
+</span><span class="cm"> * 请求示例： GET http://localhost:8080/mv2/q=123/q=456
 </span><span class="cm"> * 正常响应
 </span><span class="cm"> */</span>
 <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/mv2/{a}/{b}&#34;</span><span class="o">)</span>
@@ -470,7 +470,7 @@ SimpleControllerHandlerAdapter
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
-</span><span class="cm"> * 请求示例： GET http://localhost:8080/mv4/a=123/b=456; 
+</span><span class="cm"> * 请求示例： GET http://localhost:8080/mv4/a=123/b=456;
 </span><span class="cm"> * 结果报错：Cannot convert value of type &#39;java.lang.String&#39; to required type &#39;java.util.Map&#39;: no matching editors or conversion strategy found
 </span><span class="cm"> */</span>
 <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/mv4/{a}/{b}&#34;</span><span class="o">)</span>
@@ -1293,8 +1293,8 @@ RequestAttributeMethodArgumentResolver
         </section>
     </div>
 
-    <div class="post-nav"><a href="/03_springmvc_handlermapping/" class="prev" rel="prev" title="03_springmvc_handlermapping"><i class="fas fa-angle-left fa-fw"></i>03_springmvc_handlermapping</a>
-            <a href="/05_springmvc_handlerexceptionresolver/" class="next" rel="next" title="05_springmvc_handlerExceptionResolver">05_springmvc_handlerExceptionResolver<i class="fas fa-angle-right fa-fw"></i></a></div>
+    <div class="post-nav"><a href="/05_springmvc_handlerexceptionresolver/" class="prev" rel="prev" title="05_springmvc_handlerExceptionResolver"><i class="fas fa-angle-left fa-fw"></i>05_springmvc_handlerExceptionResolver</a>
+            <a href="/03_springmvc_handlermapping/" class="next" rel="next" title="03_springmvc_handlermapping">03_springmvc_handlermapping<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 <div id="comments"><div id="valine" class="comment"></div><noscript>
                 Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.

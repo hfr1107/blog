@@ -72,7 +72,7 @@ public @interface EnableKafka {
 <meta name="application-name" content="山脚下的脚下山の博客">
 <meta name="apple-mobile-web-app-title" content="山脚下的脚下山の博客"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/10_springdata_kafka/" /><link rel="prev" href="https://scemsjyd.com/gatling/" /><link rel="next" href="https://scemsjyd.com/emoji-support/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/10_springdata_kafka/" /><link rel="prev" href="https://scemsjyd.com/gatling/" /><link rel="next" href="https://scemsjyd.com/navicat%E8%A7%A3%E5%AF%86/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -427,7 +427,7 @@ public @interface EnableKafka {
         <span class="n">String</span> <span class="n">concurrency</span> <span class="o">=</span> <span class="n">kafkaListener</span><span class="o">.</span><span class="na">concurrency</span><span class="o">();</span>
         <span class="o">...</span>
         <span class="n">resolveKafkaProperties</span><span class="o">(</span><span class="n">endpoint</span><span class="o">,</span> <span class="n">kafkaListener</span><span class="o">.</span><span class="na">properties</span><span class="o">());</span>
-        
+
       <span class="c1">// 设置 KafkaListenerContainerFactory
 </span><span class="c1"></span>        <span class="n">KafkaListenerContainerFactory</span><span class="o">&lt;?&gt;</span> <span class="n">factory</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
         <span class="n">String</span> <span class="n">containerFactoryBeanName</span> <span class="o">=</span> <span class="n">resolve</span><span class="o">(</span><span class="n">kafkaListener</span><span class="o">.</span><span class="na">containerFactory</span><span class="o">());</span>
@@ -471,12 +471,12 @@ public @interface EnableKafka {
         <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">endpoint</span><span class="o">,</span> <span class="s">&#34;Endpoint must be set&#34;</span><span class="o">);</span>
         <span class="n">Assert</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">endpoint</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="s">&#34;Endpoint id must be set&#34;</span><span class="o">);</span>
         <span class="c1">// Factory may be null, we defer the resolution right before actually creating the container
-</span><span class="c1"></span>    
+</span><span class="c1"></span>
     <span class="c1">// 创建descriptor对象，里面相当于是kafkaListener的元信息
 </span><span class="c1"></span>        <span class="n">KafkaListenerEndpointDescriptor</span> <span class="n">descriptor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KafkaListenerEndpointDescriptor</span><span class="o">(</span><span class="n">endpoint</span><span class="o">,</span> <span class="n">factory</span><span class="o">);</span>
         <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">endpointDescriptors</span><span class="o">)</span> <span class="o">{</span>
             <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">startImmediately</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// Register and start immediately
-</span><span class="c1"></span>        
+</span><span class="c1"></span>
         <span class="c1">// 当startImmediately=true，则开始注册listenerContainer容器，具体参考：1.1.1.1.2中的endpointRegistry
 </span><span class="c1"></span>                <span class="k">this</span><span class="o">.</span><span class="na">endpointRegistry</span><span class="o">.</span><span class="na">registerListenerContainer</span><span class="o">(</span><span class="n">descriptor</span><span class="o">.</span><span class="na">endpoint</span><span class="o">,</span>
                         <span class="n">resolveContainerFactory</span><span class="o">(</span><span class="n">descriptor</span><span class="o">),</span> <span class="kc">true</span><span class="o">);</span>
@@ -535,7 +535,7 @@ public @interface EnableKafka {
         <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">listenerContainers</span><span class="o">)</span> <span class="o">{</span>
             <span class="n">Assert</span><span class="o">.</span><span class="na">state</span><span class="o">(!</span><span class="k">this</span><span class="o">.</span><span class="na">listenerContainers</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">id</span><span class="o">),</span>
                     <span class="s">&#34;Another endpoint is already registered with id &#39;&#34;</span> <span class="o">+</span> <span class="n">id</span> <span class="o">+</span> <span class="s">&#34;&#39;&#34;</span><span class="o">);</span>
-      
+
       <span class="c1">// 创建listenerContainer容器 参考1.1.1.1.2.2
 </span><span class="c1"></span>            <span class="n">MessageListenerContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="n">createListenerContainer</span><span class="o">(</span><span class="n">endpoint</span><span class="o">,</span> <span class="n">factory</span><span class="o">);</span>
             <span class="k">this</span><span class="o">.</span><span class="na">listenerContainers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">container</span><span class="o">);</span>
@@ -592,7 +592,7 @@ public @interface EnableKafka {
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">protected</span> <span class="n">MessageListenerContainer</span> <span class="nf">createListenerContainer</span><span class="o">(</span><span class="n">KafkaListenerEndpoint</span> <span class="n">endpoint</span><span class="o">,</span>
             <span class="n">KafkaListenerContainerFactory</span><span class="o">&lt;?&gt;</span> <span class="n">factory</span><span class="o">)</span> <span class="o">{</span>
-    
+
     <span class="c1">//使用工场创建容器，参考1.1.1.1.2.3
 </span><span class="c1"></span>        <span class="n">MessageListenerContainer</span> <span class="n">listenerContainer</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">createListenerContainer</span><span class="o">(</span><span class="n">endpoint</span><span class="o">);</span>
         <span class="c1">// 如果实现了InitializingBean，则调用afterPropertiesSet方法
@@ -1130,8 +1130,8 @@ public @interface EnableKafka {
         </section>
     </div>
 
-    <div class="post-nav"><a href="/gatling/" class="prev" rel="prev" title="gatling"><i class="fas fa-angle-left fa-fw"></i>gatling</a>
-            <a href="/emoji-support/" class="next" rel="next" title="Emoji 支持">Emoji 支持<i class="fas fa-angle-right fa-fw"></i></a></div>
+    <div class="post-nav"><a href="/gatling/" class="prev" rel="prev" title="gatling测试工具用法介绍"><i class="fas fa-angle-left fa-fw"></i>gatling测试工具用法介绍</a>
+            <a href="/navicat%E8%A7%A3%E5%AF%86/" class="next" rel="next" title="02_navicat密码破解">02_navicat密码破解<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 <div id="comments"><div id="valine" class="comment"></div><noscript>
                 Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.

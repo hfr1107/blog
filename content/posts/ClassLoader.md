@@ -1,5 +1,6 @@
 ---
-title: "classloader"
+weight: 1000
+title: "classloader简要概述"
 subtitle: ""
 date: 2017-10-27T15:58:21+08:00
 lastmod: 2017-10-27T15:58:21+08:00

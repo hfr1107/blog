@@ -123,7 +123,7 @@ protected void processListener(MethodKafkaListenerEndpoint<?, ?> endpoint, Kafka
         String concurrency = kafkaListener.concurrency();
         ...
         resolveKafkaProperties(endpoint, kafkaListener.properties());
-        
+
       // 设置 KafkaListenerContainerFactory
         KafkaListenerContainerFactory<?> factory = null;
         String containerFactoryBeanName = resolve(kafkaListener.containerFactory());
@@ -146,12 +146,12 @@ protected void processListener(MethodKafkaListenerEndpoint<?, ?> endpoint, Kafka
         Assert.notNull(endpoint, "Endpoint must be set");
         Assert.hasText(endpoint.getId(), "Endpoint id must be set");
         // Factory may be null, we defer the resolution right before actually creating the container
-    
+
     // 创建descriptor对象，里面相当于是kafkaListener的元信息
         KafkaListenerEndpointDescriptor descriptor = new KafkaListenerEndpointDescriptor(endpoint, factory);
         synchronized (this.endpointDescriptors) {
             if (this.startImmediately) { // Register and start immediately
-        
+
         // 当startImmediately=true，则开始注册listenerContainer容器，具体参考：1.1.1.1.2中的endpointRegistry
                 this.endpointRegistry.registerListenerContainer(descriptor.endpoint,
                         resolveContainerFactory(descriptor), true);
@@ -178,7 +178,7 @@ public void registerListenerContainer(KafkaListenerEndpoint endpoint, KafkaListe
         synchronized (this.listenerContainers) {
             Assert.state(!this.listenerContainers.containsKey(id),
                     "Another endpoint is already registered with id '" + id + "'");
-      
+
       // 创建listenerContainer容器 参考1.1.1.1.2.2
             MessageListenerContainer container = createListenerContainer(endpoint, factory);
             this.listenerContainers.put(id, container);
@@ -208,7 +208,7 @@ public void registerListenerContainer(KafkaListenerEndpoint endpoint, KafkaListe
 ```java
 protected MessageListenerContainer createListenerContainer(KafkaListenerEndpoint endpoint,
             KafkaListenerContainerFactory<?> factory) {
-    
+
     //使用工场创建容器，参考1.1.1.1.2.3
         MessageListenerContainer listenerContainer = factory.createListenerContainer(endpoint);
         // 如果实现了InitializingBean，则调用afterPropertiesSet方法

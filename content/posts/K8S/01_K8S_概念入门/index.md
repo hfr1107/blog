@@ -1,0 +1,142 @@
+---
+weight: 1
+title: "01_K8S_概念入门"
+subtitle: ""
+date: 2020-10-01T15:58:21+08:00
+lastmod: 2020-10-01T15:58:21+08:00
+draft: false
+author: "转载"
+authorLink: "https://www.cnblogs.com/noah-luo/p/13345150.html"
+description: "转载，原为老男孩教育视频内容"
+
+tags: ["K8S", "转载"]
+categories: ["转载", "K8S"]
+
+featuredImage: "https://image-static.segmentfault.com/268/838/2688383208-de2acc59bbefb7ca_fix732"
+featuredImagePreview: ""
+
+lightgallery: true
+---
+
+01_K8S_概念入门
+<!--more-->
+
+# k8s概念入门
+
+
+## 1. 四组基本概念
+
+1. Pod/Pod控制器
+
+2. Name/Namespace
+
+3. Lable/Label选择器
+
+4. Service/Ingress
+
+###  1.1 POD和POD控制器
+
+> kubernetes 的pod控制器
+
+1. Podk8s里能够被运行的最小逻辑单元1个POD里面可以运行多个容器(SideCar 边车模式)POD中的容器共享 UTS/NAT/IPC 名称空间POD和容器颗粒理解为豌豆荚和豌豆
+
+2. Pod控制器Pod控制器是Pod启动的一种模板用来保证在K8S里启动的Pod始终按预期运行包括副本数\生命周期\健康检查等
+
+3. 常用的Pod控制器:
+
+| 控制器名称        | 用途简述                                        |
+| ----------------- | ----------------------------------------------- |
+| Deployment        | 用于管理无状态应用,支持滚动更新和回滚           |
+| DaemonSet         | 确保集群中的每一个节点上只运行一个特定的pod副本 |
+| ReplicaSet        | 确保pod副本数量符合用户期望的数量状态           |
+| StatefulSet       | 管理有状态应用                                  |
+| Job               | 有状态，一次性任务                              |
+| Cronjob(定时任务) | 有状态，周期性任务                              |
+
+###  1.2 Name/Namespace
+
+1. NameK8S使用'资源'来定义每一种逻辑概念(功能)每种'资源'都应该有自己的'名称''名称'通常定义在'资源'的元数据(metadata)信息中
+
+   资源的配置信息包括:
+
+   - API版本(apiVersion)
+   - 类别(kind)
+   - 元数据(metadata)
+   - 定义清单(spec)
+   - 状态(status)
+
+2. Namespace名称空间用于隔离K8S内各种资源,类似K8S内部的虚拟分组同一个名称空间中,相同资源的名称不能相同默认的名称空间为`﻿default`﻿，`﻿kube-system﻿`，`﻿kube-public`﻿查询特定资源,要带上相应的名称空间
+
+###  1.3 Lable/Label选择器
+
+1. Lable标签的作用是便于分类管理资源对象标签与资源之间是多对多的关系给一个资源多个标签,可以实现不同维度的管理
+
+2. Lable选择器可以使用标签选择器过滤指定的标签标签选择器有基于等值关系(等于,不等于)和基于集合关系(属于,存在)的两种许多资源都支持内嵌标签选择器字段:﻿`matchLables﻿`或﻿`matchExpressions﻿`
+
+###  1.4 Service/Ingress
+
+1. Service(重点)：POD会分配IP地址,但IP会随着POD销毁而消失多个同类型POD,IP或端口必然不同,但却相同的服务Service用来提供相同服务POD的对外访问接口Service通过标签选择器来确定作用于哪些PODService只能提供L4层的调度,即:IP+端口
+
+2. Ingress(重点)：Ingress也是用来暴露POD的对外访问接口Igress提供L7层的调度,即http/httpsIgress可以调度不同业务域,不同URL路径的流量
+
+## 2. 核心组件与核心附件
+
+核心组件配置存储中心
+
+- etcd服务
+
+主控节点（master）
+
+- kube-apiserver服务
+- kube-controller-manager服务
+- kube-scheduler服务
+
+运算节点（node）
+
+- kube-kubelet服务
+
+- kube-proxy服务
+
+CLI客户端kubectl命令行工具
+
+核心附件CNI网络插件（flannel/calico）
+
+服务发现插件（coredns）
+
+服务暴露插件（traefik）
+
+GUI管理插件（dashboard）
+
+###  2.1 核心组件功能
+
+1. 配置存储中心-etcdetcd是一个非关系型数据库，作用类似于zookeeper注册中心用于各种服务的注册和数据缓存
+
+2. kube-apiserver(master)提供季军管理的REST API接口，包括鉴权、数据校验、集群状态变更负责其他模块之间的数据交互，承担通信枢纽的功能和etcd通信，是资源配额控制的入口提供玩备的集群控制机制
+
+3. kube-controller-manager由一系列控制器组成,通过apiserver监控整个集群的状态,确保集群处于预期的工作状态是管理所有控制器的控制器
+
+4. kube-scheduler主要是接收调度POD到合适的node节点上通过apiserver，从etcd中获取资源信息进行调度只负责调度工作，启动工作是node节点上的kubelet负责调度策略：预算策略（predict）、优选策略（priorities）
+
+5. kube-kubelet定时从apiserver获取节点上POD的期望状态（如副本数量、网络类型、存储空间、容器类型等）然后调用容器平台接口达到这个状态提供POD节点具体使用的网络定时汇报当前节点状态给apiserver，以供调度复制镜像和容器的创建和清理工作
+
+6. kube-proxy是K8S在每个节点上运行网络的代理，service资源的载体不直接为POD节点提供网络,而是提供POD间的集群网络建立了POD网络和集群网络的关系（clusterIp->podIp)负责建立、删除、更新调度规则与apiserver通信，以更新自己和获取其他kube-proxy的的调度规则常用的调度模式：Iptables(不推荐)、Ipvs(推荐)
+
+###  2.2 K8S的三条网络
+
+![img](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667294-c229f4bb-88ed-480d-b865-49ffad828651.png)
+
+1. 节点网络实际网络，就是宿主机网络建议地址段：﻿10.4.7.0/24﻿建议通过不同的IP端,区分不同的业务、机房或数据中心
+
+2. Pod 网络实际网络，容器运行的网络建议﻿172.7.21.0/24﻿ ,并建议POD网段与节点IP绑定如: 节点IP为﻿10.4.7.21﻿，则POD网络为﻿172.7.21.0/24﻿
+
+3. service网络虚拟网络，也叫集群网络(cluster server),用于内部集群间通信构建于POD网络之上, 主要是解决服务发现和负载均衡通过kube-proxy连接POD网络和service网络建议地址段为：﻿192.168.0.0/16﻿
+
+
+
+##  3. K8S流程图
+
+![img](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667301-c91e26c5-de30-46f2-ba82-be8e19f34bf6.png)
+
+说明:
+
+主控节点和node节点只是逻辑上的概念,物理上可以部署在一起

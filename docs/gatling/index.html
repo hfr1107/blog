@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-        <title>gatling - 山脚下的脚下山</title><meta name="Description" content="山脚下的脚下山の博客"><meta property="og:title" content="gatling" />
+        <title>gatling测试工具用法介绍 - 山脚下的脚下山</title><meta name="Description" content="山脚下的脚下山の博客"><meta property="og:title" content="gatling测试工具用法介绍" />
 <meta property="og:description" content="测试工具gatling（加特林） 在学习Webflux响应式编程的过程中偶然听到了gatling这个负载测试工具，并且看着很简单。之前有听说过" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://scemsjyd.com/gatling/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
@@ -15,16 +15,16 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
 
-<meta name="twitter:title" content="gatling"/>
+<meta name="twitter:title" content="gatling测试工具用法介绍"/>
 <meta name="twitter:description" content="测试工具gatling（加特林） 在学习Webflux响应式编程的过程中偶然听到了gatling这个负载测试工具，并且看着很简单。之前有听说过"/>
 <meta name="application-name" content="山脚下的脚下山の博客">
 <meta name="apple-mobile-web-app-title" content="山脚下的脚下山の博客"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/gatling/" /><link rel="prev" href="https://scemsjyd.com/navicat%E8%A7%A3%E5%AF%86/" /><link rel="next" href="https://scemsjyd.com/10_springdata_kafka/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/gatling/" /><link rel="prev" href="https://scemsjyd.com/sentry/" /><link rel="next" href="https://scemsjyd.com/10_springdata_kafka/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "gatling",
+        "headline": "gatling测试工具用法介绍",
         "inLanguage": "zh-CN",
         "mainEntityOfPage": {
             "@type": "WebPage",
@@ -104,10 +104,10 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">目录</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animated flipInX">gatling</h1><div class="post-meta">
+        </div><article class="page single"><h1 class="single-title animated flipInX">gatling测试工具用法介绍</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>山脚下的脚下山</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/"><i class="far fa-folder fa-fw"></i>测试工具</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-10-27">2019-10-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 715 字&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;<span id="/gatling/" class="leancloud_visitors" data-flag-title="gatling">
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;<span id="/gatling/" class="leancloud_visitors" data-flag-title="gatling测试工具用法介绍">
                         <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
                     </span>&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
@@ -322,7 +322,7 @@ Version:3.0.2
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/gatling/" data-title="gatling" data-hashtags="test"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/gatling/" data-title="gatling" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/gatling/" data-title="gatling"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/gatling/" data-title="gatling"><i class="fab fa-evernote fa-fw"></i></a></span>
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/gatling/" data-title="gatling测试工具用法介绍" data-hashtags="test"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/gatling/" data-title="gatling测试工具用法介绍" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/gatling/" data-title="gatling测试工具用法介绍"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/gatling/" data-title="gatling测试工具用法介绍"><i class="fab fa-evernote fa-fw"></i></a></span>
             </div>
         </div>
     </div>
@@ -334,7 +334,7 @@ Version:3.0.2
         </section>
     </div>
 
-    <div class="post-nav"><a href="/navicat%E8%A7%A3%E5%AF%86/" class="prev" rel="prev" title="navicat解密"><i class="fas fa-angle-left fa-fw"></i>navicat解密</a>
+    <div class="post-nav"><a href="/sentry/" class="prev" rel="prev" title="sentry在java中用法"><i class="fas fa-angle-left fa-fw"></i>sentry在java中用法</a>
             <a href="/10_springdata_kafka/" class="next" rel="next" title="10_springdata_kafka">10_springdata_kafka<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 <div id="comments"><div id="valine" class="comment"></div><noscript>

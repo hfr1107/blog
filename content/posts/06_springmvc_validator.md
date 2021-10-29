@@ -1,4 +1,5 @@
 ---
+weight: 25
 title: "06_springmvc_validator"
 subtitle: ""
 date: 2016-11-01T15:59:42+08:00
@@ -91,7 +92,7 @@ public class User {
 
     @NotNull
     private String name;
-  
+
     @Min(value="1")
     private String age;
 

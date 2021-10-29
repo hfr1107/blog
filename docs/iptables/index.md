@@ -1,4 +1,4 @@
-# iptables
+# iptables入门
 
 # iptables 简单入门介绍
 
@@ -64,10 +64,10 @@
 
 - 链（chains）
 
-  - PREROUTING：数据包进入路由表之前        
-  - INPUT：通过路由表后目的地为本机        
-  - FORWARD：通过路由表后，目的地不为本机        
-  - OUTPUT：由本机产生，向外转发        
+  - PREROUTING：数据包进入路由表之前
+  - INPUT：通过路由表后目的地为本机
+  - FORWARD：通过路由表后，目的地不为本机
+  - OUTPUT：由本机产生，向外转发
   - POSTROUTIONG：发送到网卡接口之前
 
 - 规则（rules）

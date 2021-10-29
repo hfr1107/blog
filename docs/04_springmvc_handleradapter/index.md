@@ -59,7 +59,7 @@ org.springframework.web.servlet.HandlerAdapter=org.springframework.web.servlet.m
 3. 遍历1.中找到的标记了`@ControllerAdvice`的类中找到注解了`@InitBinder`的方法
 4. 遍历1.中找到的标记了`@ControllerAdvice`的类中找到实现了`RequestBodyAdvice`和`ResponseBodyAdvice`的实现
 
-### ❷ 参数解析器 
+### ❷ 参数解析器
 
 > 1. 解析特定注解的参数
 > 2. 参数校验
@@ -75,13 +75,13 @@ org.springframework.web.servlet.HandlerAdapter=org.springframework.web.servlet.m
 ![image-20200714110456697](https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714110456697.png)
 
 - #### `RequestParamMethodArgumentResolver`
-  
+
   - 主要用来解析`@RequestParam`注解的参数
 
 ![image-20200714105830467](https://cdn.jsdelivr.net/gh/scemsjyd/static@master/uPic/image-20200714105830467.png)
 
 - #### `RequestParamMapMethodArgumentResolver`
-  
+
   - 用来解析@RequestParam注解并参数类型为Map的参数，并且requestParam.name为空
 
 ```java
@@ -110,7 +110,7 @@ public boolean supportsParameter(MethodParameter parameter) {
 ```
 
 - #### `PathVariableMapMethodArgumentResolver`
-  
+
   - 用来解析`@PathVariable`注解的参数类型是Map，并且pathVariable.value()不存在的参数
 
 ```java
@@ -123,7 +123,7 @@ public boolean supportsParameter(MethodParameter parameter) {
 ```
 
 - #### `MatrixVariableMethodArgumentResolver`
-  
+
   - 用于解析`@MatrixVariable`注解的参数；*参数类型是Map，并且matrixVariable.name存在的参数，也能被解析，但是没有默认的数据绑定器，所以会报错。
 
 ```java
@@ -144,7 +144,7 @@ public boolean supportsParameter(MethodParameter parameter) {
 
  ```java
 /**
- * 请求示例： GET http://localhost:8080/mv1/123;q=123/456;q=456 
+ * 请求示例： GET http://localhost:8080/mv1/123;q=123/456;q=456
  * 正常响应
  */
 @RequestMapping("/mv1/{x}/{y}")
@@ -160,7 +160,7 @@ public String matrixVairable1(
 
 ```java
 /**
- * 请求示例： GET http://localhost:8080/mv2/q=123/q=456 
+ * 请求示例： GET http://localhost:8080/mv2/q=123/q=456
  * 正常响应
  */
 @RequestMapping("/mv2/{a}/{b}")
@@ -174,7 +174,7 @@ public String matrixVairable2(
 
 ```java
 /**
- * 请求示例： GET http://localhost:8080/mv4/a=123/b=456; 
+ * 请求示例： GET http://localhost:8080/mv4/a=123/b=456;
  * 结果报错：Cannot convert value of type 'java.lang.String' to required type 'java.util.Map': no matching editors or conversion strategy found
  */
 @RequestMapping("/mv4/{a}/{b}")
@@ -187,7 +187,7 @@ public String matrixVairable4(
 ```
 
 - #### `MatrixVariableMapMethodArgumentResolver`
-  
+
   - 用于解析`@MatrixVariable`注解的参数类型是Map，并且matrixVariable.name不存在的参数
 
 ```java
@@ -332,7 +332,7 @@ public class ModelAttributeParamController {
 使用`@ModelAttribute`注解的参数，意思是从前面的`Model`中提取对应名称的属性。
 
 - #### `RequestResponseBodyMethodProcessor`
-  
+
   - 解析`@RequestBody`注解的参数
   - 解析`@ResponseBody`注解的响应
 
@@ -561,7 +561,7 @@ public void handleReturnValue(@Nullable Object returnValue, MethodParameter retu
 
 ## handle流程
 
-> handle方法是HandleAdapter的核心方法，Controller中业务的处理逻辑也是在此方法中被调用 
+> handle方法是HandleAdapter的核心方法，Controller中业务的处理逻辑也是在此方法中被调用
 
 `RequestMappingHandlerAdapter`中的`handle`方法如下：
 

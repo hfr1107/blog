@@ -1,4 +1,4 @@
-# HashMap
+# HashMap源码分析
 
 
 # HashMap源码解析
@@ -130,7 +130,7 @@ static final int hash(Object key) {
 }
 ```
 
-**(h = key.hashCode()) ^ (h >>> 16)** 
+**(h = key.hashCode()) ^ (h >>> 16)**
 
 为什么需要h >>> 16位？扰动函数，减轻了哈希冲突
 

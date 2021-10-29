@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>01_K8S_概念入门 - 山脚下的脚下山</title><meta name="Description" content="转载，原为老男孩教育视频内容"><meta property="og:title" content="01_K8S_概念入门" />
+<meta property="og:description" content="转载，原为老男孩教育视频内容" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-01T15:58:21+08:00" />
+<meta property="article:modified_time" content="2020-10-01T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="01_K8S_概念入门"/>
+<meta name="twitter:description" content="转载，原为老男孩教育视频内容"/>
+<meta name="application-name" content="山脚下的脚下山の博客">
+<meta name="apple-mobile-web-app-title" content="山脚下的脚下山の博客"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8/" /><link rel="prev" href="https://scemsjyd.com/02_k8s%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "01_K8S_概念入门",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 转载","wordcount":  2302 ,
+        "url": "https:\/\/scemsjyd.com\/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8\/","datePublished": "2020-10-01T15:58:21+08:00","dateModified": "2020-10-01T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "转载"
+            },"description": "转载，原为老男孩教育视频内容"
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">01_K8S_概念入门</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.cnblogs.com/noah-luo/p/13345150.html" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>转载</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BD%AC%E8%BD%BD/"><i class="far fa-folder fa-fw"></i>转载</a>&nbsp;<a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-10-01">2020-10-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2302 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;<span id="/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8/" class="leancloud_visitors" data-flag-title="01_K8S_概念入门">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="featured-image"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://image-static.segmentfault.com/268/838/2688383208-de2acc59bbefb7ca_fix732"
+        data-srcset="https://image-static.segmentfault.com/268/838/2688383208-de2acc59bbefb7ca_fix732, https://image-static.segmentfault.com/268/838/2688383208-de2acc59bbefb7ca_fix732 1.5x, https://image-static.segmentfault.com/268/838/2688383208-de2acc59bbefb7ca_fix732 2x"
+        data-sizes="auto"
+        alt="https://image-static.segmentfault.com/268/838/2688383208-de2acc59bbefb7ca_fix732"
+        title="转载，原为老男孩教育视频内容" /></div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-四组基本概念">1. 四组基本概念</a>
+      <ul>
+        <li><a href="#11-pod和pod控制器">1.1 POD和POD控制器</a></li>
+        <li><a href="#12-namenamespace">1.2 Name/Namespace</a></li>
+        <li><a href="#13-lablelabel选择器">1.3 Lable/Label选择器</a></li>
+        <li><a href="#14-serviceingress">1.4 Service/Ingress</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-核心组件与核心附件">2. 核心组件与核心附件</a>
+      <ul>
+        <li><a href="#21-核心组件功能">2.1 核心组件功能</a></li>
+        <li><a href="#22-k8s的三条网络">2.2 K8S的三条网络</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-k8s流程图">3. K8S流程图</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>01_K8S_概念入门</p>
+<h1 id="k8s概念入门">k8s概念入门</h1>
+<h2 id="1-四组基本概念">1. 四组基本概念</h2>
+<ol>
+<li>
+<p>Pod/Pod控制器</p>
+</li>
+<li>
+<p>Name/Namespace</p>
+</li>
+<li>
+<p>Lable/Label选择器</p>
+</li>
+<li>
+<p>Service/Ingress</p>
+</li>
+</ol>
+<h3 id="11-pod和pod控制器">1.1 POD和POD控制器</h3>
+<blockquote>
+<p>kubernetes 的pod控制器</p>
+</blockquote>
+<ol>
+<li>
+<p>Podk8s里能够被运行的最小逻辑单元1个POD里面可以运行多个容器(SideCar 边车模式)POD中的容器共享 UTS/NAT/IPC 名称空间POD和容器颗粒理解为豌豆荚和豌豆</p>
+</li>
+<li>
+<p>Pod控制器Pod控制器是Pod启动的一种模板用来保证在K8S里启动的Pod始终按预期运行包括副本数\生命周期\健康检查等</p>
+</li>
+<li>
+<p>常用的Pod控制器:</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>控制器名称</th>
+<th>用途简述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deployment</td>
+<td>用于管理无状态应用,支持滚动更新和回滚</td>
+</tr>
+<tr>
+<td>DaemonSet</td>
+<td>确保集群中的每一个节点上只运行一个特定的pod副本</td>
+</tr>
+<tr>
+<td>ReplicaSet</td>
+<td>确保pod副本数量符合用户期望的数量状态</td>
+</tr>
+<tr>
+<td>StatefulSet</td>
+<td>管理有状态应用</td>
+</tr>
+<tr>
+<td>Job</td>
+<td>有状态，一次性任务</td>
+</tr>
+<tr>
+<td>Cronjob(定时任务)</td>
+<td>有状态，周期性任务</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-namenamespace">1.2 Name/Namespace</h3>
+<ol>
+<li>
+<p>NameK8S使用&rsquo;资源&rsquo;来定义每一种逻辑概念(功能)每种&rsquo;资源&rsquo;都应该有自己的&rsquo;名称'&lsquo;名称&rsquo;通常定义在&rsquo;资源&rsquo;的元数据(metadata)信息中</p>
+<p>资源的配置信息包括:</p>
+<ul>
+<li>API版本(apiVersion)</li>
+<li>类别(kind)</li>
+<li>元数据(metadata)</li>
+<li>定义清单(spec)</li>
+<li>状态(status)</li>
+</ul>
+</li>
+<li>
+<p>Namespace名称空间用于隔离K8S内各种资源,类似K8S内部的虚拟分组同一个名称空间中,相同资源的名称不能相同默认的名称空间为<code>﻿default</code>﻿，<code>﻿kube-system﻿</code>，<code>﻿kube-public</code>﻿查询特定资源,要带上相应的名称空间</p>
+</li>
+</ol>
+<h3 id="13-lablelabel选择器">1.3 Lable/Label选择器</h3>
+<ol>
+<li>
+<p>Lable标签的作用是便于分类管理资源对象标签与资源之间是多对多的关系给一个资源多个标签,可以实现不同维度的管理</p>
+</li>
+<li>
+<p>Lable选择器可以使用标签选择器过滤指定的标签标签选择器有基于等值关系(等于,不等于)和基于集合关系(属于,存在)的两种许多资源都支持内嵌标签选择器字段:﻿<code>matchLables﻿</code>或﻿<code>matchExpressions﻿</code></p>
+</li>
+</ol>
+<h3 id="14-serviceingress">1.4 Service/Ingress</h3>
+<ol>
+<li>
+<p>Service(重点)：POD会分配IP地址,但IP会随着POD销毁而消失多个同类型POD,IP或端口必然不同,但却相同的服务Service用来提供相同服务POD的对外访问接口Service通过标签选择器来确定作用于哪些PODService只能提供L4层的调度,即:IP+端口</p>
+</li>
+<li>
+<p>Ingress(重点)：Ingress也是用来暴露POD的对外访问接口Igress提供L7层的调度,即http/httpsIgress可以调度不同业务域,不同URL路径的流量</p>
+</li>
+</ol>
+<h2 id="2-核心组件与核心附件">2. 核心组件与核心附件</h2>
+<p>核心组件配置存储中心</p>
+<ul>
+<li>etcd服务</li>
+</ul>
+<p>主控节点（master）</p>
+<ul>
+<li>kube-apiserver服务</li>
+<li>kube-controller-manager服务</li>
+<li>kube-scheduler服务</li>
+</ul>
+<p>运算节点（node）</p>
+<ul>
+<li>
+<p>kube-kubelet服务</p>
+</li>
+<li>
+<p>kube-proxy服务</p>
+</li>
+</ul>
+<p>CLI客户端kubectl命令行工具</p>
+<p>核心附件CNI网络插件（flannel/calico）</p>
+<p>服务发现插件（coredns）</p>
+<p>服务暴露插件（traefik）</p>
+<p>GUI管理插件（dashboard）</p>
+<h3 id="21-核心组件功能">2.1 核心组件功能</h3>
+<ol>
+<li>
+<p>配置存储中心-etcdetcd是一个非关系型数据库，作用类似于zookeeper注册中心用于各种服务的注册和数据缓存</p>
+</li>
+<li>
+<p>kube-apiserver(master)提供季军管理的REST API接口，包括鉴权、数据校验、集群状态变更负责其他模块之间的数据交互，承担通信枢纽的功能和etcd通信，是资源配额控制的入口提供玩备的集群控制机制</p>
+</li>
+<li>
+<p>kube-controller-manager由一系列控制器组成,通过apiserver监控整个集群的状态,确保集群处于预期的工作状态是管理所有控制器的控制器</p>
+</li>
+<li>
+<p>kube-scheduler主要是接收调度POD到合适的node节点上通过apiserver，从etcd中获取资源信息进行调度只负责调度工作，启动工作是node节点上的kubelet负责调度策略：预算策略（predict）、优选策略（priorities）</p>
+</li>
+<li>
+<p>kube-kubelet定时从apiserver获取节点上POD的期望状态（如副本数量、网络类型、存储空间、容器类型等）然后调用容器平台接口达到这个状态提供POD节点具体使用的网络定时汇报当前节点状态给apiserver，以供调度复制镜像和容器的创建和清理工作</p>
+</li>
+<li>
+<p>kube-proxy是K8S在每个节点上运行网络的代理，service资源的载体不直接为POD节点提供网络,而是提供POD间的集群网络建立了POD网络和集群网络的关系（clusterIp-&gt;podIp)负责建立、删除、更新调度规则与apiserver通信，以更新自己和获取其他kube-proxy的的调度规则常用的调度模式：Iptables(不推荐)、Ipvs(推荐)</p>
+</li>
+</ol>
+<h3 id="22-k8s的三条网络">2.2 K8S的三条网络</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667294-c229f4bb-88ed-480d-b865-49ffad828651.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667294-c229f4bb-88ed-480d-b865-49ffad828651.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667294-c229f4bb-88ed-480d-b865-49ffad828651.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667294-c229f4bb-88ed-480d-b865-49ffad828651.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667294-c229f4bb-88ed-480d-b865-49ffad828651.png"
+        title="img" /></p>
+<ol>
+<li>
+<p>节点网络实际网络，就是宿主机网络建议地址段：﻿10.4.7.0/24﻿建议通过不同的IP端,区分不同的业务、机房或数据中心</p>
+</li>
+<li>
+<p>Pod 网络实际网络，容器运行的网络建议﻿172.7.21.0/24﻿ ,并建议POD网段与节点IP绑定如: 节点IP为﻿10.4.7.21﻿，则POD网络为﻿172.7.21.0/24﻿</p>
+</li>
+<li>
+<p>service网络虚拟网络，也叫集群网络(cluster server),用于内部集群间通信构建于POD网络之上, 主要是解决服务发现和负载均衡通过kube-proxy连接POD网络和service网络建议地址段为：﻿192.168.0.0/16﻿</p>
+</li>
+</ol>
+<h2 id="3-k8s流程图">3. K8S流程图</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667301-c91e26c5-de30-46f2-ba82-be8e19f34bf6.png"
+        data-srcset="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667301-c91e26c5-de30-46f2-ba82-be8e19f34bf6.png, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667301-c91e26c5-de30-46f2-ba82-be8e19f34bf6.png 1.5x, https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667301-c91e26c5-de30-46f2-ba82-be8e19f34bf6.png 2x"
+        data-sizes="auto"
+        alt="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667301-c91e26c5-de30-46f2-ba82-be8e19f34bf6.png"
+        title="img" /></p>
+<p>说明:</p>
+<p>主控节点和node节点只是逻辑上的概念,物理上可以部署在一起</p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-10-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8/" data-title="01_K8S_概念入门" data-hashtags="K8S,转载"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8/" data-title="01_K8S_概念入门" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8/" data-title="01_K8S_概念入门" data-image="https://image-static.segmentfault.com/268/838/2688383208-de2acc59bbefb7ca_fix732"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8/" data-title="01_K8S_概念入门"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/02_k8s%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2/" class="prev" rel="prev" title="02_K8S_二进制部署实践"><i class="fas fa-angle-left fa-fw"></i>02_K8S_二进制部署实践</a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

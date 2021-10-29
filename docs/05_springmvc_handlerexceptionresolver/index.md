@@ -136,7 +136,7 @@ protected ModelAndView processHandlerException(HttpServletRequest request, HttpS
 public void afterPropertiesSet() {
   // Do this first, it may add ResponseBodyAdvice beans
   // ①
-  initExceptionHandlerAdviceCache(); 
+  initExceptionHandlerAdviceCache();
   // ②
   if (this.argumentResolvers == null) {
     List<HandlerMethodArgumentResolver> resolvers = getDefaultArgumentResolvers();

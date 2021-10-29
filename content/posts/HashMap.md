@@ -1,5 +1,6 @@
 ---
-title: "HashMap"
+weight: 1000
+title: "HashMap源码分析"
 subtitle: ""
 date: 2016-04-27T15:58:21+08:00
 lastmod: 2016-04-27T15:58:21+08:00
@@ -154,7 +155,7 @@ static final int hash(Object key) {
 }
 ```
 
-**(h = key.hashCode()) ^ (h >>> 16)** 
+**(h = key.hashCode()) ^ (h >>> 16)**
 
 为什么需要h >>> 16位？扰动函数，减轻了哈希冲突
 

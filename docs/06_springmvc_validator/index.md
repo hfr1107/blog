@@ -67,7 +67,7 @@ public class User {
 
     @NotNull
     private String name;
-  
+
     @Min(value="1")
     private String age;
 

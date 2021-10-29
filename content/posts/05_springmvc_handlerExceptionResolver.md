@@ -1,4 +1,5 @@
 ---
+weight: 24
 title: "05_springmvc_handlerExceptionResolver"
 subtitle: ""
 date: 2016-11-01T10:59:42+08:00
@@ -160,7 +161,7 @@ protected ModelAndView processHandlerException(HttpServletRequest request, HttpS
 public void afterPropertiesSet() {
   // Do this first, it may add ResponseBodyAdvice beans
   // ①
-  initExceptionHandlerAdviceCache(); 
+  initExceptionHandlerAdviceCache();
   // ②
   if (this.argumentResolvers == null) {
     List<HandlerMethodArgumentResolver> resolvers = getDefaultArgumentResolvers();
