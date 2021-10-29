@@ -4,7 +4,40 @@
         <link>https://scemsjyd.com/categories/spring/</link>
         <description>spring - 分类 - 山脚下的脚下山</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>scemsjyd@gmail.com (Adam.Jin)</managingEditor>
-            <webMaster>scemsjyd@gmail.com (Adam.Jin)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 01 Nov 2016 15:59:42 &#43;0800</lastBuildDate><atom:link href="https://scemsjyd.com/categories/spring/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>scemsjyd@gmail.com (Adam.Jin)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 27 Oct 2019 15:58:21 &#43;0800</lastBuildDate><atom:link href="https://scemsjyd.com/categories/spring/" rel="self" type="application/rss+xml" /><item>
+    <title>10_springdata_kafka</title>
+    <link>https://scemsjyd.com/10_springdata_kafka/</link>
+    <pubDate>Sun, 27 Oct 2019 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/10_springdata_kafka/</guid>
+    <description><![CDATA[<h1 id="spring-kafka-要点">Spring kafka 要点</h1>
+<blockquote>
+<p>以下内容记录了一些工作中遇到的kafka的要点（个人认为）</p>
+</blockquote>
+<h2 id="一kafka消费者">一、kafka消费者</h2>
+<h3 id="11源码分析">1.1、源码分析</h3>
+<h4 id="111-enablekafka">1.1.1、 <code>@EnableKafka</code></h4>
+<p>作用：kafka开启入口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Documented</span>
+<span class="nd">@Import</span><span class="o">(</span><span class="n">KafkaBootstrapConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="c1">// 最重要的入口配置
+</span><span class="c1"></span><span class="kd">public</span> <span class="nd">@interface</span> <span class="n">EnableKafka</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>]]></description>
+</item><item>
     <title>06_springmvc_validator</title>
     <link>https://scemsjyd.com/06_springmvc_validator/</link>
     <pubDate>Tue, 01 Nov 2016 15:59:42 &#43;0800</pubDate>

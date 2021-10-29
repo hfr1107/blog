@@ -4,7 +4,7 @@
         <link>https://scemsjyd.com/</link>
         <description>山脚下的脚下山の博客</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>scemsjyd@gmail.com (Adam.Jin)</managingEditor>
-            <webMaster>scemsjyd@gmail.com (Adam.Jin)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 01 Oct 2019 17:55:28 &#43;0800</lastBuildDate>
+            <webMaster>scemsjyd@gmail.com (Adam.Jin)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 27 Oct 2019 15:58:21 &#43;0800</lastBuildDate>
             <atom:link href="https://scemsjyd.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>Emoji 支持</title>
@@ -14,46 +14,123 @@
     <guid>https://scemsjyd.com/emoji-support/</guid>
     <description><![CDATA[<p>Emoji 可以通过多种方式在 Hugo 项目中启用.</p>]]></description>
 </item><item>
+    <title>10_springdata_kafka</title>
+    <link>https://scemsjyd.com/10_springdata_kafka/</link>
+    <pubDate>Sun, 27 Oct 2019 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/10_springdata_kafka/</guid>
+    <description><![CDATA[<h1 id="spring-kafka-要点">Spring kafka 要点</h1>
+<blockquote>
+<p>以下内容记录了一些工作中遇到的kafka的要点（个人认为）</p>
+</blockquote>
+<h2 id="一kafka消费者">一、kafka消费者</h2>
+<h3 id="11源码分析">1.1、源码分析</h3>
+<h4 id="111-enablekafka">1.1.1、 <code>@EnableKafka</code></h4>
+<p>作用：kafka开启入口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Documented</span>
+<span class="nd">@Import</span><span class="o">(</span><span class="n">KafkaBootstrapConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="c1">// 最重要的入口配置
+</span><span class="c1"></span><span class="kd">public</span> <span class="nd">@interface</span> <span class="n">EnableKafka</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>]]></description>
+</item><item>
+    <title>gatling</title>
+    <link>https://scemsjyd.com/gatling/</link>
+    <pubDate>Sun, 27 Oct 2019 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/gatling/</guid>
+    <description><![CDATA[测试工具gatling（加特林） 在学习Webflux响应式编程的过程中偶然听到了gatling这个负载测试工具，并且看着很简单。之前有听说过]]></description>
+</item><item>
+    <title>navicat解密</title>
+    <link>https://scemsjyd.com/navicat%E8%A7%A3%E5%AF%86/</link>
+    <pubDate>Thu, 27 Dec 2018 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/navicat%E8%A7%A3%E5%AF%86/</guid>
+    <description><![CDATA[navicat 解密 步骤如下 打开链接：https://tool.lu/coderunner/ 粘贴以下代码，修改倒数第二行 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17]]></description>
+</item><item>
+    <title>01_springmvc_flow</title>
+    <link>https://scemsjyd.com/sentry/</link>
+    <pubDate>Tue, 27 Nov 2018 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/sentry/</guid>
+    <description><![CDATA[sentry配置 使用sentry 进行异常报警 sentry安装 sentry 目前推荐使用docker安装，docker-compose启动 官方安装链接：h]]></description>
+</item><item>
+    <title>skywalking</title>
+    <link>https://scemsjyd.com/skywalking/</link>
+    <pubDate>Thu, 27 Sep 2018 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/skywalking/</guid>
+    <description><![CDATA[<h1 id="skywalking-agent源码分析">skywalking-agent源码分析</h1>
+<h2 id="执行顺序图">执行顺序图</h2>
+<blockquote>
+<p>该顺序图大体内容都有了，缺少最后一步的BootService的生命周期调用，即下面的接口。在这个接口中会有一些服务调用，比如向Gprc注册发送的流程*</p>
+</blockquote>
+<p></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"> public interface BootService {
+    void prepare() throws Throwable;
+
+    void boot() throws Throwable;
+
+    void onComplete() throws Throwable;
+
+    void shutdown() throws Throwable;
+}
+</code></pre></td></tr></table>
+</div>
+</div>]]></description>
+</item><item>
+    <title>01_redis设计与实现</title>
+    <link>https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/</link>
+    <pubDate>Sat, 27 Jan 2018 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/</guid>
+    <description><![CDATA[《redis设计与实现》学习记录（一） 一直在使用redis，使用熟练，但是好像一直没有关注过底层如何实现，最近准备关注一下底层的数据结构，于]]></description>
+</item><item>
+    <title>classloader</title>
+    <link>https://scemsjyd.com/classloader/</link>
+    <pubDate>Fri, 27 Oct 2017 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/classloader/</guid>
+    <description><![CDATA[ClassLoader 介绍 什么是ClassLoader java源码编译出来是一个个的.class文件，而ClassLoader的作用是将一个个的.class文件]]></description>
+</item><item>
+    <title>iptables</title>
+    <link>https://scemsjyd.com/iptables/</link>
+    <pubDate>Wed, 27 Sep 2017 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/iptables/</guid>
+    <description><![CDATA[iptables 简单入门介绍 iptables 是组成Linux平台下的包过滤防火墙。提到iptables就不能不提到netfliter。这里可以简单理解iptables是]]></description>
+</item><item>
     <title>06_springmvc_validator</title>
     <link>https://scemsjyd.com/06_springmvc_validator/</link>
     <pubDate>Tue, 01 Nov 2016 15:59:42 &#43;0800</pubDate>
     <author>作者</author>
     <guid>https://scemsjyd.com/06_springmvc_validator/</guid>
     <description><![CDATA[参数校验器 Spring MVC中的参数校验器并没有自己大量从新开发，而是使用了Hibernate-Validator，而Hibernate-Valida]]></description>
-</item><item>
-    <title>05_springmvc_handlerExceptionResolver</title>
-    <link>https://scemsjyd.com/05_springmvc_handlerexceptionresolver/</link>
-    <pubDate>Tue, 01 Nov 2016 10:59:42 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://scemsjyd.com/05_springmvc_handlerexceptionresolver/</guid>
-    <description><![CDATA[HandlerExceptionResolver Spring的处理器异常解析器HandlerExceptionResolver接口的实现负责处理各类控制器执行过程中出现的异常 1 2 3 4 5 public]]></description>
-</item><item>
-    <title>04_springmvc_handleradapter</title>
-    <link>https://scemsjyd.com/04_springmvc_handleradapter/</link>
-    <pubDate>Sun, 30 Oct 2016 15:59:23 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://scemsjyd.com/04_springmvc_handleradapter/</guid>
-    <description><![CDATA[HandlerAdapter HandlerAdapter是处理器适配器，Spring MVC通过HandlerAdapter来实际调用处理函数。它是SpringMvc处]]></description>
-</item><item>
-    <title>03_springmvc_handlermapping</title>
-    <link>https://scemsjyd.com/03_springmvc_handlermapping/</link>
-    <pubDate>Sat, 29 Oct 2016 15:58:58 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://scemsjyd.com/03_springmvc_handlermapping/</guid>
-    <description><![CDATA[HandlerMapping HandlerMapping接口负责根据request请求找到对应的Handler处理器及Interceptor拦截器，并将它们封装在Ha]]></description>
-</item><item>
-    <title>02_springmvc_init</title>
-    <link>https://scemsjyd.com/02_springmvc_init/</link>
-    <pubDate>Fri, 28 Oct 2016 15:58:34 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://scemsjyd.com/02_springmvc_init/</guid>
-    <description><![CDATA[DispatcherServlet Init dispatcherServlet是springmvc的核心 servlet的生命周期 ==servlet==的三个重要方法init service destroy 1.]]></description>
-</item><item>
-    <title>01_springmvc_flow</title>
-    <link>https://scemsjyd.com/01_springmvc_flow/</link>
-    <pubDate>Thu, 27 Oct 2016 15:58:21 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://scemsjyd.com/01_springmvc_flow/</guid>
-    <description><![CDATA[SpringMVC SpringMVC流程图 SpringMVC 九大组件 翻看SpringMVC源码会发现 DispatcherServlet 用于处理上传请求。处理方法是将普通的request包装成Multipa]]></description>
 </item></channel>
 </rss>
