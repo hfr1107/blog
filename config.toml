@@ -41,6 +41,16 @@ enableEmoji = true
     # 菜单配置
     [languages.zh-cn.menu]
       [[languages.zh-cn.menu.main]]
+        identifier = "home"
+        # 你可以在名称 (允许 HTML 格式) 之前添加其他信息, 例如图标
+        pre = ""
+        # 你可以在名称 (允许 HTML 格式) 之后添加其他信息, 例如图标
+        post = ""
+        name = "主页"
+        url = "/"
+        title = ""
+        weight = 1
+      [[languages.zh-cn.menu.main]]
         identifier = "posts"
         # 你可以在名称 (允许 HTML 格式) 之前添加其他信息, 例如图标
         pre = ""
@@ -49,7 +59,7 @@ enableEmoji = true
         name = "文章"
         url = "/posts/"
         title = ""
-        weight = 1
+        weight = 2
       [[languages.zh-cn.menu.main]]
         identifier = "tags"
         pre = ""
@@ -57,7 +67,7 @@ enableEmoji = true
         name = "标签"
         url = "/tags/"
         title = ""
-        weight = 2
+        weight = 3
       [[languages.zh-cn.menu.main]]
         identifier = "categories"
         pre = ""
@@ -65,7 +75,7 @@ enableEmoji = true
         name = "分类"
         url = "/categories/"
         title = ""
-        weight = 3
+        weight = 4
       #[[languages.zh-cn.menu.main]]
       #  identifier = "documentation"
       #  pre = ""
