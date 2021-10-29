@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>iptables - 标签 - 山脚下的脚下山</title>
+        <link>https://scemsjyd.com/tags/iptables/</link>
+        <description>iptables - 标签 - 山脚下的脚下山</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>scemsjyd@gmail.com (Adam.Jin)</managingEditor>
+            <webMaster>scemsjyd@gmail.com (Adam.Jin)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 27 Sep 2017 15:58:21 &#43;0800</lastBuildDate><atom:link href="https://scemsjyd.com/tags/iptables/" rel="self" type="application/rss+xml" /><item>
+    <title>iptables</title>
+    <link>https://scemsjyd.com/iptables/</link>
+    <pubDate>Wed, 27 Sep 2017 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/iptables/</guid>
+    <description><![CDATA[iptables 简单入门介绍 iptables 是组成Linux平台下的包过滤防火墙。提到iptables就不能不提到netfliter。这里可以简单理解iptables是]]></description>
+</item></channel>
+</rss>

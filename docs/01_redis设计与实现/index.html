@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>01_redis设计与实现 - 山脚下的脚下山</title><meta name="Description" content="山脚下的脚下山の博客"><meta property="og:title" content="01_redis设计与实现" />
+<meta property="og:description" content="《redis设计与实现》学习记录（一） 一直在使用redis，使用熟练，但是好像一直没有关注过底层如何实现，最近准备关注一下底层的数据结构，于" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2018-01-27T15:58:21+08:00" />
+<meta property="article:modified_time" content="2018-01-27T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="01_redis设计与实现"/>
+<meta name="twitter:description" content="《redis设计与实现》学习记录（一） 一直在使用redis，使用熟练，但是好像一直没有关注过底层如何实现，最近准备关注一下底层的数据结构，于"/>
+<meta name="application-name" content="山脚下的脚下山の博客">
+<meta name="apple-mobile-web-app-title" content="山脚下的脚下山の博客"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" /><link rel="prev" href="https://scemsjyd.com/classloader/" /><link rel="next" href="https://scemsjyd.com/skywalking/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "01_redis设计与实现",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "redis","wordcount":  3977 ,
+        "url": "https:\/\/scemsjyd.com\/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0\/","datePublished": "2018-01-27T15:58:21+08:00","dateModified": "2018-01-27T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "山脚下的脚下山"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">01_redis设计与实现</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>山脚下的脚下山</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"><i class="far fa-folder fa-fw"></i>中间件</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2018-01-27">2018-01-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3977 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 8 分钟&nbsp;<span id="/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="leancloud_visitors" data-flag-title="01_redis设计与实现">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据结构">数据结构</a>
+      <ul>
+        <li><a href="#字符串">字符串</a></li>
+        <li><a href="#链表">链表</a></li>
+        <li><a href="#字典">字典</a></li>
+        <li><a href="#跳跃表">跳跃表</a></li>
+        <li><a href="#整数集合intset">整数集合（intset）</a></li>
+        <li><a href="#压缩列表">压缩列表</a></li>
+      </ul>
+    </li>
+    <li><a href="#对象">对象</a>
+      <ul>
+        <li><a href="#编码和底层编码">编码和底层编码</a></li>
+        <li><a href="#字符串对象">字符串对象</a></li>
+        <li><a href="#列表对象">列表对象</a></li>
+        <li><a href="#哈希对象">哈希对象</a></li>
+        <li><a href="#集合对象">集合对象</a></li>
+        <li><a href="#有序集合对象">有序集合对象</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="redis设计与实现学习记录一">《redis设计与实现》学习记录（一）</h1>
+<blockquote>
+<p>一直在使用redis，使用熟练，但是好像一直没有关注过底层如何实现，最近准备关注一下底层的数据结构，于是买了本《redis设计与实现》第二版，晚上睡前抽时间看看，让自己在脑海中对redis有一个更清晰的认识。以下内容是自己看书的一些记录。因此有些内容摘自书中。</p>
+</blockquote>
+<h2 id="数据结构">数据结构</h2>
+<h3 id="字符串">字符串</h3>
+<ul>
+<li>
+<p>redis自定义了自己的字符串数据结构。（SDS=简单动态字符串）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span><span class="p">{</span>
+    <span class="kt">int</span> <span class="n">len</span><span class="p">;</span><span class="c1">//所保存的字符数长度
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">free</span><span class="p">;</span><span class="c1">//未使用字节数量
+</span><span class="c1"></span>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[];</span><span class="c1">//用于保存字符串，并且使用‘\0’结尾，与c保持一致，方便使用c的部分函数
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>优势</p>
+<ul>
+<li>获取字符串长度（STRLEN函数）时间复杂度为O(1)，因为有len这个属性。而C语言没有这个属性，要获取长度需要遍历数组。</li>
+<li>杜绝缓冲区溢出或者泄露：当字符串拼接或者添加时，C语言默认字符数组容量足够，而SDS会默认检查free是否足够。
+<ul>
+<li>空间预分配：对字符串增加，如果SDS.len小于1M,分配free和len同样大小的空间；如果&gt;1M，将分配1M的free空间。</li>
+<li>惰性空间释放：缩减SDS，并且立即释放内存，而是将释放大小增加到free空间。不用担心内存浪费，因为SDS提供了api在真正需要释放空间时执行。</li>
+<li>目的：减小频繁的内存分配，即减小了程序的时间开销，增加性能。</li>
+</ul>
+</li>
+<li>二进制安全：C以‘\0’为结尾，如果存储二进制图片等数据会认为‘\0’即结束。但是SDS有一个len属性，会读取len属性大小（+1）的长度才会结束，即安全的二进制存储。</li>
+<li>兼容部分C语言函数：SDS同样以‘\0’结尾，即遵询了部分C的结构，可以重用部分C函数，不必重写。</li>
+</ul>
+</li>
+</ul>
+<h3 id="链表">链表</h3>
+<ul>
+<li>
+<p>自定义链表结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">listNode</span><span class="p">{</span>
+    <span class="k">struct</span> <span class="n">listNode</span> <span class="o">*</span><span class="n">prev</span><span class="p">;</span><span class="c1">//前置节点
+</span><span class="c1"></span>    <span class="k">struct</span> <span class="n">listNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span><span class="c1">//后置节点
+</span><span class="c1"></span>    <span class="kt">void</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span><span class="c1">//链表结点数据
+</span><span class="c1"></span><span class="p">}</span><span class="n">listNode</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">list</span><span class="p">{</span>
+    <span class="n">listNode</span> <span class="o">*</span><span class="n">head</span><span class="p">;</span><span class="c1">//头节点
+</span><span class="c1"></span>    <span class="n">listNode</span> <span class="o">*</span><span class="n">tail</span><span class="p">;</span><span class="c1">//尾节点
+</span><span class="c1"></span>    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">len</span><span class="p">;</span><span class="c1">//链表节点数量
+</span><span class="c1"></span>    <span class="kt">void</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">dup</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">);</span><span class="c1">//节点复制函数
+</span><span class="c1"></span>    <span class="kt">void</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">free</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">);</span><span class="c1">//节点释放函数
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">match</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">);</span><span class="c1">//节点对比函数
+</span><span class="c1"></span><span class="p">}</span><span class="n">list</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>优势：</p>
+<ul>
+<li>双端链表：获取前置节点与后置节点时间复杂度O(1)，通过prev和next指针。</li>
+<li>无环：next=null即尾节点，prev=null即头节点</li>
+<li>链表长度计数器：len属性获取节点长度时间复杂度O(1)</li>
+<li>多态：可以根据value的类型为内置的三个函数指向具体类型的函数。如value是string,则三个函数为操作string的函数。</li>
+</ul>
+</li>
+</ul>
+<h3 id="字典">字典</h3>
+<ul>
+<li>
+<p>redis字典使用哈希表为底层实现。一个哈希表里有多个hash节点，一个节点保存一个k-v（键值对）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">dictht</span><span class="p">{</span> <span class="c1">//dict hash table
+</span><span class="c1"></span>    <span class="n">dictEntry</span> <span class="o">**</span><span class="n">table</span><span class="p">;</span><span class="c1">//哈希表 *数组*
+</span><span class="c1"></span>    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size</span><span class="p">;</span><span class="c1">//哈希表大小
+</span><span class="c1"></span>    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">sizemask</span><span class="p">;</span><span class="c1">//hash table大小掩码，计算索引值,总等于size-1,用户计算键放于table哪个索引上
+</span><span class="c1"></span>    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">used</span><span class="p">;</span><span class="c1">//hash table已使用节点大小
+</span><span class="c1"></span><span class="p">}</span><span class="n">dictht</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">dictEntry</span><span class="p">{</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">;</span><span class="c1">//键
+</span><span class="c1"></span>    <span class="k">union</span><span class="p">{</span>
+        <span class="kt">void</span> <span class="o">*</span><span class="n">val</span><span class="p">;</span>
+        <span class="n">uint64_tu64</span><span class="p">;</span>
+        <span class="n">int64_ts64</span><span class="p">;</span>
+    <span class="p">}</span><span class="n">v</span><span class="p">;</span> <span class="c1">//值
+</span><span class="c1"></span>    <span class="k">struct</span> <span class="n">dictEntry</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span> <span class="c1">//指向下个哈希表节点，形成链表。拉链表解决hash冲突。
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">dict</span><span class="p">{</span>
+    <span class="n">dictType</span> <span class="o">*</span><span class="n">type</span><span class="p">;</span> <span class="c1">//类型特定函数
+</span><span class="c1"></span>    <span class="kt">void</span> <span class="o">*</span><span class="n">privdaa</span><span class="p">;</span><span class="c1">//私有数据
+</span><span class="c1"></span>    <span class="n">dictht</span> <span class="n">ht</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="c1">// 哈希表，大小为2，一个存储，另一个用于rehash时
+</span><span class="c1"></span>    <span class="n">in</span> <span class="n">rehashidx</span><span class="p">;</span> <span class="c1">//rehash 索引，不rehash 值 = -1
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:15/image-20190319212810155.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:15/image-20190319212810155.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:15/image-20190319212810155.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:15/image-20190319212810155.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:15/image-20190319212810155.png"
+        title="image-20190319212810155" /></p>
+</li>
+<li>
+<p>type属性和privdata属性，用于不同类型设置不同的函数</p>
+</li>
+<li>
+<p>ht 大小为2，ht[1]只会在对ht[0]进行rehash时使用</p>
+</li>
+<li>
+<p>使用了<code>链地址法</code>解决hash冲突dictEntry.next指针存储下一个节点</p>
+</li>
+<li>
+<p>rehash</p>
+<ul>
+<li>扩展操作：为ht[1]分配ht[0].used * 2的2^n</li>
+<li>收缩操作：为ht[1]分配ht[0].used 的2^n</li>
+<li>时机，以下任一个满足：
+<ul>
+<li>服务器没有执行BGSAVE或者BGREWRITEAOF，并且load_factor&gt;=1</li>
+<li>正在执行BGSAVE或者BGREWRITEAOF，并且load_factor&gt;=5</li>
+<li>load_factor = ht[0].used / ht[0].size</li>
+<li>Load_facotr &lt; 0.1自动执行收缩</li>
+</ul>
+</li>
+<li>rehash并不是一次性完成，而是多次，激进式完成。避免当数据量大时，计算量导致停止服务。</li>
+<li>rehash时的查询先ht[0]再ht[1],新增直接操作ht[1]</li>
+</ul>
+</li>
+</ul>
+<h3 id="跳跃表">跳跃表</h3>
+<ul>
+<li>
+<p>跳跃表（skiplist）是一种有序数据结构。平均O(logN)、最坏O(N)时间复杂度。redis使用跳跃表作为有序集成键的底层实现之一。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">zskiplistNode</span><span class="p">{</span>
+    <span class="k">struct</span> <span class="n">zskiplistLevel</span><span class="p">{</span>
+        <span class="k">struct</span> <span class="n">zskiplistNode</span> <span class="o">*</span><span class="n">forward</span><span class="p">;</span><span class="c1">//前进指针
+</span><span class="c1"></span>        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">span</span><span class="p">;</span><span class="c1">//跨度
+</span><span class="c1"></span>    <span class="p">}</span><span class="n">level</span><span class="p">[];</span> <span class="c1">//层
+</span><span class="c1"></span>    <span class="k">struct</span> <span class="n">zskiplistNode</span> <span class="o">*</span><span class="n">backward</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">score</span><span class="p">;</span><span class="c1">//分值
+</span><span class="c1"></span>    <span class="n">robj</span> <span class="o">*</span><span class="n">obj</span><span class="p">;</span>
+<span class="p">}</span><span class="n">zskiplistNode</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">zskiplist</span><span class="p">{</span>
+    <span class="k">struct</span> <span class="n">skiplistNode</span> <span class="o">*</span><span class="n">header</span><span class="p">,</span><span class="o">*</span><span class="n">tail</span><span class="p">;</span><span class="c1">//头尾指针
+</span><span class="c1"></span>    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">length</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">level</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>跳跃表是有序集合的底层实现之一</p>
+</li>
+<li>
+<p><code>zskiplist</code>保存跳跃表信息，<code>zskiplistNode</code>保存节点信息</p>
+</li>
+<li>
+<p>跳跃表按照分值大小排序</p>
+</li>
+</ul>
+<h3 id="整数集合intset">整数集合（intset）</h3>
+<ul>
+<li>
+<p>整数集合是redis保存整数值的集合底层数据结构。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">typedef struct intset{
+    uint32_t encoding;//编码方式 
+    uint32_t length;//集合元素个数
+    int8_t contents[];//保存的元素
+}intset;
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>虽然intset的content属性类型为int8_t，但是content并不保存int8_t类型的值，而是取决于encoding类型的值。</p>
+</li>
+<li>
+<p>升级：当向contents添加一个类型比当前值的最大类型还大时，比如现在存放int16型的数据，但是下一个存放int32类型数据，那么intset集合会先进行<code>升级</code>。扩展contents的底层数据字节长度，再把之前的值改变成新的字节长度。最后更改encoding编码。因此intset添加元素的时间复杂度为O(N)</p>
+</li>
+<li>
+<p>不支持降级</p>
+</li>
+</ul>
+<h3 id="压缩列表">压缩列表</h3>
+<ul>
+<li>压缩列表是列表键及哈希键的底层实现之一，当列表键少量并且是小整数或者短字符时使用。</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:40/image-20190322175139662-6526059.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:40/image-20190322175139662-6526059.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:40/image-20190322175139662-6526059.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:40/image-20190322175139662-6526059.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:27:40/image-20190322175139662-6526059.png"
+        title="image-20190322175139662" /></p>
+<ul>
+<li>zlbytes表示压缩列表占用内存总字节数</li>
+<li>zltail表示压缩列表表尾距离开始节点的偏移量</li>
+<li>zllen表示节点数量</li>
+<li>entry节点数据</li>
+<li>zlend标记压缩列表结尾</li>
+</ul>
+<p>压缩列表节点数据结构，即上图的entry节点：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:28:08/image-20190322180325931.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:28:08/image-20190322180325931.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:28:08/image-20190322180325931.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:28:08/image-20190322180325931.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2020-08-04/15:28:08/image-20190322180325931.png"
+        title="image-20190322180325931" /></p>
+<ul>
+<li>描述：
+<ul>
+<li>Previous_entry_length前一节点的长度，如果是&lt; 254字节，使用1字节长保存，如果&gt;=254字节，使用5字节保存，并且属性第一字节设置为OxFE=254。</li>
+<li>encoding content内容的编码</li>
+<li>content 真正保存的内容</li>
+</ul>
+</li>
+<li>影响 ：
+<ul>
+<li>压缩列表会引起连锁更新：因为previous_entry_length保存了前一个节点的长度。如果介于250~254之前，新增一个节点在前面并且是大于254的，接下来的节点的previous_entry_length会调整为5字节，又会影响下一个节点，连锁反应。</li>
+</ul>
+</li>
+</ul>
+<h2 id="对象">对象</h2>
+<blockquote>
+<ol>
+<li>
+<p>redis并不直接使用上面的提到的数据结构来构建数据库。而是使用上面提到的数据结构构建了五种redis对象：<code>字符串对象</code> <code>列表对象</code> <code>哈希对象</code> <code>集合对象</code> <code>有序集合对象</code>。</p>
+</li>
+<li>
+<p>使用对象的好处是可以对同一种对象底层使用不同的实现。并且根据对象类型执行不同的命令。优化对象在不同的场景下的使用效率。</p>
+</li>
+<li>
+<p>redis对象实现了引用计数对内存进行回收。同时实现了对象的共享，以实现内存的节约。</p>
+</li>
+<li>
+<p>redis对象带有访问时间记录信息，lru等属性，用于回收最近最少使用的对象。</p>
+</li>
+</ol>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">redisObject</span><span class="p">{</span>
+  <span class="kt">unsigned</span> <span class="nl">type</span><span class="p">:</span><span class="mi">4</span><span class="p">;</span> <span class="c1">//对象类型
+</span><span class="c1"></span>  <span class="kt">unsigned</span> <span class="nl">encodeing</span><span class="p">:</span><span class="mi">4</span><span class="p">;</span> <span class="c1">//编码
+</span><span class="c1"></span>  <span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span> <span class="c1">//指向底层实现该对象的数据结构指针
+</span><span class="c1"></span><span class="p">}</span><span class="n">robj</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>type值有5种类型常量，分别对应redis的5种对象。</p>
+<table>
+<thead>
+<tr>
+<th>类型常量</th>
+<th>对象的名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REDIS_STRING</td>
+<td>字符串对象</td>
+</tr>
+<tr>
+<td>REDIS_LIST</td>
+<td>列表对象</td>
+</tr>
+<tr>
+<td>REDIS_HASH</td>
+<td>哈希对象</td>
+</tr>
+<tr>
+<td>REDIS_SET</td>
+<td>集合对象</td>
+</tr>
+<tr>
+<td>REDIS_ZSET</td>
+<td>有序集合对象</td>
+</tr>
+</tbody>
+</table>
+<p>可以使用<code>type</code>命令返回redis对象的值类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="n">set</span> <span class="n">msg</span> <span class="s2">&#34;hello world&#34;</span>
+<span class="n">type</span> <span class="n">msg</span> <span class="o">//</span><span class="err">返回</span><span class="n">string</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="编码和底层编码">编码和底层编码</h3>
+<blockquote>
+<p>对象的<code>ptr</code>指针指向了具体该对象的实现数据结构，而数据结构邮对象的<code>encoding</code>决定.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>编码常量</th>
+<th>编码对象底层数据结构</th>
+<th>OBJECT ENCODING命令输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REDIS_ENCODING_INT</td>
+<td>long类型整数</td>
+<td>int</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_EMBSTR</td>
+<td>embtr编码的SDS</td>
+<td>embstr</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_RAW</td>
+<td>SDS</td>
+<td>raw</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_HT</td>
+<td>字典</td>
+<td>hashtable</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_LINKEDLIST</td>
+<td>双端列表</td>
+<td>linkedlist</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_ZIPLIST</td>
+<td>压缩列表</td>
+<td>ziplist</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_INTSET</td>
+<td>整数集合</td>
+<td>intset</td>
+</tr>
+<tr>
+<td>REDIS_ENCODING_SKIPLIST</td>
+<td>跳跃表</td>
+<td>skiplist</td>
+</tr>
+</tbody>
+</table>
+<h3 id="字符串对象">字符串对象</h3>
+<blockquote>
+<p>字符串对象编码可以是int、raw、embstr。</p>
+<ol>
+<li>如果字符串对象保存的值类型为整数，那么encoding=REDIS_ENCODING_INT</li>
+<li>如何值为字符串值，并且字符串值length &gt; 32 byte 那么encoding = REDIS_ENCODING_RAW。</li>
+<li>相反如果length &lt;= 32 byte encoding = REDIS_ENCODING_EMBSTR</li>
+<li>类型的编码不是永恒不变的，当原来保存的是int值，但是使用了<code>APPEND</code>函数添加了字符串，那么类型将变成raw。为什么不是embstr，是因为embstr没有修改函数，只有先将其转为raw才能执行修改操作。</li>
+</ol>
+</blockquote>
+<h3 id="列表对象">列表对象</h3>
+<blockquote>
+<p>列表对象的编码可以是<code>ziplist</code>或者<code>linkedlist</code></p>
+<p>使用ziplist的条件如下：</p>
+<ol>
+<li>列表对象保存的所有字符串元素长度 &lt; 64 byte</li>
+<li>列表对象保存的元素数量 &lt; 512个</li>
+</ol>
+<p>除此之外都使用linkedlist结构。</p>
+<p>可以修改配置：<code>list-max-ziplist-value</code> 和<code>list-max-ziplist-entries</code>来修改上面的条件</p>
+</blockquote>
+<h3 id="哈希对象">哈希对象</h3>
+<blockquote>
+<p>哈希对象的编码是<code>ziplist</code>和<code>hashtable</code></p>
+<p>使用<code>ziplist</code>条件如下：</p>
+<ol>
+<li>所有键值对的length &lt; 64 byte</li>
+<li>所有键值对的数据&lt; 512</li>
+</ol>
+<p>除此之外使用<code>hashtable</code></p>
+<p>可以修改配置：<code>hash-max-ziplist-value</code> 和<code>hash-max-ziplist-entries</code>来修改上面的条件</p>
+</blockquote>
+<h3 id="集合对象">集合对象</h3>
+<blockquote>
+<p>集合对象使用的编码是：<code>intset</code>和<code>hashtable</code></p>
+<p>使用<code>intset</code>条件如下：</p>
+<ol>
+<li>集合对象保存的所有元素都是整数</li>
+<li>集合对象保存的元素个数 &lt;= 512</li>
+</ol>
+<p>除此之外使用<code>hashtable</code></p>
+<p>可以修改配置：<code>set-max-intset-value</code>来修改上面的条件</p>
+</blockquote>
+<h3 id="有序集合对象">有序集合对象</h3>
+<blockquote>
+<p>有序集合对象编码是：<code>ziplist</code>和<code>skiplist</code></p>
+<p>使用<code>ziplist</code>条件如下：</p>
+<ol>
+<li>有序集合保存元素个数 &lt; 128</li>
+<li>有序集合保存的所有元素长度 &lt; 64 byte</li>
+</ol>
+<p>除此之外使用<code>skiplist</code>编码</p>
+<p>可以修改配置：<code>zset-max-ziplist-value</code> 和<code>zset-max-ziplist-entries</code>来修改上面的条件</p>
+</blockquote>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2018-01-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-title="01_redis设计与实现" data-hashtags="redis"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-title="01_redis设计与实现" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-title="01_redis设计与实现"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-title="01_redis设计与实现"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/redis/">redis</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/classloader/" class="prev" rel="prev" title="classloader"><i class="fas fa-angle-left fa-fw"></i>classloader</a>
+            <a href="/skywalking/" class="next" rel="next" title="skywalking">skywalking<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

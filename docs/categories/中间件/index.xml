@@ -1,0 +1,59 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>中间件 - 分类 - 山脚下的脚下山</title>
+        <link>https://scemsjyd.com/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
+        <description>中间件 - 分类 - 山脚下的脚下山</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>scemsjyd@gmail.com (Adam.Jin)</managingEditor>
+            <webMaster>scemsjyd@gmail.com (Adam.Jin)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 27 Nov 2018 15:58:21 &#43;0800</lastBuildDate><atom:link href="https://scemsjyd.com/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="self" type="application/rss+xml" /><item>
+    <title>01_springmvc_flow</title>
+    <link>https://scemsjyd.com/sentry/</link>
+    <pubDate>Tue, 27 Nov 2018 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/sentry/</guid>
+    <description><![CDATA[sentry配置 使用sentry 进行异常报警 sentry安装 sentry 目前推荐使用docker安装，docker-compose启动 官方安装链接：h]]></description>
+</item><item>
+    <title>skywalking</title>
+    <link>https://scemsjyd.com/skywalking/</link>
+    <pubDate>Thu, 27 Sep 2018 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/skywalking/</guid>
+    <description><![CDATA[<h1 id="skywalking-agent源码分析">skywalking-agent源码分析</h1>
+<h2 id="执行顺序图">执行顺序图</h2>
+<blockquote>
+<p>该顺序图大体内容都有了，缺少最后一步的BootService的生命周期调用，即下面的接口。在这个接口中会有一些服务调用，比如向Gprc注册发送的流程*</p>
+</blockquote>
+<p></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"> public interface BootService {
+    void prepare() throws Throwable;
+
+    void boot() throws Throwable;
+
+    void onComplete() throws Throwable;
+
+    void shutdown() throws Throwable;
+}
+</code></pre></td></tr></table>
+</div>
+</div>]]></description>
+</item><item>
+    <title>01_redis设计与实现</title>
+    <link>https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/</link>
+    <pubDate>Sat, 27 Jan 2018 15:58:21 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/01_redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/</guid>
+    <description><![CDATA[《redis设计与实现》学习记录（一） 一直在使用redis，使用熟练，但是好像一直没有关注过底层如何实现，最近准备关注一下底层的数据结构，于]]></description>
+</item></channel>
+</rss>

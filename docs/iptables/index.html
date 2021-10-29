@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>iptables - 山脚下的脚下山</title><meta name="Description" content="山脚下的脚下山の博客"><meta property="og:title" content="iptables" />
+<meta property="og:description" content="iptables 简单入门介绍 iptables 是组成Linux平台下的包过滤防火墙。提到iptables就不能不提到netfliter。这里可以简单理解iptables是" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://scemsjyd.com/iptables/" /><meta property="og:image" content="https://scemsjyd.com/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2017-09-27T15:58:21+08:00" />
+<meta property="article:modified_time" content="2017-09-27T15:58:21+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://scemsjyd.com/logo.png"/>
+
+<meta name="twitter:title" content="iptables"/>
+<meta name="twitter:description" content="iptables 简单入门介绍 iptables 是组成Linux平台下的包过滤防火墙。提到iptables就不能不提到netfliter。这里可以简单理解iptables是"/>
+<meta name="application-name" content="山脚下的脚下山の博客">
+<meta name="apple-mobile-web-app-title" content="山脚下的脚下山の博客"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://scemsjyd.com/iptables/" /><link rel="prev" href="https://scemsjyd.com/06_springmvc_validator/" /><link rel="next" href="https://scemsjyd.com/classloader/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "iptables",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/scemsjyd.com\/iptables\/"
+        },"image": ["https:\/\/scemsjyd.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "iptables","wordcount":  2017 ,
+        "url": "https:\/\/scemsjyd.com\/iptables\/","datePublished": "2017-09-27T15:58:21+08:00","dateModified": "2017-09-27T15:58:21+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "Adam.Jin","logo": "https:\/\/p.qlogo.cn\/bizmail\/XpHAlE90tNCBxpvcMjtmdG52qxW6TFrUQ3VbWchBMibqlYJup0yhBzQ\/"},"author": {
+                "@type": "Person",
+                "name": "山脚下的脚下山"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="山脚下的脚下山"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>山脚下的脚下山の博客</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/scemsjyd" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">iptables</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>山脚下的脚下山</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BF%90%E7%BB%B4/"><i class="far fa-folder fa-fw"></i>运维</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-09-27">2017-09-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2017 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;<span id="/iptables/" class="leancloud_visitors" data-flag-title="iptables">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一网络基础知识">一、网络基础知识</a>
+      <ul>
+        <li><a href="#11网络分层模型">1.1、网络分层模型</a></li>
+        <li><a href="#12几种网络协议">1.2、几种网络协议</a></li>
+      </ul>
+    </li>
+    <li><a href="#二iptablesnetfliter">二、Iptables/netfliter</a>
+      <ul>
+        <li><a href="#21packet传输流程图">2.1、Packet传输流程图</a></li>
+        <li><a href="#22iptables">2.2、iptables</a></li>
+        <li><a href="#23使用">2.3、使用</a>
+          <ul>
+            <li><a href="#231操作filter表">2.3.1、操作filter表</a></li>
+            <li><a href="#232操作nat表">2.3.2、操作nat表</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#引用">引用</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="iptables-简单入门介绍">iptables 简单入门介绍</h1>
+<blockquote>
+<p>iptables 是组成Linux平台下的包过滤防火墙。提到iptables就不能不提到netfliter。这里可以简单理解iptables是客户端，而真正进行包过滤的是内核中的netfliter组件。</p>
+</blockquote>
+<h2 id="一网络基础知识">一、网络基础知识</h2>
+<h3 id="11网络分层模型">1.1、网络分层模型</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/08:41:22-v2-8846b3d85c724a94e13419a4ab3a4644_1440w.jpg"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/08:41:22-v2-8846b3d85c724a94e13419a4ab3a4644_1440w.jpg, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/08:41:22-v2-8846b3d85c724a94e13419a4ab3a4644_1440w.jpg 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/08:41:22-v2-8846b3d85c724a94e13419a4ab3a4644_1440w.jpg 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/08:41:22-v2-8846b3d85c724a94e13419a4ab3a4644_1440w.jpg"
+        title="img" /></p>
+<p>还有一个四层模型，是将五层模型中的数据链路及物理层合并为网络接口层(链路层)</p>
+<ol>
+<li>物理层：主要负责在物理载体上的数据包传输，如 WiFi，以太网，光纤，电话线等。</li>
+<li>数据链路层：主要负责链路层协议解析（主要为以太网帧）。</li>
+<li>网络层：主要负责 IP 协议（包括 IPv4 和 IPv6）解析。</li>
+<li>传输层：负责传输层协议解析（主要为 TCP，UDP 等）</li>
+<li>应用层：传输层以上我们均归类为应用层，主要包括各类应用层协议，如我们常用的 HTTP，FTP，SMTP，DNS，DHCP 等。</li>
+</ol>
+<h3 id="12几种网络协议">1.2、几种网络协议</h3>
+<blockquote>
+<p>TCP/IP 是互联网。≤相关的各类协议族的总称，比如：TCP，UDP，IP，FTP，HTTP，ICMP，SMTP 等都属于 TCP/IP 族内的协议。</p>
+</blockquote>
+<ul>
+<li>ICMP：网际报文控制协议，比如常用的ping命令，traceroute命令
+<ul>
+<li>用于IP主机、路由器之间传递控制消息。控制消息是在网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然不传输用户数据，但是对于用户数据的传递起着重要的作用。</li>
+</ul>
+</li>
+<li>IGMP：互联网组管理协议。
+<ul>
+<li>IP组播通信的特点是报文从一个源发出，被转发到一组特定的接收者。但在组播通信模型中，发送者不关注接收者的位置信息，只是将数据发送到约定的目的组播地址。要使组播报文最终能够到达接收者，需要某种机制使连接接收者网段的组播路由器能够了解到该网段存在哪些组播接收者，同时保证接收者可以加入相应的组播组中。IGMP就是用来在接收者主机和与其所在网段直接相邻的组播路由器之间建立、维护组播组成员关系的协议。</li>
+</ul>
+</li>
+<li>ARP/RARP：地址解析协议/反地址解析协议。
+<ul>
+<li>根据IP地址获取物理地址/根据物理地址获取IP地址，同一局域网下网络传输使用。</li>
+</ul>
+</li>
+<li>TCP：传输控制协议
+<ul>
+<li>三次握手，四次挥手。面向有连接，可靠传输</li>
+</ul>
+</li>
+<li>UDP：用户数据报协议
+<ul>
+<li>无连接，不可靠</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">UDP</th>
+<th style="text-align:left">TCP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">是否连接</td>
+<td style="text-align:left">无连接</td>
+<td style="text-align:left">面向连接</td>
+</tr>
+<tr>
+<td style="text-align:left">是否可靠</td>
+<td style="text-align:left">不可靠传输，不使用流量控制和拥塞控制</td>
+<td style="text-align:left">可靠传输，使用流量控制和拥塞控制</td>
+</tr>
+<tr>
+<td style="text-align:left">连接对象个数</td>
+<td style="text-align:left">支持一对一，一对多，多对一和多对多交互通信</td>
+<td style="text-align:left">只能是一对一通信</td>
+</tr>
+<tr>
+<td style="text-align:left">传输方式</td>
+<td style="text-align:left">面向报文</td>
+<td style="text-align:left">面向字节流</td>
+</tr>
+<tr>
+<td style="text-align:left">首部开销</td>
+<td style="text-align:left">首部开销小，仅8字节</td>
+<td style="text-align:left">首部最小20字节，最大60字节</td>
+</tr>
+<tr>
+<td style="text-align:left">适用场景</td>
+<td style="text-align:left">适用于实时应用（IP电话、视频会议、直播等）</td>
+<td style="text-align:left">适用于要求可靠传输的应用，例如文件传输</td>
+</tr>
+</tbody>
+</table>
+<h2 id="二iptablesnetfliter">二、Iptables/netfliter</h2>
+<blockquote>
+<p>要学会使用iptables和理解netfliter，就必须弄懂数据包在设备上的传输流程，及在每一个阶段所能做的事。</p>
+</blockquote>
+<h3 id="21packet传输流程图">2.1、Packet传输流程图</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:25:27-iptables.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:25:27-iptables.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:25:27-iptables.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:25:27-iptables.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:25:27-iptables.png"
+        title="iptables" /></p>
+<h3 id="22iptables">2.2、iptables</h3>
+<ul>
+<li>
+<p>表（tables）</p>
+<ul>
+<li>filter：一般的过滤功能</li>
+<li>nat：用于nat功能（端口映射，地址映射等）</li>
+<li>mangle：用于对特定数据包的修改</li>
+<li>Raw：有限级最高，设置raw时一般是为了不再让iptables做数据包的链接跟踪处理，提高性能RAW 表只使用在PREROUTING链和OUTPUT链上,因为优先级最高，从而可以对收到的数据包在连接跟踪前进行处理。一但用户使用了RAW表,在某个链 上,RAW表处理完后,将跳过NAT表和 ip_conntrack处理,即不再做地址转换和数据包的链接跟踪处理了。RAW表可以应用在那些不需要做nat的情况下，以提高性能。如大量访问的web服务器，可以让80端口不再让iptables做数据包的链接跟踪处理，以提高用户的访问速度。</li>
+</ul>
+</li>
+<li>
+<p>链（chains）</p>
+<ul>
+<li>PREROUTING：数据包进入路由表之前</li>
+<li>INPUT：通过路由表后目的地为本机</li>
+<li>FORWARD：通过路由表后，目的地不为本机</li>
+<li>OUTPUT：由本机产生，向外转发</li>
+<li>POSTROUTIONG：发送到网卡接口之前</li>
+</ul>
+</li>
+<li>
+<p>规则（rules）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">*nat
+:PREROUTING ACCEPT [60:4250]
+:INPUT ACCEPT [31:1973]
+:OUTPUT ACCEPT [3:220]
+:POSTROUTING ACCEPT [3:220]
+-A PREROUTING -p tcp -m tcp --dport 8088 -j DNAT --to-destination 192.168.1.160:80                              //PREROUTING规则都放在上面
+-A PREROUTING -p tcp -m tcp --dport 33066 -j DNAT --to-destination 192.168.1.161:3306
+-A POSTROUTING -d 192.168.1.160/32 -p tcp -m tcp --sport 80 -j SNAT --to-source 192.168.1.7             //POSTROUTING规则都放在下面
+-A POSTROUTING -d 192.168.1.161/32 -p tcp -m tcp --sport 3306 -j SNAT --to-source 192.168.1.7
+.....
+*filter
+:INPUT ACCEPT [16:7159]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [715:147195]
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 8088 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 33066 -j ACCEPT
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="23使用">2.3、使用</h3>
+<p><code>iptables [-t 表名] 命令选项 ［链名］ ［条件匹配］ ［-j 目标动作或跳转］</code></p>
+<ul>
+<li>查看iptables命令</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">iptables --help
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="231操作filter表">2.3.1、操作filter表</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:44:41-907596-20170109105720728-1179021991.png"
+        data-srcset="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:44:41-907596-20170109105720728-1179021991.png, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:44:41-907596-20170109105720728-1179021991.png 1.5x, https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:44:41-907596-20170109105720728-1179021991.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/scemsjyd/static_pic/raw/master/uPic/2021-04-24/09:44:41-907596-20170109105720728-1179021991.png"
+        title="img" /></p>
+<ul>
+<li>禁用ping</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">iptables -t filter -A INPUT -p icmp --icmp-type 8 -s 0.0.0.0/0 -j DROP
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>开通一段ip的端口</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">iptables -t filter -I YZW -m iprange --src-range 192.168.110.236-192.168.110.237 -p tcp -m multiport --dport 3011,3012,3301,8005,3302,3015,3016,20930 -j ACCEPT
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>保存iptables</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">iptables-save &gt; /etc/sysconfig/iptables-yzw
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="232操作nat表">2.3.2、操作nat表</h4>
+<p>比如访问本机（192.168.1.7）的8088端口转发到192.168.1.160的80端口；</p>
+<ul>
+<li>DNAT</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">iptables -t nat -A PREROUTING -p tcp -m tcp --dport 8088 -j DNAT --to-destination 192.168.1.160:80
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>SNAT</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">iptables -t nat -A POSTROUTING -d 192.168.1.160/32 -p tcp -m tcp --sport 80 -j SNAT --to-source 192.168.1.7
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>MASQUERADE</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">iptables -t nat -A POSTROUTING -s 192.168.1.7/255.255.255.0 -o eth0 -j MASQUERADE
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="引用">引用</h2>
+<p>【1】<a href="https://www.cnblogs.com/kevingrace/p/6265113.html" target="_blank" rel="noopener noreffer">Iptables 规则用法小结</a></p>
+<p>【2】<a href="https://klose911.github.io/html/iptables/state.html" target="_blank" rel="noopener noreffer">状态机制</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2017-09-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://scemsjyd.com/iptables/" data-title="iptables" data-hashtags="iptables"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://scemsjyd.com/iptables/" data-title="iptables" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://scemsjyd.com/iptables/" data-title="iptables"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://scemsjyd.com/iptables/" data-title="iptables"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/iptables/">iptables</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/06_springmvc_validator/" class="prev" rel="prev" title="06_springmvc_validator"><i class="fas fa-angle-left fa-fw"></i>06_springmvc_validator</a>
+            <a href="/classloader/" class="next" rel="next" title="classloader">classloader<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2016 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Adam.Jin</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"NEWqsYTB88Sn8Pq0AsYDaXcn-gzGzoHsz","appKey":"bvPBG3pirvLqtjU6IYVxGIyP","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://newqsytb.lc-cn-n1-shared.com","visitor":true}},"search":{"algoliaAppID":"94TQNWQOYB","algoliaIndex":"scemsjyd_blog","algoliaSearchKey":"1000dcceccf5970b4d76dfcb35d5a36a","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
