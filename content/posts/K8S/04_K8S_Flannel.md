@@ -12,7 +12,7 @@ description: "转载，原为老男孩教育视频内容"
 tags: ["K8S", "转载"]
 categories: ["转载", "K8S"]
 
-featuredImage: "https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-horizontal-color.png"
+featuredImage: "https://qiniu.scemsjyd.com/upic/20211113/qzoMjE.png"
 featuredImagePreview: ""
 
 lightgallery: true
