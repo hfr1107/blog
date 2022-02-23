@@ -4,7 +4,7 @@
         <link>https://scemsjyd.com/</link>
         <description>山脚下の脚下山</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>scemsjyd@gmail.com (Adam.Jin)</managingEditor>
-            <webMaster>scemsjyd@gmail.com (Adam.Jin)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</lastBuildDate>
+            <webMaster>scemsjyd@gmail.com (Adam.Jin)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 24 Jan 2021 13:58:21 &#43;0800</lastBuildDate>
             <atom:link href="https://scemsjyd.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>01_K8S_概念入门</title>
@@ -50,6 +50,13 @@
                 <img src="https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/2018-11-07-coredns-logo.png" referrerpolicy="no-referrer">
             </div>05_K8S_核心插件CoreDNS服务 1 coredns用途 coredns github地址 coredns都做了什么：Kubernetes内部域名解析原理]]></description>
 </item><item>
+    <title>Emoji 支持</title>
+    <link>https://scemsjyd.com/emoji-support/</link>
+    <pubDate>Tue, 01 Oct 2019 17:55:28 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://scemsjyd.com/emoji-support/</guid>
+    <description><![CDATA[<p>Emoji 可以通过多种方式在 Hugo 项目中启用.</p>]]></description>
+</item><item>
     <title>06_K8S_核心插件-ingress(服务暴露)控制器traefik</title>
     <link>https://scemsjyd.com/06_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6-ingress%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E6%8E%A7%E5%88%B6%E5%99%A8traefik/</link>
     <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
@@ -81,12 +88,5 @@
     <author>作者</author>
     <guid>https://scemsjyd.com/09_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E4%BA%A4%E4%BB%98jenkins%E5%88%B0k8s%E9%9B%86%E7%BE%A4/</guid>
     <description><![CDATA[09_K8S_交付实战-交付jenkins到k8s集群 1 准备jenkins镜像 准备镜像的操作在7.200运维机上完成 1.1 下载官方镜像 1 2 3 docker pull]]></description>
-</item><item>
-    <title>10_K8S_交付实战-流水线构建dubbo服务</title>
-    <link>https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/</link>
-    <pubDate>Thu, 01 Oct 2020 15:58:21 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://scemsjyd.com/10_k8s_%E4%BA%A4%E4%BB%98%E5%AE%9E%E6%88%98-%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BAdubbo%E6%9C%8D%E5%8A%A1/</guid>
-    <description><![CDATA[10_K8S_交付实战-流水线构建dubbo服务 1 jenkins流水线准备工作 1.1 参数构建要点 jenkins流水线配置的java项目的十个常用]]></description>
 </item></channel>
 </rss>
