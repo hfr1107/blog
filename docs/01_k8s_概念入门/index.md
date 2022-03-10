@@ -106,19 +106,19 @@ GUI管理插件（dashboard）
 
 ###  2.2 K8S的三条网络
 
-![img](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667294-c229f4bb-88ed-480d-b865-49ffad828651.png)
+![img](https://upyun.cdn.scemsjyd.com/PicGo/2022/03/1610091667294-c229f4bb-88ed-480d-b865-49ffad828651.png)
 
-1. 节点网络实际网络，就是宿主机网络建议地址段：﻿10.4.7.0/24﻿建议通过不同的IP端,区分不同的业务、机房或数据中心
+1. 节点网络实际网络，就是宿主机网络建议地址段：�10.4.7.0/24�建议通过不同的IP端,区分不同的业务、机房或数据中心
 
-2. Pod 网络实际网络，容器运行的网络建议﻿172.7.21.0/24﻿ ,并建议POD网段与节点IP绑定如: 节点IP为﻿10.4.7.21﻿，则POD网络为﻿172.7.21.0/24﻿
+2. Pod 网络实际网络，容器运行的网络建议�172.7.21.0/24� ,并建议POD网段与节点IP绑定如: 节点IP为�10.4.7.21�，则POD网络为�172.7.21.0/24�
 
-3. service网络虚拟网络，也叫集群网络(cluster server),用于内部集群间通信构建于POD网络之上, 主要是解决服务发现和负载均衡通过kube-proxy连接POD网络和service网络建议地址段为：﻿192.168.0.0/16﻿
+3. service网络虚拟网络，也叫集群网络(cluster server),用于内部集群间通信构建于POD网络之上, 主要是解决服务发现和负载均衡通过kube-proxy连接POD网络和service网络建议地址段为：�192.168.0.0/16�
 
 
 
 ##  3. K8S流程图
 
-![img](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1610091667301-c91e26c5-de30-46f2-ba82-be8e19f34bf6.png)
+![img](https://upyun.cdn.scemsjyd.com/PicGo/2022/03/1610091667301-c91e26c5-de30-46f2-ba82-be8e19f34bf6.png)
 
 说明:
 

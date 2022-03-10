@@ -9,7 +9,7 @@
 
 ### 1.1 架构图
 
-![img](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601202918753-9b104b38-ebe7-43d3-ac98-d96e46123355.png)
+![img](https://upyun.cdn.scemsjyd.com/PicGo/2022/03/1601202918753-9b104b38-ebe7-43d3-ac98-d96e46123355.png)
 
 架构说明:
 
@@ -99,7 +99,7 @@ dnssec-validation no
 [root@hdss7-11 ~]# named-checkconf
 ```
 
-![img](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601202918757-2e0c4fbf-1740-4787-884e-8ade28c911d1.png)
+![img](https://upyun.cdn.scemsjyd.com/PicGo/2022/03/1601202918757-2e0c4fbf-1740-4787-884e-8ade28c911d1-20220310181241796.png)
 
 
 
@@ -985,9 +985,6 @@ chmod +x /opt/kubernetes/server/bin/kube-apiserver.sh
 yum install supervisor -y
 systemctl start supervisord
 systemctl enable supervisord
-```
-
-```
 cat >/etc/supervisord.d/kube-apiserver.ini <<EOF
 [program:kube-apiserver]      ; 显示的程序名,类似my.cnf,可以有多个
 command=sh /opt/kubernetes/server/bin/kube-apiserver.sh
@@ -1863,7 +1860,7 @@ nginx-ds-j777c   1/1     Running   0          8s
 nginx-ds-nwsd6   1/1     Running   0          8s
 ```
 
-#### ![img](https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/1601202918741-2cc5b33b-ce36-4e44-b91f-e12e4c41dc01.png)
+#### ![img](https://upyun.cdn.scemsjyd.com/PicGo/2022/03/1601202918741-2cc5b33b-ce36-4e44-b91f-e12e4c41dc01.png)
 
 #### 7.2.2 在另一台node节点上检查
 

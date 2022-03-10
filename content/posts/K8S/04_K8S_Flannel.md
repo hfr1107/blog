@@ -12,7 +12,7 @@ description: "转载，原为老男孩教育视频内容"
 tags: ["K8S", "转载"]
 categories: ["转载", "K8S"]
 
-featuredImage: "https://qiniu.scemsjyd.com/upic/20211113/qzoMjE.png"
+featuredImage: "https://upyun.cdn.scemsjyd.com/PicGo/2022/03/20220310184017.png"
 featuredImagePreview: ""
 
 lightgallery: true

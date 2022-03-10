@@ -12,7 +12,7 @@ description: "转载，原为老男孩教育视频内容"
 tags: ["K8S", "转载"]
 categories: ["转载", "K8S"]
 
-featuredImage: "https://jyd01.oss-cn-beijing.aliyuncs.com/uPic/2018-11-07-coredns-logo.png"
+featuredImage: "https://upyun.cdn.scemsjyd.com/PicGo/2022/03/2018-11-07-coredns-logo.png"
 featuredImagePreview: ""
 
 lightgallery: true
