@@ -13,7 +13,7 @@
     <author>作者</author>
     <guid>https://scemsjyd.com/01_k8s_%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8/</guid>
     <description><![CDATA[<div class="featured-image">
-                <img src="https://upyun.cdn.scemsjyd.com/PicGo/2022/03/20220310183424.png" referrerpolicy="no-referrer">
+                <img src="https://cdn.upyun.scemsjyd.com/PicGo/2022/03/20220310183424.png" referrerpolicy="no-referrer">
             </div><p>01_K8S_概念入门</p>]]></description>
 </item><item>
     <title>02_K8S_二进制部署实践</title>
@@ -40,7 +40,7 @@
     <author>作者</author>
     <guid>https://scemsjyd.com/04_k8s_flannel/</guid>
     <description><![CDATA[<div class="featured-image">
-                <img src="https://upyun.cdn.scemsjyd.com/PicGo/2022/03/20220310184017.png" referrerpolicy="no-referrer">
+                <img src="https://cdn.upyun.scemsjyd.com/PicGo/2022/03/20220310184017.png" referrerpolicy="no-referrer">
             </div>04_K8S_核心网络插件Flannel k8s虽然设计了网络模型,然后将实现方式交给了CNI网络插件,而CNI网络插件的主要目的,就是实现P]]></description>
 </item><item>
     <title>05_K8S_核心插件coredns服务</title>
@@ -49,7 +49,7 @@
     <author>作者</author>
     <guid>https://scemsjyd.com/05_k8s_%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6coredns%E6%9C%8D%E5%8A%A1/</guid>
     <description><![CDATA[<div class="featured-image">
-                <img src="https://upyun.cdn.scemsjyd.com/PicGo/2022/03/2018-11-07-coredns-logo.png" referrerpolicy="no-referrer">
+                <img src="https://cdn.upyun.scemsjyd.com/PicGo/2022/03/2018-11-07-coredns-logo.png" referrerpolicy="no-referrer">
             </div>05_K8S_核心插件CoreDNS服务 1 coredns用途 coredns github地址 coredns都做了什么：Kubernetes内部域名解析原理]]></description>
 </item><item>
     <title>06_K8S_核心插件-ingress(服务暴露)控制器traefik</title>
@@ -67,7 +67,7 @@
     <author>作者</author>
     <guid>https://scemsjyd.com/07_k8s_web%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8Fdashboard/</guid>
     <description><![CDATA[<div class="featured-image">
-                <img src="https://upyun.cdn.scemsjyd.com/PicGo/2022/03/ui-dashboard.png" referrerpolicy="no-referrer">
+                <img src="https://cdn.upyun.scemsjyd.com/PicGo/2022/03/ui-dashboard.png" referrerpolicy="no-referrer">
             </div>07_K8S_web管理方式dashboard dashboard是k8s的可视化管理平台，是三种管理k8s集群方法之一 1 部署dashboar]]></description>
 </item><item>
     <title>08_K8S_交付实战-架构说明并准备zk集群</title>
